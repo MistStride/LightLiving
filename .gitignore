@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Android build artifacts
+android/.gradle/
+android/app/build/
+android/build/
+android/captures/
+android/local.properties
+
+# Local gradle / IDE
+*.iml
+.DS_Store
+
+# Built APK (published via GitHub Releases, not committed)
+*.apk
+
+# OS / editor
+Thumbs.db

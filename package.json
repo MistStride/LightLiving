@@ -1,0 +1,16 @@
+{
+  "name": "light-living",
+  "version": "1.0.0",
+  "private": true,
+  "description": "轻盈生活 Light Living — 物品陪伴记录册 (Android App built with Capacitor)",
+  "scripts": {
+    "sync": "node copy-web.js && cap sync",
+    "android": "node copy-web.js && cap sync && cap open android",
+    "build:apk": "node copy-web.js && cap sync && cd android && ./gradlew assembleDebug"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.4.0",
+    "@capacitor/core": "^7.4.0",
+    "@capacitor/android": "^7.4.0"
+  }
+}
