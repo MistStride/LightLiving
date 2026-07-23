@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#8B5CF6" />
+<title>轻盈生活 · Light Living</title>
+<style>
+  :root{
+    --primary:#8B5CF6;
+    --primary-soft:#DDD6FE;
+    --secondary:#93C5FD;
+    --secondary-soft:#E0F2FE;
+    --bg:#FAFAFE;
+    --surface:#FFFFFF;
+    --text-main:#1E1B4B;
+    --text-sub:#6B7280;
+    --line:#EEEDF7;
+    --shadow:0 4px 20px -2px rgba(139,92,246,.05);
+    --shadow-lg:0 12px 40px -8px rgba(139,92,246,.18);
+    --radius:22px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    background:#ECEAFB;color:var(--text-main);
+    -webkit-font-smoothing:antialiased;
+  }
+  .app{
+    max-width:480px;margin:0 auto;min-height:100vh;background:var(--bg);
+    position:relative;padding-bottom:120px;overflow-x:hidden;
+  }
+
+  /* ===== HERO ===== */
+  .hero{
+    position:relative;
+    background:linear-gradient(135deg,#E9E3FF 0%,#E0F2FE 100%);
+    padding:max(env(safe-area-inset-top),28px) 22px 54px;
+    border-bottom-left-radius:30px;border-bottom-right-radius:30px;
+  }
+  .gear{position:absolute;top:max(env(safe-area-inset-top),28px);right:18px;width:36px;height:36px;border:0;background:rgba(255,255,255,.55);border-radius:50%;font-size:17px;cursor:pointer;color:var(--text-main);transition:.2s;display:flex;align-items:center;justify-content:center;}
+  .gear:active{transform:scale(.9);}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;color:var(--text-main);}
+  .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--primary);box-shadow:0 0 0 4px rgba(139,92,246,.18);}
+  .brand small{font-weight:500;font-size:12px;color:var(--text-sub);letter-spacing:.5px;}
+  .hero-cost{margin-top:22px;}
+  .hero-cost .label{font-size:13px;color:var(--text-sub);font-weight:500;}
+  .hero-cost .amount{font-size:40px;font-weight:800;letter-spacing:-1px;color:var(--text-main);line-height:1.1;margin-top:2px;}
+  .hero-cost .amount span{font-size:40px;}
+  .hero-stats{display:flex;margin-top:20px;gap:6px;}
+  .hero-stats .col{flex:1;text-align:center;background:rgba(255,255,255,.55);backdrop-filter:blur(6px);border-radius:16px;padding:12px 4px;}
+  .hero-stats .col b{display:block;font-size:20px;font-weight:800;color:var(--text-main);}
+  .hero-stats .col span{font-size:11px;color:#5b5b78;font-weight:500;}
+
+  .lightness{
+    margin:-34px 18px 0;background:var(--surface);border-radius:var(--radius);
+    box-shadow:var(--shadow-lg);padding:18px;display:flex;align-items:center;gap:16px;
+    position:relative;z-index:2;
+  }
+  .ring{
+    --p:0;width:64px;height:64px;border-radius:50%;flex:0 0 auto;position:relative;
+    background:conic-gradient(var(--primary) calc(var(--p)*1%),#EDE9FE 0);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .ring::before{content:"";position:absolute;width:50px;height:50px;border-radius:50%;background:var(--surface);}
+  .ring b{position:relative;font-size:15px;font-weight:800;color:var(--primary);}
+  .lightness .txt{font-size:13px;line-height:1.5;color:var(--text-main);}
+  .lightness .txt small{color:var(--text-sub);}
+
+  /* ===== TOOLBAR ===== */
+  .tabs{display:flex;background:var(--surface);margin:18px 18px 0;border-radius:16px;padding:5px;box-shadow:var(--shadow);position:relative;}
+  .tabs button{flex:1;border:0;background:transparent;font-size:14px;font-weight:600;color:var(--text-sub);padding:11px 0;border-radius:12px;transition:.25s;cursor:pointer;}
+  .tabs button.on{background:linear-gradient(135deg,var(--primary),#A78BFA);color:#fff;box-shadow:0 6px 16px -4px rgba(139,92,246,.5);}
+
+  .cats{display:flex;gap:8px;overflow-x:auto;padding:14px 18px 4px;scrollbar-width:none;}
+  .cats::-webkit-scrollbar{display:none;}
+  .cats .pill{flex:0 0 auto;border:1px solid var(--line);background:var(--surface);color:var(--text-sub);font-size:12.5px;font-weight:600;padding:8px 14px;border-radius:999px;cursor:pointer;transition:.2s;white-space:nowrap;}
+  .cats .pill.on{background:var(--primary-soft);border-color:var(--primary-soft);color:var(--primary);}
+
+  .sortbar{display:flex;align-items:center;justify-content:space-between;padding:6px 20px 10px;}
+  .sortbar .count{font-size:12px;color:var(--text-sub);}
+  .sortsel{position:relative;}
+  .sortsel select{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--text-main);font-size:12.5px;font-weight:600;padding:8px 30px 8px 14px;border-radius:999px;cursor:pointer;}
+  .sortsel::after{content:"▾";position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--primary);font-size:12px;pointer-events:none;}
+
+  /* ===== SEARCH ===== */
+  .searchbar{position:relative;padding:6px 18px 4px;}
+  .searchbar input{flex:1;width:100%;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:11px 44px 11px 16px;font-size:13.5px;color:var(--text-main);outline:none;transition:.2s;font-family:inherit;}
+  .searchbar input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(139,92,246,.12);}
+  .searchbar .clr{position:absolute;right:28px;top:50%;transform:translateY(-50%);width:26px;height:26px;border:0;background:var(--line);border-radius:50%;color:var(--text-sub);cursor:pointer;font-size:13px;display:none;align-items:center;justify-content:center;}
+  .searchbar .clr:active{transform:translateY(-50%) scale(.9);}
+  .list.noanim .card{animation:none;}
+
+  /* ===== LIST / CARD ===== */
+  .list{padding:6px 18px 10px;display:flex;flex-direction:column;gap:14px;}
+  .card{
+    background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);
+    padding:14px;display:flex;gap:14px;position:relative;align-items:flex-start;
+    animation:fadeUp .42s cubic-bezier(.22,1,.36,1) both;
+  }
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+  .thumb{width:84px;height:84px;border-radius:18px;flex:0 0 auto;object-fit:cover;background:linear-gradient(135deg,var(--primary-soft),var(--secondary-soft));display:flex;align-items:center;justify-content:center;font-size:30px;}
+  .card .body{flex:1;min-width:0;}
+  .card .name{font-size:16px;font-weight:700;color:var(--text-main);display:flex;align-items:center;gap:8px;}
+  .cat-pill{font-size:10.5px;font-weight:700;color:var(--primary);background:var(--primary-soft);padding:3px 9px;border-radius:999px;}
+  .card .meta{font-size:12.5px;color:var(--text-sub);margin-top:7px;display:flex;flex-wrap:wrap;gap:4px 12px;}
+  .card .meta b{color:var(--text-main);font-weight:700;}
+  .card .cost{font-size:13px;color:var(--text-sub);margin-top:5px;}
+  .card .cost b{font-size:18px;color:var(--primary);font-weight:800;}
+  .card .note{font-size:12px;color:#9aa0b4;margin-top:7px;font-style:italic;line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .status-pill{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:4px 9px;border-radius:999px;margin-top:9px;}
+  .archived-tag{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#64748b;background:#EEF2F7;padding:4px 9px;border-radius:999px;margin-top:9px;}
+  .farewell-note{font-size:12.5px;color:#7c8196;margin-top:9px;line-height:1.55;background:#F7F6FC;border-radius:10px;padding:9px 11px;}
+
+  .menu-btn{position:absolute;top:10px;right:10px;width:30px;height:30px;border:0;background:transparent;color:var(--text-sub);font-size:20px;line-height:1;border-radius:50%;cursor:pointer;transition:.2s;}
+  .menu-btn:active{transform:scale(.9);background:var(--line);}
+
+  .checkin{position:absolute;right:14px;bottom:14px;width:46px;height:46px;border-radius:50%;border:0;cursor:pointer;
+    background:linear-gradient(135deg,var(--primary),#A78BFA);color:#fff;font-size:20px;font-weight:700;
+    box-shadow:0 8px 18px -4px rgba(139,92,246,.55);transition:transform .12s;}
+  .checkin:active{transform:scale(.9);}
+  .checkin.pop{animation:pop .4s ease;}
+  @keyframes pop{0%{transform:scale(1);}40%{transform:scale(1.22);}100%{transform:scale(1);}}
+
+  .arch-actions{display:flex;gap:10px;margin-top:12px;}
+  .arch-actions button{flex:1;border:1px solid var(--line);background:var(--surface);color:var(--text-sub);font-size:12.5px;font-weight:600;padding:9px 0;border-radius:12px;cursor:pointer;transition:.2s;}
+  .arch-actions button:active{transform:scale(.97);}
+  .arch-actions .restore{color:var(--primary);border-color:var(--primary-soft);background:var(--primary-soft);}
+
+  .empty{text-align:center;color:var(--text-sub);padding:60px 30px;}
+  .empty .em{font-size:46px;}
+  .empty p{margin:14px 0 0;font-size:14px;line-height:1.6;}
+
+  /* ===== FAB ===== */
+  .fab{
+    position:fixed;left:50%;transform:translateX(-50%);
+    bottom:calc(env(safe-area-inset-bottom) + 22px);
+    width:60px;height:60px;border-radius:50%;border:0;cursor:pointer;
+    background:linear-gradient(135deg,var(--primary),#7C6FF0);color:#fff;font-size:30px;font-weight:300;
+    box-shadow:0 14px 30px -6px rgba(139,92,246,.6);z-index:30;transition:transform .15s;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .fab:active{transform:translateX(-50%) scale(.92);}
+
+  /* ===== MODAL ===== */
+  .overlay{position:fixed;inset:0;background:rgba(30,27,75,.42);backdrop-filter:blur(3px);z-index:40;
+    display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .28s;}
+  .overlay.show{opacity:1;pointer-events:auto;}
+  .sheet{width:100%;max-width:480px;background:var(--surface);border-top-left-radius:28px;border-top-right-radius:28px;
+    padding:22px 22px calc(env(safe-area-inset-bottom) + 26px);transform:translateY(100%);transition:transform .32s cubic-bezier(.22,1,.36,1);max-height:92vh;overflow-y:auto;}
+  .overlay.show .sheet{transform:translateY(0);}
+  .sheet h3{margin:0 0 4px;font-size:19px;font-weight:800;color:var(--text-main);}
+  .sheet .sub{font-size:13px;color:var(--text-sub);margin-bottom:18px;line-height:1.5;}
+
+  .field{margin-bottom:15px;}
+  .field label{display:block;font-size:13px;font-weight:600;color:var(--text-main);margin-bottom:7px;}
+  .field input,.field textarea,.field select{
+    width:100%;border:1px solid var(--line);background:#FBFBFE;border-radius:14px;padding:13px 14px;
+    font-size:15px;color:var(--text-main);font-family:inherit;outline:none;transition:.2s;
+  }
+  .field input[type=color]{padding:6px;height:46px;}
+  .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(139,92,246,.12);}
+  .field textarea{resize:none;min-height:64px;}
+  .row2{display:flex;gap:12px;}
+  .row2 .field{flex:1;}
+
+  .seg{display:flex;background:#F3F1FB;border-radius:14px;padding:4px;gap:4px;}
+  .seg button{flex:1;border:0;background:transparent;font-size:14px;font-weight:600;color:var(--text-sub);padding:11px 0;border-radius:11px;cursor:pointer;transition:.22s;}
+  .seg button.on{background:var(--surface);color:var(--primary);box-shadow:0 2px 8px -2px rgba(139,92,246,.25);}
+
+  .upload{border:1.5px dashed var(--primary-soft);border-radius:16px;padding:14px;text-align:center;cursor:pointer;color:var(--text-sub);font-size:13px;transition:.2s;position:relative;overflow:hidden;}
+  .upload:active{transform:scale(.99);}
+  .upload img{width:100%;max-height:160px;border-radius:12px;object-fit:cover;display:block;}
+  .upload .ph{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 0;}
+  .upload .ph .ic{font-size:26px;}
+
+  .reasons{display:flex;flex-direction:column;gap:10px;margin:8px 0 16px;}
+  .reasons label{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:14px;padding:14px;font-size:14.5px;font-weight:600;color:var(--text-main);cursor:pointer;transition:.2s;}
+  .reasons label.on{border-color:var(--primary);background:var(--primary-soft);}
+  .reasons input{accent-color:var(--primary);width:18px;height:18px;}
+
+  .btn-primary{width:100%;border:0;background:linear-gradient(135deg,var(--primary),#7C6FF0);color:#fff;font-size:16px;font-weight:700;padding:15px 0;border-radius:16px;cursor:pointer;box-shadow:0 10px 24px -6px rgba(139,92,246,.5);transition:transform .12s;}
+  .btn-primary:active{transform:scale(.98);}
+  .btn-ghost{width:100%;border:1px solid var(--line);background:var(--surface);color:var(--text-sub);font-size:15px;font-weight:600;padding:14px 0;border-radius:16px;cursor:pointer;margin-top:10px;transition:transform .12s;}
+  .btn-ghost:active{transform:scale(.98);}
+
+  .farewell-card{background:linear-gradient(135deg,#F5F1FF,#EAF4FF);border-radius:20px;padding:22px;text-align:center;margin-bottom:6px;}
+  .farewell-card .heart{font-size:34px;}
+  .farewell-card .msg{font-size:15px;line-height:1.6;color:var(--text-main);margin-top:8px;font-weight:600;}
+
+  /* status management */
+  .status-card{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:10px;}
+  .status-card .ic{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex:0 0 auto;}
+  .status-card .info{flex:1;min-width:0;}
+  .status-card .info b{font-size:14px;color:var(--text-main);}
+  .status-card .info small{display:block;color:var(--text-sub);font-size:11.5px;margin-top:3px;line-height:1.45;}
+  .status-card .ops{display:flex;flex-direction:column;gap:5px;flex:0 0 auto;}
+  .status-card .ops button{border:1px solid var(--line);background:var(--surface);border-radius:8px;font-size:11px;padding:5px 9px;cursor:pointer;color:var(--text-sub);transition:.15s;}
+  .status-card .ops button:active{transform:scale(.94);}
+  .cond-row{display:flex;gap:6px;align-items:center;margin-bottom:8px;}
+  .cond-row select,.cond-row input{flex:1;border:1px solid var(--line);border-radius:10px;padding:10px;font-size:13px;background:#FBFBFE;font-family:inherit;color:var(--text-main);}
+  .cond-row .c-del{flex:0 0 auto;width:34px;height:38px;border:1px solid var(--line);background:var(--surface);border-radius:10px;color:var(--text-sub);cursor:pointer;font-size:14px;}
+  .cond-row .c-del:active{transform:scale(.92);}
+
+  .toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 96px);transform:translateX(-50%) translateY(20px);
+    background:rgba(30,27,75,.92);color:#fff;font-size:13.5px;font-weight:600;padding:12px 20px;border-radius:999px;z-index:60;
+    opacity:0;pointer-events:none;transition:.3s;white-space:nowrap;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  /* ===== reminder ===== */
+  .reminder{margin:14px 18px 0;background:linear-gradient(135deg,#FFF4F4,#FDEEF0);border:1px solid #FAD7DC;border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);}
+  .rem-head{display:flex;align-items:center;justify-content:space-between;font-size:15px;font-weight:800;color:#b91c4b;}
+  .rem-ignore-all{border:0;background:transparent;color:#b91c4b;font-size:12px;font-weight:600;cursor:pointer;text-decoration:underline;padding:2px 4px;}
+  .rem-body{font-size:12.5px;color:#9b5a6a;line-height:1.5;margin:8px 0 12px;}
+  .rem-item{display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(255,255,255,.72);border-radius:14px;padding:10px 12px;margin-bottom:8px;}
+  .rem-item b{font-size:14px;color:var(--text-main);}
+  .rem-item small{display:block;font-size:11px;color:#9b5a6a;margin-top:2px;}
+  .rem-btns{display:flex;gap:8px;flex:0 0 auto;}
+  .rem-farewell{border:0;background:linear-gradient(135deg,var(--primary),#A78BFA);color:#fff;font-size:12px;font-weight:700;padding:8px 12px;border-radius:10px;cursor:pointer;}
+  .rem-farewell:active{transform:scale(.96);}
+  .rem-ignore{border:1px solid #FAD7DC;background:transparent;color:#b91c4b;font-size:12px;font-weight:600;padding:8px 12px;border-radius:10px;cursor:pointer;}
+  .rem-ignore:active{transform:scale(.96);}
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<button class="fab" id="fab" aria-label="添加物品">+</button>
+<div class="toast" id="toast"></div>
+
+<!-- Add Sheet -->
+<div class="overlay" id="addOverlay">
+  <div class="sheet">
+    <h3>添一件好物</h3>
+    <div class="sub">认真记录，物尽其用 ✨</div>
+    <div class="field">
+      <label>物品名称</label>
+      <input id="f_name" type="text" placeholder="例如：复古胶片相机" maxlength="40" />
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label>购买价格 (¥)</label>
+        <input id="f_price" type="number" inputmode="decimal" placeholder="0.00" min="0" step="0.01" />
+      </div>
+      <div class="field">
+        <label>入手日期</label>
+        <input id="f_date" type="date" />
+      </div>
+    </div>
+    <div class="field">
+      <label>分类</label>
+      <select id="f_cat"></select>
+    </div>
+    <div class="field">
+      <label>计费模式</label>
+      <div class="seg" id="f_mode">
+        <button type="button" data-m="day" class="on">📅 按天数</button>
+        <button type="button" data-m="count">🔢 按次数</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>随手备注 / 心情故事</label>
+      <textarea id="f_note" placeholder="它陪你做了什么？" maxlength="120"></textarea>
+    </div>
+    <div class="field">
+      <label>物品照片（可选）</label>
+      <div class="upload" id="f_upload">
+        <div class="ph" id="f_ph"><span class="ic">📷</span><span>点击上传 / 拍照</span></div>
+        <img id="f_img" style="display:none" alt="" />
+      </div>
+      <input id="f_file" type="file" accept="image/*" capture="environment" style="display:none" />
+    </div>
+    <button class="btn-primary" id="f_submit">收入陪伴册</button>
+    <button class="btn-ghost" data-close="addOverlay">取消</button>
+  </div>
+</div>
+
+<!-- Farewell Sheet -->
+<div class="overlay" id="farewellOverlay">
+  <div class="sheet">
+    <h3>圆满告别</h3>
+    <div class="sub">放手，也是一种轻盈。</div>
+    <div class="farewell-card">
+      <div class="heart">💜</div>
+      <div class="msg" id="farewellMsg"></div>
+    </div>
+    <div class="reasons" id="reasons">
+      <label><input type="radio" name="reason" value="赠送他人" /> 🎁 赠送他人</label>
+      <label><input type="radio" name="reason" value="回收丢弃" /> ♻️ 回收丢弃</label>
+      <label><input type="radio" name="reason" value="闲置处理" /> 📦 闲置处理</label>
+    </div>
+    <div class="field">
+      <label>给它的告别评语</label>
+      <textarea id="farewellNote" placeholder="写句心里话，比如：谢谢你陪我走过那段日子，希望下一位主人也喜欢你。" maxlength="140"></textarea>
+    </div>
+    <button class="btn-primary" id="farewellConfirm">温柔归档</button>
+    <button class="btn-ghost" data-close="farewellOverlay">再想想</button>
+  </div>
+</div>
+
+<!-- Status management -->
+<div class="overlay" id="statusOverlay">
+  <div class="sheet">
+    <h3>状态与关系规则</h3>
+    <div class="sub">按你和物品的关系自定义状态；标记为「消极」的状态会拉低轻盈度，提醒你断舍离。</div>
+    <div id="statusList"></div>
+    <button class="btn-primary" id="addStatus">+ 新增状态</button>
+    <button class="btn-ghost" id="exportBtn">📤 导出备份</button>
+    <button class="btn-ghost" id="importBtn">📥 导入备份</button>
+    <input id="importFile" type="file" accept="application/json,.json" style="display:none" />
+  </div>
+</div>
+
+<!-- Status edit -->
+<div class="overlay" id="statusEditOverlay">
+  <div class="sheet">
+    <h3 id="seTitle">新增状态</h3>
+    <div class="sub">设定名称、外观与判定条件</div>
+    <div class="row2">
+      <div class="field">
+        <label>名称</label>
+        <input id="se_name" type="text" maxlength="8" placeholder="如：物尽其用" />
+      </div>
+      <div class="field" style="flex:0 0 90px">
+        <label>图标</label>
+        <input id="se_emoji" type="text" maxlength="2" placeholder="✨" />
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label>颜色</label>
+        <input id="se_color" type="color" value="#8B5CF6" />
+      </div>
+      <div class="field">
+        <label>适用模式</label>
+        <select id="se_apply"><option value="all">全部</option><option value="day">按天</option><option value="count">按次</option></select>
+      </div>
+    </div>
+    <div class="field">
+      <label>关系倾向</label>
+      <div class="seg" id="se_pos">
+        <button type="button" data-p="1" class="on">🌟 积极</button>
+        <button type="button" data-p="0">🌫️ 消极</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>命中逻辑</label>
+      <div class="seg" id="se_match">
+        <button type="button" data-m="all" class="on">满足全部</button>
+        <button type="button" data-m="any">满足任一</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>判定条件</label>
+      <div id="se_conds"></div>
+      <button class="btn-ghost" id="se_addCond" style="margin-top:4px">+ 添加条件</button>
+    </div>
+    <button class="btn-primary" id="se_save">保存状态</button>
+    <button class="btn-ghost" data-close="statusEditOverlay">取消</button>
+  </div>
+</div>
+
+<!-- Confirm dialog (replaces native confirm, works in sandbox) -->
+<div class="overlay" id="confirmOverlay">
+  <div class="sheet" style="max-width:420px">
+    <h3 id="confirmTitle">确认操作</h3>
+    <div class="sub" id="confirmMsg"></div>
+    <button class="btn-primary" id="confirmYes">确认</button>
+    <button class="btn-ghost" data-close="confirmOverlay">取消</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  const STORE_KEY='light_living_items_v1';
+  const SEED_FLAG='light_living_seeded_v1';
+  const STATUS_KEY='light_living_statuses_v1';
+  const REMIND_KEY='light_living_remind_dismissed_v1';
+  const SAMPLE_MIG_FLAG='light_living_sample4_v1';
+  const CATEGORIES=['数码电子','服饰鞋包','居家生活','个人爱好','其他'];
+
+  const METRICS={unit:{label:'单位成本',unit:'¥'},days:{label:'陪伴天数',unit:'天'},count:{label:'打卡次数',unit:'次'}};
+  const OPS={lte:'≤',gte:'≥',lt:'<',gt:'>'};
+  const NEUTRAL={id:'neutral',name:'相伴中',emoji:'',color:'#9aa0b4',positive:false};
+
+  let state={items:[],statuses:[],tab:'active',category:'全部',sort:'cost_desc',search:''};
+  let formMode='day';
+  let newImage=null;
+  let pendingId=null;
+  let editingStatus=null;
+  let editingIsNew=false;
+  let dismissed=[];
+  let confirmCb=null;
+
+  /* ---------- storage ---------- */
+  function load(){
+    try{state.items=JSON.parse(localStorage.getItem(STORE_KEY))||[];}catch(e){state.items=[];}
+    try{state.statuses=JSON.parse(localStorage.getItem(STATUS_KEY))||[];}catch(e){state.statuses=[];}
+    try{dismissed=JSON.parse(localStorage.getItem(REMIND_KEY))||[];}catch(e){dismissed=[];}
+    if(!localStorage.getItem(SEED_FLAG)&&state.items.length===0){
+      state.items=seed();localStorage.setItem(SEED_FLAG,'1');save();
+    }
+    if(state.statuses.length===0){state.statuses=defaultStatuses();saveStatuses();}
+    migrateSamples();
+  }
+  function save(){localStorage.setItem(STORE_KEY,JSON.stringify(state.items));}
+  function saveStatuses(){localStorage.setItem(STATUS_KEY,JSON.stringify(state.statuses));}
+
+  function exportBackup(){
+    const data={app:'light-living',version:1,exportedAt:new Date().toISOString(),items:state.items,statuses:state.statuses};
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;a.download='light-living-backup-'+new Date().toISOString().slice(0,10)+'.json';
+    document.body.appendChild(a);a.click();a.remove();
+    URL.revokeObjectURL(url);
+    toast('已导出备份 📤');
+  }
+  function importBackup(file){
+    const reader=new FileReader();
+    reader.onload=e=>{
+      try{
+        const data=JSON.parse(e.target.result);
+        if(!data||!Array.isArray(data.items))throw new Error('格式不符');
+        askConfirm('导入备份将覆盖当前所有物品与状态规则，确定继续？',()=>{
+          state.items=data.items;
+          if(Array.isArray(data.statuses))state.statuses=data.statuses;
+          save();saveStatuses();closeOverlay('statusOverlay');render();renderStatusList?.();
+          toast('已从备份还原 📥');
+        },'导入备份');
+      }catch(err){toast('备份文件无效，请检查');}
+    };
+    reader.readAsText(file);
+  }
+
+  function sampleFour(){
+    return [
+      {id:'seed6',name:'健身环大冒险',price:499,purchaseDate:new Date(2025,11,17).toISOString().slice(0,10),category:'个人爱好',mode:'count',useCount:3,lastCheckin:'2026-01-20',image:'',note:'买来立志减肥，结果成了摆设。',status:'active',archiveReason:'',farewellNote:''},
+      {id:'seed7',name:'智能运动手环',price:299,purchaseDate:new Date(2025,8,5).toISOString().slice(0,10),category:'数码电子',mode:'day',useCount:1,lastCheckin:null,image:'',note:'每天记录步数，已经离不开它。',status:'active',archiveReason:'',farewellNote:''},
+      {id:'seed8',name:'香薰精油套装',price:129,purchaseDate:new Date(2026,4,10).toISOString().slice(0,10),category:'居家生活',mode:'day',useCount:1,lastCheckin:null,image:'',note:'睡前扩香，助眠小确幸。',status:'active',archiveReason:'',farewellNote:''},
+      {id:'seed9',name:'单反相机镜头',price:2200,purchaseDate:new Date(2025,9,20).toISOString().slice(0,10),category:'数码电子',mode:'count',useCount:1,lastCheckin:'2025-11-01',image:'',note:'想学摄影，结果手机拍拍也够了。',status:'active',archiveReason:'',farewellNote:''}
+    ];
+  }
+  function migrateSamples(){
+    if(localStorage.getItem(SAMPLE_MIG_FLAG))return;
+    state.items=state.items.concat(sampleFour());
+    localStorage.setItem(SAMPLE_MIG_FLAG,'1');
+    save();
+  }
+
+  function defaultStatuses(){
+    return [
+      {id:'s1',name:'物尽其用',emoji:'✨',color:'#d97706',positive:true,applyTo:'all',match:'any',
+        conditions:[{metric:'unit',op:'lte',value:3},{metric:'count',op:'gte',value:30}]},
+      {id:'s2',name:'独自吃灰',emoji:'🌫️',color:'#94a3b8',positive:false,applyTo:'count',match:'all',
+        conditions:[{metric:'count',op:'lte',value:3},{metric:'days',op:'gte',value:30}]}
+    ];
+  }
+
+  function seed(){
+    const t=new Date();
+    const d=(y,m,day)=>new Date(t.getFullYear()-y, m, day).toISOString().slice(0,10);
+    return [
+      {id:'seed1',name:'复古胶片相机',price:1280,purchaseDate:d(1,8,12),category:'个人爱好',mode:'count',useCount:46,lastCheckin:'2026-07-18',image:'',note:'记录生活的眼睛，每一卷都值得。',status:'active',archiveReason:'',farewellNote:''},
+      {id:'seed2',name:'机械键盘',price:499,purchaseDate:d(1,0,15),category:'数码电子',mode:'day',useCount:1,lastCheckin:null,image:'',note:'敲字的手感，是每天的仪式感。',status:'active',archiveReason:'',farewellNote:''},
+      {id:'seed3',name:'香薰蜡烛',price:89,purchaseDate:d(0,5,20),category:'居家生活',mode:'day',useCount:1,lastCheckin:null,image:'',note:'睡前的一束微光与气息。',status:'active',archiveReason:'',farewellNote:''},
+      {id:'seed4',name:'羊绒围巾',price:259,purchaseDate:d(1,10,2),category:'服饰鞋包',mode:'count',useCount:2,lastCheckin:'2026-01-05',image:'',note:'冬天的温柔铠甲，可惜很少戴。',status:'active',archiveReason:'',farewellNote:''},
+      {id:'seed5',name:'便携蓝牙音箱',price:399,purchaseDate:d(2,2,1),category:'数码电子',mode:'day',useCount:1,lastCheckin:null,image:'',note:'露营与阳台的bgm。',status:'archived',archiveReason:'闲置处理',farewellNote:'用了几次就闲置了，希望下个人常带它出门。'}
+    ];
+  }
+
+  /* ---------- calc ---------- */
+  function daysSince(dateStr){
+    const d=new Date(dateStr+'T00:00:00');const now=new Date();
+    return Math.max(0,Math.floor((now-d)/86400000));
+  }
+  function perDay(it){const days=daysSince(it.purchaseDate)+1;return it.price/Math.max(1,days);}
+  function perUse(it){return it.price/Math.max(1,it.useCount);}
+  function unitCost(it){return it.mode==='count'?perUse(it):perDay(it);}
+  function unseenDays(it){return it.mode==='day'?0:daysSince(it.lastCheckin||it.purchaseDate);}
+
+  function metricValue(it,m){
+    if(m==='unit')return unitCost(it);
+    if(m==='days')return daysSince(it.purchaseDate);
+    if(m==='count')return it.useCount;
+    return 0;
+  }
+  function compare(v,op,t){t=Number(t);return op==='lte'?v<=t:op==='gte'?v>=t:op==='lt'?v<t:v>t;}
+
+  function evalStatus(it){
+    for(const st of state.statuses){
+      if(st.applyTo!=='all'&&st.applyTo!==it.mode)continue;
+      const cs=st.conditions;if(!cs||cs.length===0)continue;
+      let ok=st.match==='all';
+      for(const c of cs){
+        const r=compare(metricValue(it,c.metric),c.op,c.value);
+        if(st.match==='all'){if(!r){ok=false;break;}}
+        else{if(r)ok=true;}
+      }
+      if(ok)return st;
+    }
+    return NEUTRAL;
+  }
+
+  /* ---------- helpers ---------- */
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+  function money(n){return '¥'+Number(n).toLocaleString('zh-CN',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function moneyShort(n){return '¥'+Number(n).toLocaleString('zh-CN',{maximumFractionDigits:0});}
+
+  /* ---------- derived ---------- */
+  function visible(){
+    let arr=state.items.filter(it=>it.status===(state.tab==='active'?'active':'archived'));
+    if(state.category!=='全部')arr=arr.filter(it=>it.category===state.category);
+    if(state.search){
+      const q=state.search.toLowerCase();
+      arr=arr.filter(it=>(it.name||'').toLowerCase().includes(q)||(it.note||'').toLowerCase().includes(q));
+    }
+    const by={
+      cost_desc:(a,b)=>unitCost(a)-unitCost(b),
+      cost_asc:(a,b)=>unitCost(b)-unitCost(a),
+      date_desc:(a,b)=>new Date(b.purchaseDate)-new Date(a.purchaseDate),
+      unseen_desc:(a,b)=>unseenDays(b)-unseenDays(a)
+    };
+    arr.sort(by[state.sort]||by.cost_desc);
+    return arr;
+  }
+  function heroStats(){
+    const active=state.items.filter(it=>it.status==='active');
+    const daily=active.filter(it=>it.mode==='day').reduce((s,it)=>s+perDay(it),0);
+    const asset=active.reduce((s,it)=>s+it.price,0);
+    const archived=state.items.filter(it=>it.status==='archived').length;
+    const positive=active.filter(it=>evalStatus(it).positive).length;
+    const negative=active.filter(it=>{const s=evalStatus(it);return !s.positive&&s.id!=='neutral';}).length;
+    const score=active.length?Math.round(positive/active.length*100):0;
+    return {daily,asset,archived,count:active.length,score,positive,negative};
+  }
+  function insight(s){
+    if(s.count===0)return '添加第一件好物，开启轻盈生活 🌱';
+    if(s.score>=70)return '轻盈度优秀，好物都被好好善待 ✨';
+    if(s.score>=40)return '渐入佳境，正在物尽其用 🌿';
+    if(s.negative>0)return '有些好物在独自吃灰，也许该断舍离了 🌫️';
+    return '慢慢来，陪伴本身就是意义 🤍';
+  }
+
+  /* ---------- 断舍离提醒 ---------- */
+  function idleDays(it){return it.mode==='count'?unseenDays(it):daysSince(it.purchaseDate);}
+  function negativeItems(){
+    return state.items.filter(it=>it.status==='active').filter(it=>{
+      const s=evalStatus(it);return !s.positive&&s.id!=='neutral';
+    });
+  }
+  function reminderHTML(){
+    const list=negativeItems().filter(it=>!dismissed.includes(it.id));
+    if(list.length===0)return '';
+    return `<div class="reminder">
+      <div class="rem-head">🌫️ 断舍离提醒<button class="rem-ignore-all" data-act="ignoreAll">忽略全部</button></div>
+      <div class="rem-body">有 <b>${list.length}</b> 件好物处于消极状态。与其占着空间，不如给它们一个体面的告别。</div>
+      ${list.map(it=>`<div class="rem-item">
+        <div><b>${esc(it.name)}</b><small>已 ${idleDays(it)} 天未好好使用 · ${esc(it.category)}</small></div>
+        <div class="rem-btns">
+          <button class="rem-farewell" data-act="farewell" data-id="${it.id}">去告别</button>
+          <button class="rem-ignore" data-act="ignore" data-id="${it.id}">忽略</button>
+        </div>
+      </div>`).join('')}
+    </div>`;
+  }
+
+  /* ---------- render ---------- */
+  function render(){
+    const s=heroStats();
+    const app=document.getElementById('app');
+    let html='';
+    html+=`
+      <header class="hero">
+        <button class="gear" id="gearBtn" aria-label="状态规则">⚙️</button>
+        <div class="brand"><span class="dot"></span> 轻盈生活 <small>LIGHT LIVING</small></div>
+        <div class="hero-cost">
+          <div class="label">每日陪伴总成本</div>
+          <div class="amount"><span>${money(s.daily)}</span></div>
+        </div>
+        <div class="hero-stats">
+          <div class="col"><b>${s.count}</b><span>陪伴中好物</span></div>
+          <div class="col"><b>${moneyShort(s.asset)}</b><span>持有资产总额</span></div>
+          <div class="col"><b>${s.archived}</b><span>已圆满告别</span></div>
+        </div>
+      </header>
+      <div class="lightness">
+        <div class="ring" style="--p:${s.score}"><b>${s.score}%</b></div>
+        <div class="txt"><b>轻盈度分析</b><br><small>${insight(s)}<br>${s.positive} 件状态积极 · ${s.negative} 件在吃灰</small></div>
+      </div>
+      ${reminderHTML()}
+      <div class="tabs">
+        <button data-tab="active" class="${state.tab==='active'?'on':''}">📦 陪伴中物品</button>
+        <button data-tab="archived" class="${state.tab==='archived'?'on':''}">📖 陪伴回忆录</button>
+      </div>
+      <div class="cats">
+        ${['全部',...CATEGORIES].map(c=>`<div class="pill ${state.category===c?'on':''}" data-cat="${esc(c)}">${esc(c)}</div>`).join('')}
+      </div>
+      <div class="searchbar">
+        <input id="searchInput" type="search" placeholder="🔍 搜索名称或备注…" value="${esc(state.search)}" />
+        <button class="clr" id="searchClear" aria-label="清除搜索">✕</button>
+      </div>
+      <div class="sortbar">
+        <div class="count">共 ${visible().length} 件</div>
+        <div class="sortsel">
+          <select id="sortSel">
+            <option value="cost_desc">单位成本 高→低</option>
+            <option value="cost_asc">单位成本 低→高</option>
+            <option value="date_desc">陪伴时间 最新→最久</option>
+            <option value="unseen_desc">长久未见</option>
+          </select>
+        </div>
+      </div>
+      <div class="list">${renderList()}</div>
+    `;
+    app.innerHTML=html;
+    const sel=document.getElementById('sortSel');if(sel)sel.value=state.sort;
+  }
+
+  function renderList(){
+    const arr=visible();
+    if(arr.length===0){
+      const emptyMsg=state.tab==='active'
+        ?'<div class="em">🪶</div><p>还没有陪伴中的好物。<br>点击右下角 + ，记录第一件认真拥有的东西。</p>'
+        :'<div class="em">📖</div><p>回忆录还是空的。<br>当一件物品圆满告别，它会被温柔地归档在这里。</p>';
+      return `<div class="empty">${emptyMsg}</div>`;
+    }
+    return arr.map((it,i)=>cardHTML(it,i)).join('');
+  }
+
+  function updateList(){
+    const list=document.querySelector('#app .list');
+    if(list){list.classList.add('noanim');list.innerHTML=renderList();}
+    const count=document.querySelector('#app .sortbar .count');
+    if(count)count.textContent='共 '+visible().length+' 件';
+    const clr=document.getElementById('searchClear');
+    if(clr)clr.style.display=state.search?'flex':'none';
+  }
+
+  function statusPill(it){
+    const st=evalStatus(it);
+    if(st.id==='neutral')return `<div class="status-pill" style="color:${st.color};background:color-mix(in srgb, ${st.color} 12%, white)">${esc(st.name)}</div>`;
+    return `<div class="status-pill" style="color:${st.color};background:color-mix(in srgb, ${st.color} 14%, white)">${st.emoji} ${esc(st.name)}</div>`;
+  }
+
+  function cardHTML(it,i){
+    const delay=(i%8)*0.04;
+    const thumb=it.image?`<img class="thumb" src="${esc(it.image)}" alt="">`:`<div class="thumb">📦</div>`;
+    let meta,cost;
+    if(it.mode==='day'){
+      meta=`<span>陪伴 <b>${daysSince(it.purchaseDate)}</b> 天</span><span>原价 <b>${moneyShort(it.price)}</b></span>`;
+      cost=`日均 <b>${money(perDay(it))}</b>`;
+    }else{
+      meta=`<span>已打卡 <b>${it.useCount}</b> 次</span><span>原价 <b>${moneyShort(it.price)}</b></span>`;
+      cost=`单次 <b>${money(perUse(it))}</b>`;
+    }
+    const note=it.note?`<div class="note">“${esc(it.note)}”</div>`:'';
+    const pill=statusPill(it);
+
+    if(it.status==='active'){
+      const menu=`<button class="menu-btn" data-act="farewell" data-id="${it.id}" aria-label="告别">⋯</button>`;
+      const checkin=it.mode==='count'?`<button class="checkin" data-act="checkin" data-id="${it.id}" aria-label="打卡">+1</button>`:'';
+      return `<div class="card" style="animation-delay:${delay}s">
+        ${thumb}
+        <div class="body">
+          <div class="name">${esc(it.name)}<span class="cat-pill">${esc(it.category)}</span></div>
+          <div class="meta">${meta}</div>
+          <div class="cost">${cost}</div>
+          ${note}${pill}
+        </div>
+        ${menu}${checkin}
+      </div>`;
+    }else{
+      const fn=it.farewellNote?`<div class="farewell-note">💬 ${esc(it.farewellNote)}</div>`:'';
+      return `<div class="card" style="animation-delay:${delay}s">
+        ${thumb}
+        <div class="body">
+          <div class="name">${esc(it.name)}<span class="cat-pill">${esc(it.category)}</span></div>
+          <div class="meta">${meta}</div>
+          <div class="cost">${cost}</div>
+          ${note}
+          <div class="archived-tag">💜 圆满告别 · ${esc(it.archiveReason||'')}</div>
+          ${fn}
+          <div class="arch-actions">
+            <button class="restore" data-act="restore" data-id="${it.id}">恢复陪伴</button>
+            <button data-act="del" data-id="${it.id}">删除记录</button>
+          </div>
+        </div>
+      </div>`;
+    }
+  }
+
+  /* ---------- toast ---------- */
+  let toastT;
+  function toast(msg){
+    const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');
+    clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),1800);
+  }
+  function vibrate(ms){if(navigator.vibrate)try{navigator.vibrate(ms);}catch(e){}}
+
+  /* ---------- overlay ---------- */
+  function openOverlay(id){document.getElementById(id).classList.add('show');}
+  function closeOverlay(id){document.getElementById(id).classList.remove('show');}
+  function askConfirm(msg,onYes,title){
+    document.getElementById('confirmTitle').textContent=title||'确认操作';
+    document.getElementById('confirmMsg').textContent=msg;
+    confirmCb=onYes;openOverlay('confirmOverlay');
+  }
+
+  /* ---------- add form ---------- */
+  function resetForm(){
+    formMode='day';newImage=null;
+    document.getElementById('f_name').value='';
+    document.getElementById('f_price').value='';
+    document.getElementById('f_date').value=new Date().toISOString().slice(0,10);
+    document.getElementById('f_note').value='';
+    document.getElementById('f_img').style.display='none';
+    document.getElementById('f_ph').style.display='flex';
+    document.getElementById('f_file').value='';
+    const sel=document.getElementById('f_cat');
+    if(sel.options.length===0)CATEGORIES.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;sel.appendChild(o);});
+    sel.value=CATEGORIES[0];
+    document.querySelectorAll('#f_mode button').forEach(b=>b.classList.toggle('on',b.dataset.m==='day'));
+  }
+
+  function compressImage(file,cb){
+    const reader=new FileReader();
+    reader.onload=e=>{
+      const img=new Image();
+      img.onload=()=>{
+        const max=1000;let w=img.width,h=img.height;
+        if(w>max||h>max){const r=Math.min(max/w,max/h);w=Math.round(w*r);h=Math.round(h*r);}
+        const c=document.createElement('canvas');c.width=w;c.height=h;
+        c.getContext('2d').drawImage(img,0,0,w,h);
+        cb(c.toDataURL('image/jpeg',0.72));
+      };
+      img.src=e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function submitAdd(){
+    const name=document.getElementById('f_name').value.trim();
+    const price=parseFloat(document.getElementById('f_price').value);
+    const date=document.getElementById('f_date').value;
+    const cat=document.getElementById('f_cat').value;
+    const note=document.getElementById('f_note').value.trim();
+    if(!name){toast('给好物起个名字吧');return;}
+    if(isNaN(price)||price<0){toast('请填写有效的价格');return;}
+    if(!date){toast('请选择入手日期');return;}
+    const item={
+      id:'it_'+Date.now(),name,price,purchaseDate:date,category:cat,mode:formMode,
+      useCount:formMode==='count'?0:1,lastCheckin:null,image:newImage||'',note,status:'active',archiveReason:'',farewellNote:''
+    };
+    state.items.unshift(item);save();closeOverlay('addOverlay');render();toast('已收入陪伴册 💜');vibrate(20);
+  }
+
+  /* ---------- farewell ---------- */
+  function openFarewell(id){
+    const it=state.items.find(x=>x.id===id);if(!it)return;
+    pendingId=id;
+    document.getElementById('farewellMsg').textContent=
+      `感谢「${it.name}」陪伴了你 ${daysSince(it.purchaseDate)} 天。放手，也是一种轻盈。`;
+    document.getElementById('farewellNote').value='';
+    document.querySelectorAll('#reasons input').forEach(r=>r.checked=false);
+    document.querySelectorAll('#reasons label').forEach(l=>l.classList.remove('on'));
+    openOverlay('farewellOverlay');
+  }
+  function confirmFarewell(){
+    const it=state.items.find(x=>x.id===pendingId);if(!it){closeOverlay('farewellOverlay');return;}
+    const r=document.querySelector('#reasons input:checked');
+    const note=document.getElementById('farewellNote').value.trim();
+    if(!note){toast('写句告别评语再走吧 💬');return;}
+    it.status='archived';it.archiveReason=r?r.value:'闲置处理';it.farewellNote=note;
+    save();closeOverlay('farewellOverlay');render();toast('已移入陪伴回忆录 📖');vibrate(30);
+  }
+
+  /* ---------- status management ---------- */
+  function ruleSummary(st){
+    const scope=st.applyTo==='all'?'全部':st.applyTo==='day'?'按天':'按次';
+    const join=st.match==='all'?' 且 ':' 或 ';
+    const parts=(st.conditions||[]).map(c=>METRICS[c.metric].label+OPS[c.op]+c.value+METRICS[c.metric].unit).join(join);
+    return scope+' · '+(st.match==='all'?'满足全部':'满足任一')+' · '+(parts||'无条件');
+  }
+  function renderStatusList(){
+    const list=document.getElementById('statusList');
+    list.innerHTML=state.statuses.map((st,i)=>`
+      <div class="status-card">
+        <div class="ic" style="background:color-mix(in srgb, ${st.color} 16%, white);color:${st.color}">${st.emoji||'•'}</div>
+        <div class="info">
+          <b>${esc(st.name)} ${st.positive?'<span style="color:#16a34a;font-size:11px">积极</span>':'<span style="color:#dc2626;font-size:11px">消极</span>'}</b>
+          <small>${ruleSummary(st)}</small>
+        </div>
+        <div class="ops">
+          <button data-se-edit="${st.id}">编辑</button>
+          <button data-se-del="${st.id}">删除</button>
+          <button data-se-up="${st.id}" ${i===0?'disabled style="opacity:.4"':''}>↑</button>
+          <button data-se-down="${st.id}" ${i===state.statuses.length-1?'disabled style="opacity:.4"':''}>↓</button>
+        </div>
+      </div>`).join('');
+  }
+  function openStatusManage(){renderStatusList();openOverlay('statusOverlay');}
+  function openStatusEdit(id){
+    editingIsNew=!id;
+    if(id){const s=state.statuses.find(x=>x.id===id);editingStatus=JSON.parse(JSON.stringify(s));}
+    else{editingStatus={id:'st_'+Date.now(),name:'',emoji:'💭',color:'#8B5CF6',applyTo:'all',match:'all',positive:true,conditions:[{metric:'unit',op:'lte',value:3}]};}
+    document.getElementById('seTitle').textContent=editingIsNew?'新增状态':'编辑状态';
+    document.getElementById('se_name').value=editingStatus.name;
+    document.getElementById('se_emoji').value=editingStatus.emoji;
+    document.getElementById('se_color').value=editingStatus.color;
+    document.getElementById('se_apply').value=editingStatus.applyTo;
+    document.querySelectorAll('#se_match button').forEach(b=>b.classList.toggle('on',b.dataset.m===editingStatus.match));
+    document.querySelectorAll('#se_pos button').forEach(b=>b.classList.toggle('on',(b.dataset.p==='1')===editingStatus.positive));
+    renderCondEditor();
+    openOverlay('statusEditOverlay');
+  }
+  function renderCondEditor(){
+    const box=document.getElementById('se_conds');
+    box.innerHTML=(editingStatus.conditions||[]).map((c,i)=>`
+      <div class="cond-row" data-i="${i}">
+        <select class="c-metric">${Object.entries(METRICS).map(([k,v])=>`<option value="${k}" ${c.metric===k?'selected':''}>${v.label}</option>`).join('')}</select>
+        <select class="c-op">${Object.entries(OPS).map(([k,v])=>`<option value="${k}" ${c.op===k?'selected':''}>${v}</option>`).join('')}</select>
+        <input class="c-val" type="number" value="${c.value}" />
+        <button class="c-del" data-del="${i}">✕</button>
+      </div>`).join('');
+  }
+  function saveStatusEdit(){
+    editingStatus.name=document.getElementById('se_name').value.trim();
+    if(!editingStatus.name){toast('给状态起个名字');return;}
+    if(!editingStatus.conditions||editingStatus.conditions.length===0){toast('至少添加一个判定条件');return;}
+    if(editingIsNew)state.statuses.push(editingStatus);
+    else{const idx=state.statuses.findIndex(x=>x.id===editingStatus.id);if(idx>=0)state.statuses[idx]=editingStatus;}
+    saveStatuses();closeOverlay('statusEditOverlay');render();toast('状态已保存 ✨');
+  }
+
+  /* ---------- events ---------- */
+  document.getElementById('app').addEventListener('click',e=>{
+    const t=e.target.closest('[data-act],[data-tab],[data-cat],#gearBtn');if(!t)return;
+    if(t.id==='gearBtn'){openStatusManage();return;}
+    if(t.dataset.tab){state.tab=t.dataset.tab;render();return;}
+    if(t.dataset.cat){state.category=t.dataset.cat;render();return;}
+    const act=t.dataset.act,id=t.dataset.id;
+    if(act==='checkin'){
+      const it=state.items.find(x=>x.id===id);if(!it)return;
+      it.useCount++;it.lastCheckin=new Date().toISOString().slice(0,10);save();render();
+      const btn=document.querySelector('.checkin[data-id="'+id+'"]');
+      if(btn){btn.classList.add('pop');setTimeout(()=>btn.classList.remove('pop'),420);}
+      toast('已打卡 +1 ✨');vibrate(15);
+    }else if(act==='farewell'){openFarewell(id);}
+    else if(act==='restore'){
+      const it=state.items.find(x=>x.id===id);if(!it)return;
+      it.status='active';it.archiveReason='';it.farewellNote='';save();render();toast('欢迎回到陪伴中 💜');
+    }else if(act==='ignore'){
+      if(!dismissed.includes(id))dismissed.push(id);
+      localStorage.setItem(REMIND_KEY,JSON.stringify(dismissed));render();
+    }else if(act==='ignoreAll'){
+      negativeItems().forEach(it=>{if(!dismissed.includes(it.id))dismissed.push(it.id);});
+      localStorage.setItem(REMIND_KEY,JSON.stringify(dismissed));render();toast('已忽略提醒');
+    }else if(act==='del'){
+      askConfirm('确定删除这条回忆记录吗？此操作不可撤销。',()=>{
+        state.items=state.items.filter(x=>x.id!==id);save();render();toast('已删除');
+      },'删除记录');
+    }
+  });
+
+  document.getElementById('app').addEventListener('change',e=>{
+    if(e.target.id==='sortSel'){state.sort=e.target.value;render();}
+  });
+  document.getElementById('app').addEventListener('input',e=>{
+    if(e.target.id==='searchInput'){state.search=e.target.value;updateList();}
+  });
+  document.getElementById('app').addEventListener('click',e=>{
+    if(e.target.id==='searchClear'){
+      const inp=document.getElementById('searchInput');
+      if(inp){inp.value='';state.search='';updateList();inp.focus();}
+    }
+  });
+
+  document.getElementById('fab').addEventListener('click',()=>{resetForm();openOverlay('addOverlay');});
+  document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>closeOverlay(b.dataset.close)));
+  document.getElementById('confirmYes').addEventListener('click',()=>{const cb=confirmCb;confirmCb=null;closeOverlay('confirmOverlay');if(cb)cb();});
+  document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)closeOverlay(o.id);}));
+
+  document.querySelectorAll('#f_mode button').forEach(b=>b.addEventListener('click',()=>{
+    formMode=b.dataset.m;
+    document.querySelectorAll('#f_mode button').forEach(x=>x.classList.toggle('on',x===b));
+  }));
+
+  document.getElementById('f_upload').addEventListener('click',()=>document.getElementById('f_file').click());
+  document.getElementById('f_file').addEventListener('change',e=>{
+    const f=e.target.files[0];if(!f)return;
+    compressImage(f,data=>{newImage=data;const img=document.getElementById('f_img');img.src=data;img.style.display='block';document.getElementById('f_ph').style.display='none';});
+  });
+  document.getElementById('f_submit').addEventListener('click',submitAdd);
+
+  document.querySelectorAll('#reasons label').forEach(l=>l.addEventListener('click',()=>{
+    document.querySelectorAll('#reasons label').forEach(x=>x.classList.remove('on'));
+    l.classList.add('on');const inp=l.querySelector('input');if(inp)inp.checked=true;
+  }));
+  document.getElementById('farewellConfirm').addEventListener('click',confirmFarewell);
+
+  /* status mgmt events */
+  document.getElementById('addStatus').addEventListener('click',()=>openStatusEdit(null));
+  document.getElementById('exportBtn').addEventListener('click',exportBackup);
+  document.getElementById('importBtn').addEventListener('click',()=>document.getElementById('importFile').click());
+  document.getElementById('importFile').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;importBackup(f);e.target.value='';});
+  document.getElementById('statusList').addEventListener('click',e=>{
+    const ed=e.target.closest('[data-se-edit]');
+    const del=e.target.closest('[data-se-del]');
+    const up=e.target.closest('[data-se-up]');
+    const down=e.target.closest('[data-se-down]');
+    if(ed){openStatusEdit(ed.dataset.seEdit);return;}
+    if(del){const id=del.dataset.seDel;state.statuses=state.statuses.filter(x=>x.id!==id);saveStatuses();renderStatusList();render();toast('已删除状态');return;}
+    if(up){const i=state.statuses.findIndex(x=>x.id===up.dataset.seUp);if(i>0){const t=state.statuses[i];state.statuses[i]=state.statuses[i-1];state.statuses[i-1]=t;saveStatuses();renderStatusList();render();}return;}
+    if(down){const i=state.statuses.findIndex(x=>x.id===down.dataset.seDown);if(i>=0&&i<state.statuses.length-1){const t=state.statuses[i];state.statuses[i]=state.statuses[i+1];state.statuses[i+1]=t;saveStatuses();renderStatusList();render();}return;}
+  });
+
+  document.getElementById('se_name').addEventListener('input',e=>editingStatus.name=e.target.value);
+  document.getElementById('se_emoji').addEventListener('input',e=>editingStatus.emoji=e.target.value);
+  document.getElementById('se_color').addEventListener('input',e=>editingStatus.color=e.target.value);
+  document.getElementById('se_apply').addEventListener('change',e=>editingStatus.applyTo=e.target.value);
+  document.querySelectorAll('#se_pos button').forEach(b=>b.addEventListener('click',()=>{
+    editingStatus.positive=b.dataset.p==='1';
+    document.querySelectorAll('#se_pos button').forEach(x=>x.classList.toggle('on',x===b));
+  }));
+  document.querySelectorAll('#se_match button').forEach(b=>b.addEventListener('click',()=>{
+    editingStatus.match=b.dataset.m;
+    document.querySelectorAll('#se_match button').forEach(x=>x.classList.toggle('on',x===b));
+  }));
+  document.getElementById('se_addCond').addEventListener('click',()=>{
+    if(!editingStatus.conditions)editingStatus.conditions=[];
+    editingStatus.conditions.push({metric:'unit',op:'lte',value:0});renderCondEditor();
+  });
+  document.getElementById('se_conds').addEventListener('change',e=>{
+    const row=e.target.closest('.cond-row');if(!row)return;const i=+row.dataset.i;const c=editingStatus.conditions[i];
+    if(e.target.classList.contains('c-metric'))c.metric=e.target.value;
+    else if(e.target.classList.contains('c-op'))c.op=e.target.value;
+    else if(e.target.classList.contains('c-val'))c.value=e.target.value;
+  });
+  document.getElementById('se_conds').addEventListener('click',e=>{
+    const del=e.target.closest('.c-del');if(!del)return;
+    const i=+del.dataset.del;editingStatus.conditions.splice(i,1);renderCondEditor();
+  });
+  document.getElementById('se_save').addEventListener('click',saveStatusEdit);
+
+  /* ---------- init ---------- */
+  load();render();
+})();
+</script>
+</body>
+</html>
