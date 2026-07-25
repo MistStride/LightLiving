@@ -110,6 +110,22 @@
 .empty .et { margin-top: 24rpx; font-size: 30rpx; font-weight: 600; color: var(--text); }
 .empty .es { margin-top: 12rpx; font-size: 24rpx; line-height: 1.6; }
 
+/* 分页（每页最多 5 件，避开底部悬浮 + 自定义 tabBar） */
+.pager {
+  display: flex; align-items: center; justify-content: space-between; gap: 20rpx;
+  margin: 4rpx 32rpx 220rpx; padding: 18rpx 24rpx;
+  background: var(--surface); border: 1rpx solid var(--border); border-radius: 999rpx;
+  box-shadow: 0 6rpx 24rpx var(--shadow);
+}
+.pg-btn {
+  font-size: 26rpx; font-weight: 700; color: var(--primary);
+  background: var(--primary-soft); padding: 16rpx 36rpx; border-radius: 999rpx;
+  transition: .2s;
+}
+.pg-btn:active { transform: scale(.95); }
+.pg-btn.disabled { color: var(--text-soft); background: var(--surface-2); opacity: .55; }
+.pg-info { font-size: 25rpx; font-weight: 600; color: var(--text-soft); }
+
 /* 悬浮新增（渐变） */
 .fab {
   position: fixed; left: 50%; transform: translateX(-50%);

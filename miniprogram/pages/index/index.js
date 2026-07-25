@@ -60,6 +60,10 @@ Page({
     ],
     search: '',
     count: 0,
+    // 分页（每页最多 5 件）
+    pageSize: 5,
+    pageNum: 1,
+    totalPages: 1,
     emptyTitle: '这里还空空如也',
     emptySub: '点击右下角 ＋ ，记录第一件陪伴你的好物',
     stats: { total: '¥0', perDay: '¥0', neg: 0, inf: false, count: 0 },
@@ -162,7 +166,33 @@ Page({
     else if (s === 'date_desc') list.sort((a, b) => (b.purchase || '').localeCompare(a.purchase || ''));
     else if (s === 'unseen_desc') list.sort((a, b) => store.idleDays(b) - store.idleDays(a));
 
-    this.setData({ items: list, count: list.length });
+    // 分页（每页最多 5 件）：筛选/排序/切换变化时回到第 1 页
+    const pageSize = this.data.pageSize;
+    const totalPages = Math.max(1, Math.ceil(list.length / pageSize));
+    this._filtered = list;
+    this.setData({ count: list.length, totalPages, pageNum: 1 });
+    this.renderPage();
+  },
+
+  // 仅渲染当前页切片（翻页时不重新筛选）
+  renderPage() {
+    const list = this._filtered || [];
+    const pageSize = this.data.pageSize;
+    const pageNum = this.data.pageNum;
+    const start = (pageNum - 1) * pageSize;
+    const items = list.slice(start, start + pageSize);
+    this.setData({ items, pageNum });
+  },
+
+  prevPage() {
+    if (this.data.pageNum <= 1) return;
+    this.setData({ pageNum: this.data.pageNum - 1 });
+    this.renderPage();
+  },
+  nextPage() {
+    if (this.data.pageNum >= this.data.totalPages) return;
+    this.setData({ pageNum: this.data.pageNum + 1 });
+    this.renderPage();
   },
 
   onSearch(e) {
