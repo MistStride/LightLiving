@@ -4,9 +4,9 @@
 
   <view class="card profile">
     <view class="profile-ico">🪶</view>
-    <view>
+    <view class="profile-info">
       <view class="profile-name">物尽其轻</view>
-      <view class="profile-sub muted">极简物品陪伴记录 · v{{ver}}</view>
+      <view class="profile-slogan">物尽其用，轻盈地生活 ✨</view>
     </view>
   </view>
 

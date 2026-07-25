@@ -86,13 +86,30 @@ Page({
   },
 
   onShow() {
-    const t = app.globalData.theme;
+    // 从持久化读取主题（唯一可信来源），保证切换配色后回到首页必定同步
+    const t = store.getTheme();
+    app.globalData.theme = t;
     this.setData({ theme: t });
     theme.applyNav(t);
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 0, theme: t });
     }
     this.refresh();
+    // 注册主题监听：即便 onShow 时序异常，配色变化也能即时同步到本页
+    if (this._offTheme) this._offTheme();
+    this._offTheme = app.onTheme(key => {
+      this.setData({ theme: key });
+      theme.applyNav(key);
+      if (typeof this.getTabBar === 'function' && this.getTabBar()) this.getTabBar().setData({ theme: key });
+    });
+  },
+
+  onHide() {
+    if (this._offTheme) { this._offTheme(); this._offTheme = null; }
+  },
+
+  onUnload() {
+    if (this._offTheme) { this._offTheme(); this._offTheme = null; }
   },
 
   refresh() {
@@ -255,5 +272,4 @@ Page({
     });
   },
 
-  goSettings() { wx.switchTab({ url: '/pages/settings/settings' }); }
 });
