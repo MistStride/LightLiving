@@ -1,0 +1,36 @@
+.intro { margin-top: 24rpx; }
+.st { padding: 24rpx 28rpx; }
+.st-head { justify-content: flex-start; }
+.st-emoji { font-size: 40rpx; margin-right: 14rpx; }
+.st-name { font-size: 30rpx; font-weight: 600; margin-right: 14rpx; }
+.st-apply { font-size: 22rpx; margin-left: auto; }
+.st-sum { font-size: 24rpx; margin-top: 10rpx; }
+.st-actions { margin-top: 14rpx; }
+.link { font-size: 26rpx; color: var(--primary); margin-right: 30rpx; }
+.link.danger { color: var(--danger); }
+.add { margin: 10rpx 24rpx 40rpx; }
+
+.field-label { font-size: 26rpx; color: var(--text-soft); margin: 22rpx 0 12rpx; }
+.input { background: var(--surface-2); border: 1rpx solid var(--border); border-radius: 16rpx; padding: 20rpx 22rpx; font-size: 30rpx; }
+.picker { background: var(--surface-2); border: 1rpx solid var(--border); border-radius: 16rpx; padding: 20rpx 22rpx; font-size: 30rpx; }
+
+.emoji-row { display: flex; flex-wrap: wrap; }
+.emoji-opt { width: 70rpx; height: 70rpx; border-radius: 16rpx; margin: 0 10rpx 10rpx 0; display: flex; align-items: center; justify-content: center; font-size: 38rpx; background: var(--surface-2); border: 2rpx solid var(--border); }
+.emoji-opt.on { border-color: var(--primary); background: var(--primary-soft); }
+
+.color-row { display: flex; flex-wrap: wrap; }
+.color-opt { width: 64rpx; height: 64rpx; border-radius: 50%; margin: 0 16rpx 16rpx 0; border: 4rpx solid transparent; }
+.color-opt.on { border-color: var(--text); }
+
+.cond { display: flex; align-items: center; margin-bottom: 14rpx; }
+.mini-picker { background: var(--surface-2); border: 1rpx solid var(--border); border-radius: 12rpx; padding: 14rpx 18rpx; font-size: 26rpx; min-width: 150rpx; margin-right: 12rpx; }
+.mini-input { background: var(--surface-2); border: 1rpx solid var(--border); border-radius: 12rpx; padding: 14rpx; font-size: 26rpx; width: 120rpx; margin-right: 12rpx; }
+.cond-del { color: var(--danger); font-size: 30rpx; padding: 0 10rpx; }
+.add-cond { margin-top: 6rpx; }
+
+/* 底部弹出的编辑面板 */
+.sheet-mask { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,.45); z-index: 100; display: flex; align-items: flex-end; }
+.sheet { width: 100%; max-height: 88vh; overflow-y: auto; background: var(--surface); border-radius: 32rpx 32rpx 0 0; padding: 36rpx 32rpx calc(36rpx + env(safe-area-inset-bottom)); box-sizing: border-box; }
+.sheet-title { font-size: 34rpx; font-weight: 700; margin-bottom: 8rpx; }
+.sheet-btns { margin-top: 30rpx; }
+.half { flex: 1; margin: 0 10rpx; }

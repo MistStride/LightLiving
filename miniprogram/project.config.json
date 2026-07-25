@@ -1,0 +1,20 @@
+{
+  "description": "物尽其轻 - 极简物品陪伴记录小程序",
+  "packOptions": {
+    "ignore": []
+  },
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true,
+    "newFeature": true,
+    "bigPackageSizeSupport": true
+  },
+  "compileType": "miniprogram",
+  "libVersion": "3.0.0",
+  "appid": "wx5389132842b00e33",
+  "projectname": "light-living-wx",
+  "condition": {}
+}

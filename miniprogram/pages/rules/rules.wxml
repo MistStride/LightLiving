@@ -1,0 +1,72 @@
+<view class="page theme-{{theme}}">
+
+  <view class="card intro">
+    <view class="title">状态与关系规则</view>
+    <view class="sub">按你和物品的关系自定义状态。标记为「消极」的状态会拉低轻盈度，并触发断舍离提醒。可设判定条件，例如「未使用天数 ≥ 30 天」自动贴「🌫️ 独自吃灰」。</view>
+  </view>
+
+  <view wx:for="{{statuses}}" wx:key="id" class="card st">
+    <view class="row st-head">
+      <text class="st-emoji" style="color:{{item.color}}">{{item.emoji}}</text>
+      <text class="st-name">{{item.name}}</text>
+      <text class="pill {{item.positive ? '' : 'neg'}}">{{item.positive ? '积极' : '消极'}}</text>
+      <text class="st-apply muted">{{item.applyTo === 'all' ? '全部' : (item.applyTo === 'time' ? '按天' : '按次')}}</text>
+    </view>
+    <view class="st-sum muted">{{item._summary}}</view>
+    <view class="row st-actions">
+      <text class="link" data-id="{{item.id}}" bindtap="openEdit">编辑</text>
+      <text class="link danger" data-id="{{item.id}}" bindtap="del">删除</text>
+    </view>
+  </view>
+
+  <view class="btn-primary add" bindtap="openAdd">+ 新增状态</view>
+
+  <!-- 编辑面板 -->
+  <view wx:if="{{editing}}" class="sheet-mask" bindtap="closeEdit">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-title">状态编辑</view>
+
+      <view class="field-label">图标</view>
+      <view class="emoji-row">
+        <view wx:for="{{emojis}}" wx:key="*this" class="emoji-opt {{editing.emoji === item ? 'on' : ''}}"
+          data-e="{{item}}" bindtap="eEmoji">{{item}}</view>
+      </view>
+
+      <view class="field-label">名称</view>
+      <input class="input" value="{{editing.name}}" bindinput="eName" maxlength="10" placeholder="状态名" />
+
+      <view class="field-label">颜色</view>
+      <view class="color-row">
+        <view wx:for="{{colors}}" wx:key="*this" class="color-opt {{editing.color === item ? 'on' : ''}}"
+          style="background:{{item}}" data-c="{{item}}" bindtap="eColor"></view>
+      </view>
+
+      <view class="field-label">倾向</view>
+      <switch checked="{{editing.positive}}" bindchange="ePositive" color="#57b89c" /> {{editing.positive ? '积极' : '消极'}}
+
+      <view class="field-label">适用物品</view>
+      <picker mode="selector" range="{{applyOptions}}" value="{{applyIndex}}" bindchange="eApply">
+        <view class="picker">{{applyOptions[applyIndex]}} ›</view>
+      </picker>
+
+      <view class="field-label">判定条件（全部满足才生效）</view>
+      <view wx:for="{{editing.conditions}}" wx:key="index" class="cond">
+        <picker mode="selector" range="{{metricLabels}}" value="{{condMetricIdx[index]}}" data-i="{{index}}" bindchange="eCondMetric">
+          <view class="mini-picker">{{metricLabels[condMetricIdx[index]]}}</view>
+        </picker>
+        <picker mode="selector" range="{{opLabels}}" value="{{condOpIdx[index]}}" data-i="{{index}}" bindchange="eCondOp">
+          <view class="mini-picker">{{opLabels[condOpIdx[index]]}}</view>
+        </picker>
+        <input class="mini-input" type="digit" value="{{item.value}}" data-i="{{index}}" bindinput="eCondVal" />
+        <text class="cond-del" data-i="{{index}}" bindtap="delCond">✕</text>
+      </view>
+      <view class="btn-ghost add-cond" bindtap="addCond">+ 添加条件</view>
+
+      <view class="row sheet-btns">
+        <view class="btn-ghost half" bindtap="closeEdit">取消</view>
+        <view class="btn-primary half" bindtap="saveEdit">保存</view>
+      </view>
+    </view>
+  </view>
+
+</view>

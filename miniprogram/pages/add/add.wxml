@@ -1,0 +1,47 @@
+<view class="page theme-{{theme}}">
+
+  <view class="card">
+    <view class="field-label">封面</view>
+    <view class="emoji-row">
+      <view wx:for="{{emojis}}" wx:key="*this" class="emoji-opt {{emoji === item ? 'on' : ''}}"
+        data-e="{{item}}" bindtap="onEmoji">{{item}}</view>
+    </view>
+
+    <view class="field-label">名字</view>
+    <input class="input" placeholder="例如：机械键盘" value="{{name}}" bindinput="onName" maxlength="30" />
+
+    <view class="field-label">分类</view>
+    <picker mode="selector" range="{{cats}}" value="{{catIndex}}" bindchange="onCat">
+      <view class="picker">{{cats[catIndex]}} ›</view>
+    </picker>
+
+    <view class="field-label">价格（¥）</view>
+    <input class="input" type="digit" placeholder="0.00" value="{{price}}" bindinput="onPrice" />
+
+    <view class="field-label">计费方式</view>
+    <radio-group class="mode-group" bindchange="onMode">
+      <label class="mode-opt {{mode === 'time' ? 'on' : ''}}">
+        <radio value="time" checked="{{mode === 'time'}}" color="#57b89c" /> 按天陪伴（看每天摊多少）
+      </label>
+      <label class="mode-opt {{mode === 'use' ? 'on' : ''}}">
+        <radio value="use" checked="{{mode === 'use'}}" color="#57b89c" /> 按次使用（看每次值多少）
+      </label>
+    </radio-group>
+
+    <view class="field-label">入手日期</view>
+    <picker mode="date" value="{{purchase}}" bindchange="onDate">
+      <view class="picker">{{purchase}} ›</view>
+    </picker>
+
+    <view wx:if="{{mode === 'use'}}" class="field-label">已使用次数</view>
+    <input wx:if="{{mode === 'use'}}" class="input" type="number" placeholder="0" value="{{useCount}}" bindinput="onUseCount" />
+  </view>
+
+  <view class="tip muted">
+    按次物品：0 次使用时，每次成本显示为 ∞（还没回本）。长久不打卡会触发「独自吃灰」提醒。
+  </view>
+
+  <view class="btn-primary save" bindtap="save">{{isEdit ? '保存修改' : '收入陪伴册'}}</view>
+  <view class="btn-ghost cancel" bindtap="cancel">取消</view>
+
+</view>

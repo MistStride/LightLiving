@@ -1,0 +1,36 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/add/add",
+    "pages/rules/rules",
+    "pages/categories/categories",
+    "pages/settings/settings",
+    "pages/guide/guide",
+    "pages/backup/backup"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#57b89c",
+    "navigationBarTitleText": "物尽其轻",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f3f9f6",
+    "enablePullDownRefresh": false
+  },
+  "tabBar": {
+    "color": "#88968f",
+    "selectedColor": "#57b89c",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "陪伴册"
+      },
+      {
+        "pagePath": "pages/settings/settings",
+        "text": "我的"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

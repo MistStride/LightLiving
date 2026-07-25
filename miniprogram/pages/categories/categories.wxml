@@ -1,0 +1,18 @@
+<view class="page theme-{{theme}}">
+
+  <view class="card intro">
+    <view class="title">物品分类管理</view>
+    <view class="sub">点分类名可重命名，删除时其中的物品会自动改派到其他分类。新增分类让你统计更清晰。</view>
+  </view>
+
+  <view wx:for="{{cats}}" wx:key="*this" class="card cat" data-cat="{{item}}" bindtap="renameCat">
+    <view class="cat-name">{{item}}</view>
+    <view class="row cat-actions">
+      <text class="muted">{{counts[item] || 0}} 件</text>
+      <text class="link danger" catchtap="delCat" data-cat="{{item}}">删除</text>
+    </view>
+  </view>
+
+  <view class="btn-primary add" bindtap="addCat">+ 新增分类</view>
+
+</view>

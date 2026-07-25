@@ -1,0 +1,5 @@
+.intro { margin-top: 24rpx; }
+.bk-head { justify-content: space-between; align-items: baseline; }
+.bk-row { display: flex; align-items: center; justify-content: space-between; padding: 20rpx 0; border-top: 1rpx solid var(--border); }
+.bk-time { font-size: 28rpx; }
+.link { font-size: 28rpx; color: var(--primary); }

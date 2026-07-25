@@ -1,0 +1,7 @@
+.intro { margin-top: 24rpx; }
+.cat { display: flex; align-items: center; justify-content: space-between; }
+.cat-name { font-size: 30rpx; font-weight: 600; }
+.cat-actions { align-items: center; }
+.link { font-size: 26rpx; color: var(--primary); margin-left: 24rpx; }
+.link.danger { color: var(--danger); }
+.add { margin: 10rpx 24rpx 40rpx; }

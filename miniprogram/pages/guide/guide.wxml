@@ -1,0 +1,47 @@
+<view class="page theme-{{theme}} guide">
+
+  <view class="card">
+    <view class="g-h1">为什么是「物尽其轻」</view>
+    <view class="g-p">我们买下一件东西，往往是为了让生活更好。可日子久了，很多东西静静地躺在角落，既占地方，又悄悄消耗着我们的注意力与金钱。</view>
+    <view class="g-p">「物尽其轻」想做的，是帮你<text class="hl">看清自己与物品的关系</text>：它陪了你多久、每次使用的真实成本是多少、是不是已经很久没被需要。看清之后，该留的物尽其用，该放的放手告别——让拥有重新变轻。</view>
+  </view>
+
+  <view class="card">
+    <view class="g-h2">🪶 3 分钟上手</view>
+    <view class="g-p"><text class="hl">1. 添一件好物</text>：点陪伴册右下角 ＋，起个名字、选个分类、填价格，再选计费方式。</view>
+    <view class="g-p"><text class="hl">按天陪伴</text>：看「每天摊多少」，适合天天在用的东西（键盘、杯子）。</view>
+    <view class="g-p"><text class="hl">按次使用</text>：看「每次值多少」，适合偶尔用的东西（相机、露营装备）。0 次使用时，每次成本显示 ∞——还没回本。</view>
+    <view class="g-p"><text class="hl">2. 打卡</text>：在物品上长按 → 打卡一次，记录你又用了它。系统据此计算「未使用天数」。</view>
+    <view class="g-p"><text class="hl">3. 看状态</text>：系统按你设定的「状态与关系规则」自动给物品贴标签，比如「🌫️ 独自吃灰」。</view>
+  </view>
+
+  <view class="card">
+    <view class="g-h2">🏷️ 状态与关系规则</view>
+    <view class="g-p">点「我的 → 状态与关系规则」，按你和物品的关系自定义状态。每条规则可设判定条件，例如：</view>
+    <view class="g-quote">未使用天数 ≥ 30 天 且 打卡次数 ≤ 3 → 自动贴「🌫️ 独自吃灰」</view>
+    <view class="g-p">标记为「消极」的状态会拉低轻盈度，并在首页提醒你断舍离。你可以随时增删改，把规则调成你自己的节奏。</view>
+  </view>
+
+  <view class="card">
+    <view class="g-h2">💔 圆满告别</view>
+    <view class="g-p">当一件东西不再被需要，长按它 → 圆满告别。它会移入「圆满告别」列表，仍可在「陪伴册 → 圆满告别」里恢复。放手，轻盈地生活。</view>
+  </view>
+
+  <view class="card">
+    <view class="g-h2">💾 数据备份与恢复</view>
+    <view class="g-p">每次改动都会<text class="hl">自动留一份带时间戳的备份</text>（最近 5 份），可从「数据备份与恢复」随时回退。换手机时，点「备份到文件」导出 JSON，到新设备「从文件还原」即可。</view>
+  </view>
+
+  <view class="card">
+    <view class="g-h2">🔒 隐私</view>
+    <view class="g-p">所有数据只存在你的本机，不会上传任何云端服务器。清掉小程序数据或卸载会丢失，记得定期备份。</view>
+  </view>
+
+  <view class="card">
+    <view class="g-h2">❓ 常见问题</view>
+    <view class="g-p"><text class="hl">为什么我装了却打不开？</text> 小程序需微信 8.0 以上，首次加载稍等几秒。</view>
+    <view class="g-p"><text class="hl">数据丢了怎么办？</text> 可用自动备份回退，或导入之前的 JSON 备份。</view>
+    <view class="g-p"><text class="hl">能多设备同步吗？</text> 当前为纯本地，手动导出/导入 JSON 即可在设备间迁移。</view>
+  </view>
+
+</view>

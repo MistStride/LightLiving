@@ -1,0 +1,20 @@
+.profile { display: flex; align-items: center; margin-top: 24rpx; }
+.profile-ico { width: 96rpx; height: 96rpx; border-radius: 24rpx; background: var(--primary-soft); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 52rpx; margin-right: 24rpx; }
+.profile-name { font-size: 34rpx; font-weight: 700; }
+.profile-sub { font-size: 24rpx; margin-top: 6rpx; }
+
+.field-label { font-size: 26rpx; color: var(--text-soft); margin: 6rpx 0 18rpx; }
+.theme-row { display: flex; }
+.theme-opt { flex: 1; text-align: center; padding: 18rpx 0; border-radius: 16rpx; border: 2rpx solid var(--border); margin-right: 16rpx; font-size: 26rpx; background: var(--surface-2); }
+.theme-opt:last-child { margin-right: 0; }
+.theme-opt.on { border-color: var(--primary); }
+.theme-dot { width: 40rpx; height: 40rpx; border-radius: 50%; margin: 0 auto 10rpx; }
+
+.menu { padding: 6rpx 0; }
+.menu-row { display: flex; align-items: center; padding: 30rpx 28rpx; border-bottom: 1rpx solid var(--border); }
+.menu-row:last-child { border-bottom: none; }
+.mr-ico { font-size: 36rpx; margin-right: 20rpx; }
+.mr-tx { flex: 1; font-size: 30rpx; }
+.mr-ar { color: var(--text-soft); font-size: 36rpx; }
+
+.foot { text-align: center; font-size: 22rpx; padding: 40rpx 40rpx; line-height: 1.7; }

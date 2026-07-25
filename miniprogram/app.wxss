@@ -1,0 +1,126 @@
+/* ===== 物尽其轻 · 全局样式与三套主题 ===== */
+/* 主题通过页面根 view 的 class 切换：theme-mint / theme-green / theme-night */
+
+.theme-mint {
+  --bg: #f3f9f6;
+  --surface: #ffffff;
+  --surface-2: #f7fbf9;
+  --primary: #57b89c;
+  --primary-soft: #e8f5f0;
+  --text: #283330;
+  --text-soft: #6b7d77;
+  --border: #e3efe9;
+  --danger: #e07a6b;
+  --warn: #e0a96b;
+  --shadow: rgba(87, 184, 156, 0.18);
+}
+
+.theme-green {
+  --bg: #eef7ee;
+  --surface: #ffffff;
+  --surface-2: #f4faf4;
+  --primary: #2faa5a;
+  --primary-soft: #e2f5e8;
+  --text: #1f3622;
+  --text-soft: #5c7a60;
+  --border: #d9ecdd;
+  --danger: #e0625b;
+  --warn: #cf942f;
+  --shadow: rgba(47, 170, 90, 0.18);
+}
+
+.theme-night {
+  --bg: #15191a;
+  --surface: #1f2624;
+  --surface-2: #232b29;
+  --primary: #6fd3b5;
+  --primary-soft: #243a33;
+  --text: #e6efeb;
+  --text-soft: #9fb3ac;
+  --border: #2c3633;
+  --danger: #e88a7d;
+  --warn: #e3b277;
+  --shadow: rgba(0, 0, 0, 0.45);
+}
+
+.page {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  box-sizing: border-box;
+  padding-bottom: 40rpx;
+}
+
+/* 通用卡片 */
+.card {
+  background: var(--surface);
+  border-radius: 24rpx;
+  padding: 28rpx;
+  margin: 18rpx 24rpx;
+  box-shadow: 0 6rpx 24rpx var(--shadow);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.muted { color: var(--text-soft); }
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  border-radius: 999rpx;
+  padding: 22rpx 0;
+  text-align: center;
+  font-size: 30rpx;
+  border: none;
+}
+
+.btn-ghost {
+  background: var(--surface-2);
+  color: var(--text-soft);
+  border-radius: 999rpx;
+  padding: 20rpx 0;
+  text-align: center;
+  font-size: 28rpx;
+  border: 1rpx solid var(--border);
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: #fff;
+  border-radius: 999rpx;
+  padding: 20rpx 0;
+  text-align: center;
+  font-size: 28rpx;
+  border: none;
+}
+
+.divider { height: 1rpx; background: var(--border); margin: 20rpx 0; }
+
+.pill {
+  display: inline-block;
+  padding: 6rpx 18rpx;
+  border-radius: 999rpx;
+  font-size: 22rpx;
+  background: var(--primary-soft);
+  color: var(--primary);
+  margin-right: 10rpx;
+}
+
+.pill.neg { background: rgba(224, 122, 107, 0.14); color: var(--danger); }
+.pill.warn { background: rgba(224, 169, 107, 0.16); color: var(--warn); }
+
+.empty {
+  text-align: center;
+  color: var(--text-soft);
+  padding: 120rpx 40rpx;
+  font-size: 28rpx;
+  line-height: 1.8;
+}
+
+.title { font-size: 34rpx; font-weight: 600; }
+.sub { font-size: 24rpx; color: var(--text-soft); margin-top: 8rpx; line-height: 1.6; }
+
+input, textarea, picker { color: var(--text); }
