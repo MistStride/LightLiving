@@ -314,7 +314,7 @@
 <div class="overlay" id="farewellOverlay">
   <div class="sheet">
     <h3>断·舍·离</h3>
-    <div class="sub">放手，也是一种轻盈。</div>
+    <div class="sub">放手，轻盈地生活。</div>
     <div class="farewell-card">
       <div class="heart">💜</div>
       <div class="msg" id="farewellMsg"></div>
@@ -946,7 +946,7 @@
     const it=state.items.find(x=>x.id===id);if(!it)return;
     pendingId=id;
     document.getElementById('farewellMsg').textContent=
-      `感谢「${it.name}」陪伴了你 ${companionDays(it)} 天。放手，也是一种轻盈。`;
+      `感谢「${it.name}」陪伴了你 ${companionDays(it)} 天。放手，轻盈地生活。`;
     document.getElementById('farewellNote').value='';
     document.querySelectorAll('#reasons input').forEach(r=>r.checked=false);
     document.querySelectorAll('#reasons label').forEach(l=>l.classList.remove('on'));
