@@ -170,6 +170,22 @@
   .menu-row .mr-tx{flex:1;min-width:0;}
   .menu-row .mr-ar{color:#c7c3e0;font-size:20px;flex:0 0 auto;}
 
+  /* ===== CATEGORY / AUTOBACKUP LISTS ===== */
+  .field-wrap{margin:14px 0 6px;}
+  .field-wrap .field{width:100%;}
+  .row{display:flex;gap:10px;margin-top:6px;}
+  .row .btn-primary,.row .btn-ghost{margin-top:0;}
+  .cat-item{display:flex;align-items:center;gap:10px;padding:13px 14px;border-radius:14px;background:var(--surface);margin-bottom:10px;}
+  .cat-item .cat-name{flex:1;font-size:15px;font-weight:600;color:var(--text-main);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .cat-item .cat-act{border:0;background:var(--primary-soft);color:var(--primary);font-size:13px;font-weight:700;padding:7px 12px;border-radius:10px;cursor:pointer;}
+  .cat-item .cat-act.del{background:#FBE9EC;color:#E24B4A;}
+  .bak-item{display:flex;align-items:center;gap:10px;padding:13px 14px;border-radius:14px;background:var(--surface);margin-bottom:10px;}
+  .bak-item .bak-info{flex:1;min-width:0;}
+  .bak-item .bak-ts{font-size:14px;font-weight:600;color:var(--text-main);}
+  .bak-item .bak-meta{font-size:12px;color:var(--text-sub);margin-top:2px;}
+  .bak-item .cat-act.del{background:#FBE9EC;color:#E24B4A;}
+  .empty-tip{font-size:13px;color:var(--text-sub);text-align:center;padding:22px 0;}
+
   /* ===== GUIDE BODY ===== */
   .guide-body{max-height:62vh;overflow-y:auto;margin-bottom:14px;-webkit-overflow-scrolling:touch;}
   .guide-body h4{margin:18px 0 6px;font-size:15px;font-weight:800;color:var(--text-main);}
@@ -372,10 +388,43 @@
     <div class="sub">管理你的物品陪伴方式</div>
     <button class="menu-row" data-set="rules"><span class="mr-ico">⚙️</span><span class="mr-tx">状态与关系规则</span><span class="mr-ar">›</span></button>
     <button class="menu-row" data-set="guide"><span class="mr-ico">📖</span><span class="mr-tx">使用指南</span><span class="mr-ar">›</span></button>
+    <button class="menu-row" data-set="cats"><span class="mr-ico">🏷️</span><span class="mr-tx">物品分类管理</span><span class="mr-ar">›</span></button>
+    <button class="menu-row" id="autoBakBtn"><span class="mr-ico">♻️</span><span class="mr-tx">恢复自动备份</span><span class="mr-ar">›</span></button>
     <button class="menu-row" id="exportBtn"><span class="mr-ico">📤</span><span class="mr-tx">备份数据</span><span class="mr-ar">›</span></button>
     <button class="menu-row" id="importBtn"><span class="mr-ico">📥</span><span class="mr-tx">还原数据</span><span class="mr-ar">›</span></button>
     <input id="importFile" type="file" accept="application/json,.json" style="display:none" />
     <button class="ctx-cancel" data-close="settingsOverlay">关闭</button>
+  </div>
+</div>
+
+<!-- Categories manage -->
+<div class="overlay" id="catsOverlay">
+  <div class="sheet">
+    <div class="ctx-handle"></div>
+    <h3>物品分类管理</h3>
+    <div class="sub">自定义你常用的分类；删除前会先把在用的物品改派到其它分类。</div>
+    <div id="catsList"></div>
+    <button class="btn-primary" id="addCat">+ 新增分类</button>
+  </div>
+</div>
+
+<!-- Category edit -->
+<div class="overlay" id="catEditOverlay">
+  <div class="sheet">
+    <h3 id="catEditTitle">新增分类</h3>
+    <div class="field-wrap"><input class="field" id="cat_name" placeholder="例如：乐器 / 户外装备" maxlength="12" /></div>
+    <div class="row"><button class="btn-primary" id="catSave">保存</button><button class="btn-ghost" data-close="catEditOverlay">取消</button></div>
+  </div>
+</div>
+
+<!-- Auto backup restore -->
+<div class="overlay" id="autoBakOverlay">
+  <div class="sheet">
+    <div class="ctx-handle"></div>
+    <h3>自动备份恢复</h3>
+    <div class="sub">每次改动都会自动留一份带时间戳的备份，可随时恢复。</div>
+    <div id="autoBakList"></div>
+    <button class="ctx-cancel" data-close="autoBakOverlay">关闭</button>
   </div>
 </div>
 
@@ -444,7 +493,10 @@
       </ul>
 
       <h4>备份与还原（换手机不丢）</h4>
-      <p>数据存在<b>本机</b>，清缓存或换设备会丢。设置里点「备份数据」下载 <code>light-living-backup-日期.json</code>；「还原数据」选回该文件即可。</p>
+      <p>每次改动都会<b>自动留一份带时间戳的备份</b>（最近 5 份，存在本机），可从「设置 → 恢复自动备份」随时回退。要换手机时，点「备份数据」导出 <code>light-living-备份-时间.json</code>，到新设备「还原数据」导入即可。</p>
+
+      <h4>自定义分类</h4>
+      <p>分类不再写死——点「设置 → 物品分类管理」可新增 / 重命名 / 删除分类；删除时会自动把在用的物品改派到其它分类，不会丢失。</p>
 
       <h4>封面与 emoji</h4>
       <p>可上传照片（自动压缩 ≤1000px），或直接选 emoji 当封面；名字首字符是 emoji 且没传照片时，会自动用它当封面。</p>
@@ -455,6 +507,7 @@
         <li><b>数据会丢吗？</b> 存在本机 LocalStorage，清 App 数据 / 卸载会丢，记得定期备份。</li>
         <li><b>能云端同步吗？</b> 当前纯本地单机版，可手动导出 JSON 传给另一台设备导入。</li>
         <li><b>长按没反应？</b> 在卡片空白处长按约 0.5 秒；桌面用右键。</li>
+        <li><b>怎么退出弹窗？</b> 手机用系统「返回」手势（屏幕边缘右滑 / 左滑）或返回键，会先关掉当前弹窗而不是退出 App；在首页再按一次才会退出。</li>
         <li><b>庆祝音效没声？</b> 检查是否静音；音效由 Web Audio 实时合成，离线也能响。</li>
       </ul>
 
@@ -544,13 +597,19 @@
   const SAMPLE_MIG_FLAG='light_living_sample4_v1';
   const SAMPLE_EMOJI_FLAG='light_living_sample_emoji_v1';
   const SAMPLE_EMOJI={'seed1':'📸','seed2':'⌨️','seed3':'🕯️','seed4':'🧣','seed5':'🔊','seed6':'🎮','seed7':'⌚','seed8':'🌿','seed9':'📷'};
-  const CATEGORIES=['数码电子','服饰鞋包','居家生活','个人爱好','其他'];
+  const DEFAULT_CATS=['数码电子','服饰鞋包','居家生活','个人爱好','其他'];
+  const CAT_KEY='light_living_categories_v1';
+  const AUTOBAK_KEY='light_living_autobackup_v1';
+  function getCats(){return categories;}
+  function fillCatSelect(sel){sel.innerHTML='';getCats().forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;sel.appendChild(o);});}
   const PAGE_SIZE=5;
 
   const METRICS={unit:{label:'单位成本',unit:'¥'},days:{label:'陪伴天数',unit:'天'},count:{label:'打卡次数',unit:'次'}};
   const OPS={lte:'≤',gte:'≥',lt:'<',gt:'>'};
   const NEUTRAL={id:'neutral',name:'相伴中',emoji:'',color:'#9aa0b4',positive:false};
 
+  let categories=[];
+  let overlayStack=[];
   let state={items:[],statuses:[],tab:'active',category:'全部',sort:'cost_desc',search:'',page:1};
   let formMode='day';
   let newImage=null;
@@ -558,6 +617,7 @@
   let pendingId=null;
   let editingStatus=null;
   let editingIsNew=false;
+  let editingCatIdx=null;
   let dismissed=[];
   let confirmCb=null;
 
@@ -565,6 +625,8 @@
   function load(){
     try{state.items=JSON.parse(localStorage.getItem(STORE_KEY))||[];}catch(e){state.items=[];}
     try{state.statuses=JSON.parse(localStorage.getItem(STATUS_KEY))||[];}catch(e){state.statuses=[];}
+    try{categories=JSON.parse(localStorage.getItem(CAT_KEY))||[];}catch(e){categories=[];}
+    if(categories.length===0){categories=DEFAULT_CATS.slice();localStorage.setItem(CAT_KEY,JSON.stringify(categories));}
     try{dismissed=JSON.parse(localStorage.getItem(REMIND_KEY))||[];}catch(e){dismissed=[];}
     if(!localStorage.getItem(SEED_FLAG)&&state.items.length===0){
       state.items=seed();localStorage.setItem(SEED_FLAG,'1');save();
@@ -573,18 +635,29 @@
     migrateSamples();
     migrateEmoji();
   }
-  function save(){localStorage.setItem(STORE_KEY,JSON.stringify(state.items));}
-  function saveStatuses(){localStorage.setItem(STATUS_KEY,JSON.stringify(state.statuses));}
+  function save(){localStorage.setItem(STORE_KEY,JSON.stringify(state.items));autoBackup();}
+  function saveStatuses(){localStorage.setItem(STATUS_KEY,JSON.stringify(state.statuses));autoBackup();}
+  function autoBackup(){
+    try{
+      const list=JSON.parse(localStorage.getItem(AUTOBAK_KEY))||[];
+      list.push({ts:Date.now(),items:state.items,statuses:state.statuses});
+      while(list.length>5)list.shift();
+      localStorage.setItem(AUTOBAK_KEY,JSON.stringify(list));
+    }catch(e){}
+  }
 
   function exportBackup(){
-    const data={app:'light-living',version:1,exportedAt:new Date().toISOString(),items:state.items,statuses:state.statuses};
+    const s=new Date();
+    const pad=n=>String(n).padStart(2,'0');
+    const fn='light-living-备份-'+s.getFullYear()+pad(s.getMonth()+1)+pad(s.getDate())+'-'+pad(s.getHours())+pad(s.getMinutes())+'.json';
+    const data={app:'light-living',version:1,exportedAt:s.toISOString(),items:state.items,statuses:state.statuses};
     const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
     const url=URL.createObjectURL(blob);
     const a=document.createElement('a');
-    a.href=url;a.download='light-living-backup-'+new Date().toISOString().slice(0,10)+'.json';
+    a.href=url;a.download=fn;
     document.body.appendChild(a);a.click();a.remove();
     URL.revokeObjectURL(url);
-    toast('已导出备份 📤');
+    toast('已导出带时间戳的备份 📤 建议同步到云盘 / 微信文件传输助手做双保险');
   }
   function importBackup(file){
     const reader=new FileReader();
@@ -596,7 +669,7 @@
           state.items=data.items;
           if(Array.isArray(data.statuses))state.statuses=data.statuses;
           save();saveStatuses();closeOverlay('settingsOverlay');render();renderStatusList?.();
-          toast('已从备份还原 📥');
+          toast('已从备份还原 📥 想再留一份？可在「设置 → 备份数据」重新导出');
         },'导入备份');
       }catch(err){toast('备份文件无效，请检查');}
     };
@@ -788,7 +861,7 @@
         <button data-tab="archived" class="${state.tab==='archived'?'on':''}">📖 断·舍·离</button>
       </div>
       <div class="cats">
-        ${['全部',...CATEGORIES].map(c=>`<div class="pill ${state.category===c?'on':''}" data-cat="${esc(c)}">${esc(c)}</div>`).join('')}
+        ${['全部',...getCats()].map(c=>`<div class="pill ${state.category===c?'on':''}" data-cat="${esc(c)}">${esc(c)}</div>`).join('')}
       </div>
       <div class="searchbar">
         <input id="searchInput" type="search" placeholder="🔍 搜索名称或备注…" value="${esc(state.search)}" />
@@ -955,8 +1028,22 @@
   }
 
   /* ---------- overlay ---------- */
-  function openOverlay(id){document.getElementById(id).classList.add('show');}
-  function closeOverlay(id){document.getElementById(id).classList.remove('show');}
+  function openOverlay(id){
+    const el=document.getElementById(id);if(!el)return;
+    el.classList.add('show');
+    if(overlayStack.indexOf(id)<0)overlayStack.push(id);
+    try{history.pushState({llOverlay:id},'');}catch(e){}
+  }
+  function closeOverlay(id){
+    if(overlayStack.indexOf(id)>=0){try{history.back();}catch(e){const el=document.getElementById(id);if(el)el.classList.remove('show');}}
+    else{const el=document.getElementById(id);if(el)el.classList.remove('show');}
+  }
+  window.addEventListener('popstate',function(){
+    if(overlayStack.length){
+      const id=overlayStack.pop();
+      const el=document.getElementById(id);if(el)el.classList.remove('show');
+    }
+  });
   function askConfirm(msg,onYes,title){
     document.getElementById('confirmTitle').textContent=title||'确认操作';
     document.getElementById('confirmMsg').textContent=msg;
@@ -974,8 +1061,7 @@
     document.querySelectorAll('#f_emojiRow .chip').forEach(c=>c.classList.remove('on'));
     document.getElementById('f_file').value='';
     const sel=document.getElementById('f_cat');
-    if(sel.options.length===0)CATEGORIES.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;sel.appendChild(o);});
-    sel.value=CATEGORIES[0];
+    fillCatSelect(sel);sel.value=getCats()[0];
     document.querySelectorAll('#f_mode button').forEach(b=>b.classList.toggle('on',b.dataset.m==='day'));
     updateImagePreview();
   }
@@ -1006,8 +1092,7 @@
     document.getElementById('f_date').value=it.purchaseDate;
     document.getElementById('f_note').value=it.note||'';
     const sel=document.getElementById('f_cat');
-    if(sel.options.length===0)CATEGORIES.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;sel.appendChild(o);});
-    sel.value=it.category;
+    fillCatSelect(sel);sel.value=it.category;
     formMode=it.mode;
     document.querySelectorAll('#f_mode button').forEach(b=>b.classList.toggle('on',b.dataset.m===formMode));
     newImage=it.image||null;
@@ -1107,6 +1192,70 @@
   }
   function openSettings(){openOverlay('settingsOverlay');}
   function openStatusManage(){renderStatusList();openOverlay('statusOverlay');}
+
+  /* ---------- categories ---------- */
+  function saveCats(){localStorage.setItem(CAT_KEY,JSON.stringify(categories));}
+  function renderCatsList(){
+    const box=document.getElementById('catsList');
+    if(categories.length===0){box.innerHTML='<div class="empty-tip">还没有分类，点下面新增一个吧</div>';return;}
+    box.innerHTML=categories.map((c,i)=>`<div class="cat-item"><span class="cat-name">${esc(c)}</span><button class="cat-act" data-cat-edit="${i}">改名</button><button class="cat-act del" data-cat-del="${i}">删除</button></div>`).join('');
+  }
+  function openCatEdit(idx){
+    editingCatIdx=idx;
+    document.getElementById('catEditTitle').textContent=idx==null?'新增分类':'重命名分类';
+    document.getElementById('cat_name').value=idx==null?'':categories[idx];
+    openOverlay('catEditOverlay');
+    setTimeout(()=>{const el=document.getElementById('cat_name');if(el)el.focus();},60);
+  }
+  function saveCat(){
+    const v=document.getElementById('cat_name').value.trim();
+    if(!v){toast('分类名不能为空');return;}
+    if(editingCatIdx==null){
+      if(categories.includes(v)){toast('已存在相同分类');return;}
+      categories.push(v);
+    }else{
+      if(categories.some((c,i)=>i!==editingCatIdx&&c===v)){toast('已存在相同分类');return;}
+      categories[editingCatIdx]=v;
+    }
+    saveCats();renderCatsList();closeOverlay('catEditOverlay');render();toast('分类已保存 🏷️');
+  }
+  function deleteCat(idx){
+    const name=categories[idx];
+    const used=state.items.filter(it=>it.category===name).length;
+    if(used>0){
+      const rest=categories.filter((_,i)=>i!==idx);
+      askConfirm(`有 ${used} 件物品正在使用「${name}」，删除后会改派到「${rest[0]||'其他'}」。确定继续？`,()=>{
+        const fallback=rest[0];
+        state.items.forEach(it=>{if(it.category===name)it.category=fallback;});
+        categories.splice(idx,1);saveCats();save();renderCatsList();render();toast('已删除并改派物品');
+      },'删除分类');
+      return;
+    }
+    categories.splice(idx,1);saveCats();renderCatsList();render();toast('已删除分类');
+  }
+  function openCats(){renderCatsList();openOverlay('catsOverlay');}
+
+  /* ---------- auto backup ---------- */
+  function renderAutoBak(){
+    const box=document.getElementById('autoBakList');
+    let list=[];try{list=JSON.parse(localStorage.getItem(AUTOBAK_KEY))||[];}catch(e){}
+    if(list.length===0){box.innerHTML='<div class="empty-tip">暂无自动备份，改动后会自动生成</div>';return;}
+    list=list.slice().reverse();
+    box.innerHTML=list.map(b=>{
+      const d=new Date(b.ts);const pad=n=>String(n).padStart(2,'0');
+      const ts=`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+      return `<div class="bak-item" data-bak-ts="${b.ts}"><div class="bak-info"><div class="bak-ts">${ts}</div><div class="bak-meta">${b.items.length} 件物品 · ${b.statuses.length} 条状态</div></div><button class="cat-act" data-bak-restore="${b.ts}">恢复</button></div>`;
+    }).join('');
+  }
+  function openAutoBak(){renderAutoBak();openOverlay('autoBakOverlay');}
+  function restoreAutoBak(ts){
+    let list=[];try{list=JSON.parse(localStorage.getItem(AUTOBAK_KEY))||[];}catch(e){}
+    const b=list.find(x=>String(x.ts)===String(ts));if(!b)return;
+    askConfirm('恢复将用这份自动备份覆盖当前数据，确定继续？',()=>{
+      state.items=b.items;state.statuses=b.statuses;
+      save();saveStatuses();closeOverlay('autoBakOverlay');render();toast('已恢复到该时间点 🕑');
+    },'恢复自动备份');
+  }
   function openStatusEdit(id){
     editingIsNew=!id;
     if(id){const s=state.statuses.find(x=>x.id===id);editingStatus=JSON.parse(JSON.stringify(s));}
@@ -1185,6 +1334,7 @@
     const k=r.dataset.set;
     if(k==='rules'){closeOverlay('settingsOverlay');openStatusManage();}
     else if(k==='guide'){closeOverlay('settingsOverlay');openOverlay('guideOverlay');}
+    else if(k==='cats'){closeOverlay('settingsOverlay');openCats();}
   });
 
   /* ---------- long press / context menu ---------- */
@@ -1273,6 +1423,17 @@
   /* status mgmt events */
   document.getElementById('addStatus').addEventListener('click',()=>openStatusEdit(null));
   document.getElementById('exportBtn').addEventListener('click',exportBackup);
+  document.getElementById('autoBakBtn').addEventListener('click',openAutoBak);
+  document.getElementById('addCat').addEventListener('click',()=>openCatEdit(null));
+  document.getElementById('catSave').addEventListener('click',saveCat);
+  document.getElementById('catsList').addEventListener('click',e=>{
+    const ed=e.target.closest('[data-cat-edit]');const del=e.target.closest('[data-cat-del]');
+    if(ed){openCatEdit(+ed.dataset.catEdit);return;}
+    if(del){deleteCat(+del.dataset.catDel);return;}
+  });
+  document.getElementById('autoBakList').addEventListener('click',e=>{
+    const r=e.target.closest('[data-bak-restore]');if(r)restoreAutoBak(r.dataset.bakRestore);
+  });
   document.getElementById('importBtn').addEventListener('click',()=>document.getElementById('importFile').click());
   document.getElementById('importFile').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;importBackup(f);e.target.value='';});
   document.getElementById('statusList').addEventListener('click',e=>{
