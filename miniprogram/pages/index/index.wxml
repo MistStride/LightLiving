@@ -56,9 +56,16 @@
         class="chip {{filterCat === item ? 'on' : ''}}"
         data-cat="{{item}}" bindtap="onFilter">{{item}}</view>
     </scroll-view>
-    <picker mode="selector" range="{{['最近添加','成本降序','成本升序','最久未用']}}" bindchange="onSort">
-      <view class="sort-btn">⇅ 排序</view>
-    </picker>
+  </view>
+
+  <!-- 排序（对齐网页：单位成本 高→低/低→高、陪伴时间、长久未见） -->
+  <view class="sortbar">
+    <text class="sort-count">共 {{count}} 件</text>
+    <scroll-view scroll-x class="sort-chips" enhanced show-scrollbar="{{false}}">
+      <view wx:for="{{sorts}}" wx:key="key"
+        class="sort-chip {{sort === item.key ? 'on' : ''}}"
+        data-key="{{item.key}}" bindtap="onSortTap">{{item.label}}</view>
+    </scroll-view>
   </view>
 
   <!-- 物品列表 -->

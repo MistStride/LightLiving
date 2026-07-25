@@ -72,7 +72,18 @@
   border-radius: 999rpx; margin-right: 14rpx;
 }
 .chip.on { background: var(--primary-soft); border-color: var(--primary-soft); color: var(--primary); }
-.sort-btn { font-size: 24rpx; color: var(--text-soft); background: var(--surface); border: 1rpx solid var(--border); padding: 14rpx 24rpx; border-radius: 999rpx; white-space: nowrap; }
+
+/* 排序栏（对齐网页：左侧数量 + 右侧排序选项） */
+.sortbar { display: flex; align-items: center; gap: 18rpx; padding: 4rpx 32rpx 12rpx; }
+.sort-count { font-size: 24rpx; color: var(--text-soft); font-weight: 600; white-space: nowrap; }
+.sort-chips { flex: 1; white-space: nowrap; }
+.sort-chip {
+  display: inline-block; border: 1rpx solid var(--border); background: var(--surface);
+  color: var(--text-soft); font-size: 23rpx; font-weight: 600; padding: 12rpx 22rpx;
+  border-radius: 999rpx; margin-right: 12rpx;
+}
+.sort-chip.on { background: var(--primary-soft); border-color: var(--primary); color: var(--primary); }
+.sort-chip.on::after { content: ' ✓'; opacity: .8; }
 
 /* 列表与卡片 */
 .list { padding: 12rpx 32rpx 20rpx; display: flex; flex-direction: column; gap: 24rpx; }

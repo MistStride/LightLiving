@@ -2,6 +2,16 @@ const app = getApp();
 const store = require('../../utils/store.js');
 const theme = require('../../utils/theme.js');
 
+// 单位成本比较（对齐网页 cmpCost：∞ 视为最贵，desc 时排最前）
+function cmpCost(a, b, desc) {
+  const x = store.unitCost(a), y = store.unitCost(b);
+  const infX = !isFinite(x), infY = !isFinite(y);
+  if (infX && infY) return 0;
+  if (infX) return desc ? -1 : 1;
+  if (infY) return desc ? 1 : -1;
+  return desc ? y - x : x - y;
+}
+
 function decorate(it) {
   const sts = store.evalStatuses(it);
   const idle = store.idleDays(it);
@@ -41,8 +51,15 @@ Page({
     tab: 'active',
     cats: ['全部'],
     filterCat: '全部',
-    sort: 'recent',
+    sort: 'cost_desc',
+    sorts: [
+      { key: 'cost_desc', label: '成本 高→低' },
+      { key: 'cost_asc', label: '成本 低→高' },
+      { key: 'date_desc', label: '陪伴时间' },
+      { key: 'unseen_desc', label: '长久未见' }
+    ],
     search: '',
+    count: 0,
     emptyTitle: '这里还空空如也',
     emptySub: '点击右下角 ＋ ，记录第一件陪伴你的好物',
     stats: { total: '¥0', perDay: '¥0', neg: 0, inf: false, count: 0 },
@@ -121,13 +138,14 @@ Page({
     const kw = (this.data.search || '').trim().toLowerCase();
     if (kw) list = list.filter(i => (i.name + ' ' + (i.note || '')).toLowerCase().indexOf(kw) >= 0);
 
+    // 排序（对齐网页：单位成本/陪伴时间/长久未见，∞ 视为最贵）
     const s = this.data.sort;
-    if (s === 'cost_desc') list.sort((a, b) => store.perDayCost(b) - store.perDayCost(a));
-    else if (s === 'cost_asc') list.sort((a, b) => store.perDayCost(a) - store.perDayCost(b));
-    else if (s === 'idle') list.sort((a, b) => store.idleDays(b) - store.idleDays(a));
-    else list.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    if (s === 'cost_desc') list.sort((a, b) => cmpCost(a, b, true));
+    else if (s === 'cost_asc') list.sort((a, b) => cmpCost(a, b, false));
+    else if (s === 'date_desc') list.sort((a, b) => (b.purchase || '').localeCompare(a.purchase || ''));
+    else if (s === 'unseen_desc') list.sort((a, b) => store.idleDays(b) - store.idleDays(a));
 
-    this.setData({ items: list });
+    this.setData({ items: list, count: list.length });
   },
 
   onSearch(e) {
@@ -148,10 +166,8 @@ Page({
     this.setData({ filterCat: e.currentTarget.dataset.cat });
     this.applyFilter();
   },
-  onSort(e) {
-    const SORTS = ['recent', 'cost_desc', 'cost_asc', 'idle'];
-    const idx = +e.detail.value;
-    this.setData({ sort: SORTS[idx] });
+  onSortTap(e) {
+    this.setData({ sort: e.currentTarget.dataset.key });
     this.applyFilter();
   },
 
