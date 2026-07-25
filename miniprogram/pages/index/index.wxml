@@ -1,25 +1,33 @@
 <view class="page theme-{{theme}}">
 
-  <!-- 顶部统计 -->
-  <view class="card hero">
-    <view class="row hero-top">
-      <view class="hero-block">
-        <view class="hero-num">{{stats.total}}</view>
-        <view class="hero-label">总投入</view>
-      </view>
-      <view class="hero-block">
-        <view class="hero-num">{{stats.perDay}}</view>
-        <view class="hero-label">每日陪伴成本</view>
-      </view>
-      <view class="hero-block">
-        <view class="hero-num">{{stats.count}}</view>
-        <view class="hero-label">在册物品</view>
-      </view>
+  <!-- 渐变页头 -->
+  <view class="header">
+    <view class="brand">
+      <view class="brand-dot"></view>
+      <view class="brand-tx">物尽其轻<text class="brand-sub">LIGHT LIVING</text></view>
     </view>
-    <view wx:if="{{stats.neg > 0}}" class="hero-tip warn">
-      🌫️ 有 {{stats.neg}} 件物品在吃灰，是时候断舍离了
+    <view class="gear" bindtap="goSettings">⚙</view>
+
+    <view class="hero-cost">
+      <view class="label">总投入</view>
+      <view class="amount">{{stats.total}}</view>
     </view>
-    <view wx:else class="hero-tip">✨ 物尽其用，轻盈生活</view>
+    <view class="hero-stats">
+      <view class="col"><view class="b">{{stats.perDay}}</view><view class="s">每日陪伴成本</view></view>
+      <view class="col"><view class="b">{{stats.count}}</view><view class="s">在册好物</view></view>
+      <view class="col"><view class="b" style="color:{{stats.neg>0?'#e0638f':'inherit'}}">{{stats.neg}}</view><view class="s">在吃灰</view></view>
+    </view>
+  </view>
+
+  <!-- 轻盈度环 -->
+  <view class="lightness">
+    <view class="ring" style="--p:{{stats.lightness}}">
+      <view class="ring-b">{{stats.lightness}}<text class="ring-p">%</text></view>
+    </view>
+    <view class="l-txt">
+      <view class="l-title">轻盈度</view>
+      <view class="l-sub">{{stats.neg > 0 ? '有 ' + stats.neg + ' 件在吃灰，是时候断舍离了' : '物尽其用，轻盈生活'}}</view>
+    </view>
   </view>
 
   <!-- 标签切换 -->
@@ -29,9 +37,9 @@
       data-key="{{item.key}}" bindtap="onTab">{{item.label}}</view>
   </view>
 
-  <!-- 筛选 + 排序 -->
+  <!-- 分类筛选 + 排序 -->
   <view class="filterbar">
-    <scroll-view scroll-x class="chips">
+    <scroll-view scroll-x class="chips" enhanced show-scrollbar="{{false}}">
       <view wx:for="{{cats}}" wx:key="*this"
         class="chip {{filterCat === item ? 'on' : ''}}"
         data-cat="{{item}}" bindtap="onFilter">{{item}}</view>
@@ -43,31 +51,32 @@
 
   <!-- 物品列表 -->
   <view wx:if="{{items.length === 0}}" class="empty">
-    <view style="font-size:64rpx">🪶</view>
-    <view style="margin-top:20rpx">这里还空空如也</view>
-    <view style="margin-top:10rpx">点击右下角 + ，记录第一件陪伴你的好物</view>
+    <view class="em">🪶</view>
+    <view class="et">这里还空空如也</view>
+    <view class="es">点击右下角 ＋ ，记录第一件陪伴你的好物</view>
   </view>
 
-  <view wx:for="{{items}}" wx:key="id" class="card item"
-    data-id="{{item.id}}" bindtap="onEdit" bindlongpress="onLongPress">
-    <view class="item-thumb">{{item._thumb}}</view>
-    <view class="item-main">
-      <view class="row item-head">
-        <text class="item-name">{{item.name}}</text>
-        <text wx:if="{{item._archived}}" class="pill">已告别</text>
+  <view class="list">
+    <view wx:for="{{items}}" wx:key="id" class="card item"
+      data-id="{{item.id}}" bindtap="onEdit" bindlongpress="onLongPress">
+      <image wx:if="{{item._img}}" class="thumb" src="{{item._img}}" mode="aspectFill" />
+      <view wx:else class="thumb">{{item._thumb}}</view>
+      <view class="body">
+        <view class="name">{{item.name}}<text class="cat-pill">{{item.category}}</text></view>
+        <view class="meta muted">
+          <block wx:if="{{item.mode === 'time'}}">陪伴 <text class="b">{{item._days}}</text> 天 · 原价 <text class="b">{{item._priceText}}</text></block>
+          <block wx:else>打卡 <text class="b">{{item.useCount}}</text> 次 · 原价 <text class="b">{{item._priceText}}</text> · {{item._idleText}}</block>
+        </view>
+        <view class="tags">
+          <text wx:for="{{item._statuses}}" wx:for-item="s" wx:key="id" class="status-pill" style="color:{{s.color}};background:{{s.color}}22">{{s.emoji}} {{s.name}}</text>
+          <text wx:if="{{item._archived}}" class="arch-tag">已告别</text>
+        </view>
+        <view wx:if="{{item.farewellAt}}" class="farewell-note">已于 {{item.farewellAt}} 圆满告别 🕊️</view>
       </view>
-      <view class="item-meta muted">
-        {{item.category}} · 陪伴 {{item._days}} 天
-        <text wx:if="{{item._idleText}}"> · {{item._idleText}}</text>
+      <view class="cost">
+        <view class="cost-num">{{item._perUse}}</view>
+        <view class="cost-label muted">{{item.mode === 'time' ? '每日成本' : '每次成本'}}</view>
       </view>
-      <view class="row item-tags">
-        <text class="pill" wx:for="{{item._statuses}}" wx:for-item="s" wx:key="id"
-          style="background:{{s.color}}22;color:{{s.color}}">{{s.emoji}} {{s.name}}</text>
-      </view>
-    </view>
-    <view class="item-cost">
-      <view class="cost-num">{{item._perUse}}</view>
-      <view class="cost-label muted">每次成本</view>
     </view>
   </view>
 

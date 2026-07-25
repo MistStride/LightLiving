@@ -8,6 +8,22 @@
 }
 .emoji-opt.on { border-color: var(--primary); background: var(--primary-soft); }
 
+.cover-box { display: flex; align-items: center; gap: 24rpx; }
+.cover-img { width: 160rpx; height: 160rpx; border-radius: 20rpx; object-fit: cover; flex: 0 0 auto; }
+.cover-ph {
+  width: 160rpx; height: 160rpx; border-radius: 20rpx; flex: 0 0 auto;
+  background: linear-gradient(135deg, var(--primary-soft), var(--secondary-soft));
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8rpx;
+}
+.cover-ic { font-size: 48rpx; }
+.cover-tx { font-size: 20rpx; color: var(--text-soft); }
+.cover-actions { display: flex; flex-direction: column; gap: 14rpx; flex: 1; }
+.cover-btn {
+  background: var(--primary); color: #fff; font-size: 26rpx; font-weight: 600;
+  padding: 18rpx 0; border-radius: 14rpx; text-align: center;
+}
+.cover-btn.ghost { background: var(--surface-2); color: var(--text-soft); border: 1rpx solid var(--border); }
+
 .input {
   background: var(--surface-2); border: 1rpx solid var(--border); border-radius: 16rpx;
   padding: 22rpx 24rpx; font-size: 30rpx;

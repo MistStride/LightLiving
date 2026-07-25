@@ -1,12 +1,14 @@
 /* ===== 物尽其轻 · 全局样式与三套主题 ===== */
-/* 主题通过页面根 view 的 class 切换：theme-mint / theme-green / theme-night */
+/* 主题通过页面根 view 的 class 切换：theme-mint / theme-purple / theme-night */
 
 .theme-mint {
-  --bg: #f3f9f6;
+  --bg: #f1f9f5;
+  --bg-grad: linear-gradient(160deg, #E8F6EF 0%, #EAF4FE 100%);
   --surface: #ffffff;
-  --surface-2: #f7fbf9;
+  --surface-2: #f4fbf8;
   --primary: #57b89c;
   --primary-soft: #e8f5f0;
+  --secondary-soft: #d9f0ea;
   --text: #283330;
   --text-soft: #6b7d77;
   --border: #e3efe9;
@@ -15,26 +17,30 @@
   --shadow: rgba(87, 184, 156, 0.18);
 }
 
-.theme-green {
-  --bg: #eef7ee;
+.theme-purple {
+  --bg: #f3eefe;
+  --bg-grad: linear-gradient(160deg, #E9E3FF 0%, #E0F2FE 100%);
   --surface: #ffffff;
-  --surface-2: #f4faf4;
-  --primary: #2faa5a;
-  --primary-soft: #e2f5e8;
-  --text: #1f3622;
-  --text-soft: #5c7a60;
-  --border: #d9ecdd;
-  --danger: #e0625b;
-  --warn: #cf942f;
-  --shadow: rgba(47, 170, 90, 0.18);
+  --surface-2: #f5f0ff;
+  --primary: #8b5cf6;
+  --primary-soft: #ede9fe;
+  --secondary-soft: #e3dbff;
+  --text: #2c2540;
+  --text-soft: #6b6390;
+  --border: #e6defb;
+  --danger: #e0638f;
+  --warn: #c98b3a;
+  --shadow: rgba(139, 92, 246, 0.18);
 }
 
 .theme-night {
   --bg: #15191a;
+  --bg-grad: linear-gradient(160deg, #1b2127 0%, #13181c 100%);
   --surface: #1f2624;
   --surface-2: #232b29;
   --primary: #6fd3b5;
   --primary-soft: #243a33;
+  --secondary-soft: #2a3a44;
   --text: #e6efeb;
   --text-soft: #9fb3ac;
   --border: #2c3633;
@@ -45,7 +51,7 @@
 
 .page {
   min-height: 100vh;
-  background: var(--bg);
+  background: var(--bg-grad);
   color: var(--text);
   box-sizing: border-box;
   padding-bottom: 40rpx;

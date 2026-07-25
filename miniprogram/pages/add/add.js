@@ -12,6 +12,7 @@ Page({
     name: '',
     emoji: '✨',
     emojis: EMOJIS,
+    image: '',
     cats: [],
     catIndex: 0,
     price: '',
@@ -37,6 +38,7 @@ Page({
         d.isEdit = true;
         d.name = it.name || '';
         d.emoji = it.emoji || '✨';
+        d.image = it.image || '';
         d.price = it.price != null ? String(it.price) : '';
         d.mode = it.mode || 'time';
         d.purchase = it.purchase || store.todayStr();
@@ -52,10 +54,35 @@ Page({
   onName(e) { this.setData({ name: e.detail.value }); },
   onPrice(e) { this.setData({ price: e.detail.value }); },
   onUseCount(e) { this.setData({ useCount: e.detail.value }); },
-  onEmoji(e) { this.setData({ emoji: e.detail.currentTarget.dataset.e }); },
+  onEmoji(e) { this.setData({ emoji: e.detail.currentTarget.dataset.e, image: '' }); },
   onCat(e) { this.setData({ catIndex: +e.detail.value }); },
   onMode(e) { this.setData({ mode: e.detail.value }); },
   onDate(e) { this.setData({ purchase: e.detail.value }); },
+
+  // 上传封面照片（压缩后转 base64 持久化，与原版行为一致）
+  chooseCover() {
+    wx.chooseMedia({
+      count: 1,
+      mediaType: ['image'],
+      sourceType: ['album', 'camera'],
+      sizeType: ['compressed'],
+      success: (res) => {
+        const fp = res.tempFiles[0].tempFilePath;
+        const fs = wx.getFileSystemManager();
+        fs.readFile({
+          filePath: fp,
+          encoding: 'base64',
+          success: (r) => {
+            const ext = (fp.split('.').pop() || 'jpg').toLowerCase().replace('jpeg', 'jpg');
+            const dataUrl = 'data:image/' + ext + ';base64,' + r.data;
+            this.setData({ image: dataUrl });
+          },
+          fail: () => wx.showToast({ title: '读取图片失败', icon: 'none' })
+        });
+      }
+    });
+  },
+  removeCover() { this.setData({ image: '' }); },
 
   save() {
     const d = this.data;
@@ -68,6 +95,7 @@ Page({
       id: d.id || '',
       name,
       emoji: d.emoji,
+      image: d.image || '',
       category: d.cats[d.catIndex],
       price,
       mode: d.mode,

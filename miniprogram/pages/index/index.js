@@ -11,11 +11,17 @@ function decorate(it) {
     else if (idle === 0) idleText = '今天用过';
     else idleText = idle + ' 天没用';
   }
+  const img = it.image || '';
+  const isImg = img.indexOf('data:') === 0;
+  let thumb = it.emoji || '';
+  if (!thumb) { const ch = Array.from(it.name || '')[0] || ''; thumb = /\p{Extended_Pictographic}/u.test(ch) ? ch : '📦'; }
   return Object.assign({}, it, {
-    _thumb: it.emoji || (it.name ? it.name.slice(0, 1) : '·'),
+    _img: isImg ? img : '',
+    _thumb: thumb,
     _days: store.companionDays(it),
     _perDay: store.money(store.perDayCost(it)),
     _perUse: store.money(store.unitCost(it)),
+    _priceText: store.money(it.price || 0),
     _idle: idle,
     _idleText: idleText,
     _statuses: sts,
@@ -51,13 +57,15 @@ Page({
   refresh() {
     const cats = ['全部'].concat(store.getCats());
     const st = store.computeStats(store.getItems());
+    const lightness = st.count ? Math.round((st.count - st.neg) / st.count * 100) : 0;
     this.setData({
       cats,
       stats: {
         total: store.money(st.total),
         perDay: store.money(st.perDay) + (st.inf ? ' ＋ ∞' : ''),
         neg: st.neg,
-        count: st.count
+        count: st.count,
+        lightness
       }
     });
     this.applyFilter();

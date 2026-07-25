@@ -1,7 +1,18 @@
 <view class="page theme-{{theme}}">
 
   <view class="card">
-    <view class="field-label">封面</view>
+    <view class="field-label">封面（上传照片，或选个 emoji）</view>
+    <view class="cover-box">
+      <image wx:if="{{image}}" class="cover-img" src="{{image}}" mode="aspectFill" />
+      <view wx:else class="cover-ph" bindtap="chooseCover">
+        <view class="cover-ic">📷</view>
+        <view class="cover-tx">点击上传 / 拍照</view>
+      </view>
+      <view class="cover-actions">
+        <view class="cover-btn" bindtap="chooseCover">{{image ? '重新上传' : '上传照片'}}</view>
+        <view wx:if="{{image}}" class="cover-btn ghost" bindtap="removeCover">移除照片</view>
+      </view>
+    </view>
     <view class="emoji-row">
       <view wx:for="{{emojis}}" wx:key="*this" class="emoji-opt {{emoji === item ? 'on' : ''}}"
         data-e="{{item}}" bindtap="onEmoji">{{item}}</view>

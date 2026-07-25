@@ -8,13 +8,13 @@ const THEMES = {
     bg: '#f3f9f6',
     primary: '#57b89c'
   },
-  green: {
-    key: 'green',
-    name: '森野绿',
-    navBg: '#2faa5a',
+  purple: {
+    key: 'purple',
+    name: '梦幻紫',
+    navBg: '#7c6ff0',
     navText: '#ffffff',
-    bg: '#eef7ee',
-    primary: '#2faa5a'
+    bg: '#f3eefe',
+    primary: '#8b5cf6'
   },
   night: {
     key: 'night',
