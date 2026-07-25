@@ -6,7 +6,8 @@
     "pages/categories/categories",
     "pages/settings/settings",
     "pages/guide/guide",
-    "pages/backup/backup"
+    "pages/backup/backup",
+    "pages/about/about"
   ],
   "window": {
     "navigationStyle": "custom",

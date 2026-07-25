@@ -1,0 +1,33 @@
+.about { padding-bottom: 60rpx; }
+
+/* 渐变 hero（与首页页头一致） */
+.hero {
+  background: var(--hero-grad);
+  padding: 0 40rpx 56rpx;
+  border-bottom-left-radius: 40rpx;
+  border-bottom-right-radius: 40rpx;
+  text-align: center;
+  color: #fff;
+}
+.hero-ico { font-size: 84rpx; padding-top: 44rpx; line-height: 1; }
+.hero-name { font-size: 46rpx; font-weight: 700; margin-top: 18rpx; letter-spacing: 2rpx; }
+.hero-slogan { font-size: 26rpx; margin-top: 14rpx; color: rgba(255, 255, 255, 0.88); }
+
+.a-title { font-size: 32rpx; font-weight: 700; color: var(--text); margin-bottom: 16rpx; }
+.a-body { font-size: 28rpx; color: var(--text-soft); line-height: 1.85; }
+
+.feat { display: flex; align-items: center; padding: 20rpx 0; border-bottom: 1rpx solid var(--border); }
+.feat:last-child { border-bottom: none; }
+.feat-ico {
+  width: 76rpx; height: 76rpx; flex: 0 0 auto;
+  border-radius: 20rpx; background: var(--primary-soft);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 40rpx; margin-right: 22rpx;
+}
+.feat-tx { display: flex; flex-direction: column; }
+.feat-name { font-size: 30rpx; font-weight: 600; color: var(--text); }
+.feat-sub { font-size: 24rpx; color: var(--text-soft); margin-top: 6rpx; }
+
+.privacy { background: var(--primary-soft); }
+
+.end { text-align: center; font-size: 24rpx; padding: 44rpx 0 10rpx; }

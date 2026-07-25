@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "关于 物尽其轻",
+  "usingComponents": {
+    "nav-bar": "/components/nav-bar/nav-bar"
+  }
+}

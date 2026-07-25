@@ -1,0 +1,53 @@
+<view class="page theme-{{theme}} about">
+
+  <nav-bar title="关于" showBack="{{true}}" />
+
+  <!-- 渐变 hero -->
+  <view class="hero">
+    <view class="status-spacer" style="height: {{statusBarHeight}}px;"></view>
+    <view class="hero-ico">🪶</view>
+    <view class="hero-name">物尽其轻</view>
+    <view class="hero-slogan">物尽其用，轻盈地生活 ✨</view>
+  </view>
+
+  <!-- 理念 -->
+  <view class="card">
+    <view class="a-title">为什么是轻盈生活</view>
+    <view class="a-body">我们拥有很多，却很少真正使用。物尽其轻帮你温柔地看见每件物品的真实处境——它陪了你多久、每次使用的成本，以及那些被遗忘在角落的。</view>
+  </view>
+
+  <!-- 三件事 -->
+  <view class="card">
+    <view class="a-title">我们陪你做的三件事</view>
+    <view class="feat">
+      <view class="feat-ico">📅</view>
+      <view class="feat-tx">
+        <view class="feat-name">陪伴时长</view>
+        <view class="feat-sub">记录你与每件物品的相处时光</view>
+      </view>
+    </view>
+    <view class="feat">
+      <view class="feat-ico">💰</view>
+      <view class="feat-tx">
+        <view class="feat-name">真实成本</view>
+        <view class="feat-sub">算一算每次使用到底花了多少</view>
+      </view>
+    </view>
+    <view class="feat">
+      <view class="feat-ico">🌫️</view>
+      <view class="feat-tx">
+        <view class="feat-name">温柔提醒</view>
+        <view class="feat-sub">长期闲置时，轻柔地提醒你断舍离</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 数据隐私 -->
+  <view class="card privacy">
+    <view class="a-title">🔒 你的数据只属于你</view>
+    <view class="a-body">所有记录仅保存在本机，不上传任何云端，也不收集个人信息。换手机或卸载前，记得在「数据备份与恢复」里导出一份。</view>
+  </view>
+
+  <view class="end muted">放手，轻盈地生活。</view>
+
+</view>

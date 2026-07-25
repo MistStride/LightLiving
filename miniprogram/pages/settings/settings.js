@@ -5,17 +5,36 @@ const themeMod = require('../../utils/theme.js');
 Page({
   data: {
     theme: 'mint',
-    themes: []
+    themes: [],
+    lastBackup: '暂无记录',
+    guardStatus: '已开启'
   },
 
   onShow() {
     const t = store.getTheme();
     app.globalData.theme = t;
-    this.setData({ theme: t, themes: themeMod.list() });
+    this.setData({ theme: t, themes: themeMod.list(), lastBackup: this.fmtLastBackup() });
     themeMod.applyNav(t);
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 1, theme: t });
     }
+  },
+
+  // 把最近一次自动备份的时间，转成「今天 14:30 / 昨天 / N天前 / 暂无记录」
+  fmtLastBackup() {
+    const arr = store.getAutoBackups();
+    if (!arr.length) return '暂无记录';
+    const ts = arr[arr.length - 1].ts;
+    const d = new Date(ts);
+    const now = new Date();
+    const p = n => (n < 10 ? '0' + n : '' + n);
+    const hm = p(d.getHours()) + ':' + p(d.getMinutes());
+    const startOfDay = t => new Date(t.getFullYear(), t.getMonth(), t.getDate()).getTime();
+    const diffDay = Math.floor((startOfDay(now) - startOfDay(d)) / 86400000);
+    if (diffDay <= 0) return '今天 ' + hm;
+    if (diffDay === 1) return '昨天 ' + hm;
+    if (diffDay < 30) return diffDay + ' 天前';
+    return (d.getMonth() + 1) + '月' + d.getDate() + '日';
   },
 
   pickTheme(e) {
@@ -39,11 +58,6 @@ Page({
   },
 
   about() {
-    wx.showModal({
-      title: '关于 物尽其轻',
-      content: '一款极简的物品陪伴记录工具。记录你与每件物品的相处：相伴多久、每次使用的真实成本，长期闲置时温柔提醒你断舍离。数据只存在本机，不上传云端。',
-      showCancel: false,
-      confirmText: '知道了'
-    });
+    wx.navigateTo({ url: '/pages/about/about' });
   }
 });
