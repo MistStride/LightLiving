@@ -476,7 +476,7 @@
       <p class="tip">💡「陪伴天数」从 <b>1 天</b> 起算，刚入手显示「陪伴 1 天」，日均 = 原价，符合直觉。</p>
 
       <h4>自定义状态与关系规则</h4>
-      <p>点设置里的「状态与关系规则」，按你和物品的关系自定义状态（✨ 物尽其用 / 🌫️ 独自吃灰 / 💜 新伙伴）。可增删改，标记积极 / 消极 / 中性；还能设判定条件（如「按次且超 20 天没打卡」自动贴「🌫️ 独自吃灰」）。<b>消极状态</b>会拉低轻盈度并触发断舍离提醒。</p>
+      <p>点设置里的「状态与关系规则」，按你和物品的关系自定义状态（✨ 物尽其用 / 🌫️ 独自吃灰 / 💜 新伙伴）。可增删改，标记积极 / 消极 / 中性；还能加判定条件，比如给「按次」物品设「<b>未使用天数 ≥ 30 天</b>」就自动贴「🌫️ 独自吃灰」。<b>消极状态</b>会拉低轻盈度并触发断舍离提醒。</p>
 
       <h4>断舍离提醒</h4>
       <p>消极状态物品会在首页顶部浮现温柔提醒，列出「已吃灰 X 天」。可「去告别」或「忽略」。这步不强求，轻盈生活从不制造焦虑。</p>
@@ -610,7 +610,7 @@
   function fillCatSelect(sel){sel.innerHTML='';getCats().forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;sel.appendChild(o);});}
   const PAGE_SIZE=5;
 
-  const METRICS={unit:{label:'单位成本',unit:'¥'},days:{label:'陪伴天数',unit:'天'},count:{label:'打卡次数',unit:'次'}};
+  const METRICS={unit:{label:'单位成本',unit:'¥'},days:{label:'陪伴天数',unit:'天'},count:{label:'打卡次数',unit:'次'},idle:{label:'未使用天数',unit:'天'}};
   const OPS={lte:'≤',gte:'≥',lt:'<',gt:'>'};
   const NEUTRAL={id:'neutral',name:'相伴中',emoji:'',color:'#9aa0b4',positive:false};
 
@@ -713,7 +713,7 @@
       {id:'s1',name:'物尽其用',emoji:'✨',color:'#d97706',positive:true,applyTo:'all',match:'any',
         conditions:[{metric:'unit',op:'lte',value:3},{metric:'count',op:'gte',value:30}]},
       {id:'s2',name:'独自吃灰',emoji:'🌫️',color:'#94a3b8',positive:false,applyTo:'count',match:'all',
-        conditions:[{metric:'count',op:'lte',value:3},{metric:'days',op:'gte',value:30}]}
+        conditions:[{metric:'count',op:'lte',value:3},{metric:'idle',op:'gte',value:30}]}
     ];
   }
 
@@ -752,6 +752,7 @@
     if(m==='unit')return unitCost(it);
     if(m==='days')return companionDays(it);
     if(m==='count')return it.useCount;
+    if(m==='idle')return it.mode==='count'?unseenDays(it):0;
     return 0;
   }
   function compare(v,op,t){t=Number(t);return op==='lte'?v<=t:op==='gte'?v>=t:op==='lt'?v<t:v>t;}
