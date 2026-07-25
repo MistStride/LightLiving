@@ -6,7 +6,9 @@
 
 不是催你扔东西的断舍离工具，而是让你**更珍惜用得上的好物，也体面地放过不再需要的它**。
 
-[为什么是它](#-为什么是轻盈生活) · [核心特性](#-核心特性) · [三个版本](#-三个版本) · [3 分钟上手](#-3-分钟上手) · [使用指南](使用指南.md)
+[为什么是它](#-为什么是轻盈生活) · [核心特性](#-核心特性) · [三个版本](#-三个版本) · [3 分钟上手](#-3-分钟上手) · [使用指南](使用说明.md)
+
+🌐 English version: [README.en.md](README.en.md)
 
 </div>
 
@@ -66,7 +68,7 @@ python -m http.server 8123
 
 ### 2. Android APK（原生体验）
 
-基于 Capacitor 打包，已发布正式版 `v1.2.0`。在 [GitHub Release](https://github.com/MistStride/LightLiving/releases) 下载 APK 安装即可。
+基于 Capacitor 打包，已发布正式版 `v1.3.0`。在 [GitHub Release](https://github.com/MistStride/LightLiving/releases) 下载 APK 安装即可。
 
 ### 3. 微信小程序 · 物尽其轻
 
@@ -91,7 +93,7 @@ python -m http.server 8123
 
 **微信小程序**：用微信开发者工具导入 `miniprogram/` → 编译 → 首页点右下角 ＋ 记录第一件好物；首次进入若库为空，可点空态「载入示例好物」一键填充 5 件示例。
 
-> 不知道从哪开始？先看 [使用指南](使用指南.md)，3 分钟学会添加第一件好物。
+> 不知道从哪开始？先看 [使用说明](使用说明.md)，3 分钟学会添加第一件好物。
 
 ---
 
