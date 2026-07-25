@@ -19,13 +19,73 @@
     --shadow:0 4px 20px -2px rgba(139,92,246,.05);
     --shadow-lg:0 12px 40px -8px rgba(139,92,246,.18);
     --radius:22px;
+    --hero-g1:#E9E3FF;
+    --hero-g2:#E0F2FE;
+    --field-bg:#FBFBFE;
   }
+  /* ===== 主题：竹杖（薄荷绿）===== */
+  [data-theme="mint"]{
+    --primary:#3fae8e;
+    --primary-soft:#cdeede;
+    --secondary:#7fd1b0;
+    --secondary-soft:#e3f6ee;
+    --bg:#eef9f3;
+    --surface:#ffffff;
+    --text-main:#16302a;
+    --text-sub:#5a7a70;
+    --line:#e0f0e8;
+    --shadow:0 4px 20px -2px rgba(63,174,142,.06);
+    --shadow-lg:0 12px 40px -8px rgba(63,174,142,.18);
+    --hero-g1:#DDF3EA;
+    --hero-g2:#E7F6F0;
+    --field-bg:#f3fbf7;
+  }
+  /* ===== 主题：鸢尾（紫，默认）===== */
+  [data-theme="purple"]{
+    --primary:#8B5CF6;
+    --primary-soft:#DDD6FE;
+    --secondary:#93C5FD;
+    --secondary-soft:#E0F2FE;
+    --bg:#FAFAFE;
+    --surface:#FFFFFF;
+    --text-main:#1E1B4B;
+    --text-sub:#6B7280;
+    --line:#EEEDF7;
+    --shadow:0 4px 20px -2px rgba(139,92,246,.05);
+    --shadow-lg:0 12px 40px -8px rgba(139,92,246,.18);
+    --hero-g1:#E9E3FF;
+    --hero-g2:#E0F2FE;
+    --field-bg:#FBFBFE;
+  }
+  /* ===== 主题：星夜（深色）===== */
+  [data-theme="night"]{
+    --primary:#6fd3b5;
+    --primary-soft:#26403a;
+    --secondary:#5bb6e0;
+    --secondary-soft:#1f3a44;
+    --bg:#11151a;
+    --surface:#1b2228;
+    --text-main:#e6efeb;
+    --text-sub:#9fb2ad;
+    --line:#27323a;
+    --shadow:0 4px 20px -2px rgba(0,0,0,.4);
+    --shadow-lg:0 12px 40px -8px rgba(0,0,0,.55);
+    --hero-g1:#1c2a2c;
+    --hero-g2:#16242b;
+    --field-bg:#20282f;
+  }
+  [data-theme="night"] .ctx-cancel{background:#222b33;color:var(--text-sub);}
+  [data-theme="night"] .seg{background:#222b33;}
+  [data-theme="night"] .field input,[data-theme="night"] .field textarea,[data-theme="night"] .field select{background:var(--surface);}
+  [data-theme="night"] .guide-body .tip{background:#1b2228;color:var(--text-sub);}
+  [data-theme="night"] .guide-body code{background:#222b33;}
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
   html,body{margin:0;padding:0;}
   body{
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-    background:#ECEAFB;color:var(--text-main);
+    background:var(--bg);color:var(--text-main);
     -webkit-font-smoothing:antialiased;
+    transition:background .3s;
   }
   .app{
     max-width:480px;margin:0 auto;min-height:100vh;background:var(--bg);
@@ -35,7 +95,7 @@
   /* ===== HERO ===== */
   .hero{
     position:relative;
-    background:linear-gradient(135deg,#E9E3FF 0%,#E0F2FE 100%);
+    background:linear-gradient(135deg,var(--hero-g1) 0%,var(--hero-g2) 100%);
     padding:max(env(safe-area-inset-top),28px) 22px 54px;
     border-bottom-left-radius:30px;border-bottom-right-radius:30px;
   }
@@ -170,6 +230,19 @@
   .menu-row .mr-tx{flex:1;min-width:0;}
   .menu-row .mr-ar{color:#c7c3e0;font-size:20px;flex:0 0 auto;}
 
+  /* ===== 设置：主题 / 语言 ===== */
+  .settings-block{margin:6px 0 4px;}
+  .sb-label{font-size:12.5px;font-weight:700;color:var(--text-sub);margin:10px 4px 8px;letter-spacing:.3px;}
+  .theme-row{display:flex;gap:8px;}
+  .theme-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;border:1.5px solid var(--line);background:var(--surface);color:var(--text-main);font-size:13.5px;font-weight:600;padding:11px 4px;border-radius:14px;cursor:pointer;transition:.2s;}
+  .theme-btn:active{transform:scale(.97);}
+  .theme-btn.on{border-color:var(--primary);background:var(--primary-soft);color:var(--primary);}
+  .theme-btn .tdot{width:13px;height:13px;border-radius:50%;flex:0 0 auto;}
+  .lang-row{display:flex;gap:8px;}
+  .lang-btn{flex:1;border:1.5px solid var(--line);background:var(--surface);color:var(--text-sub);font-size:14px;font-weight:600;padding:11px 0;border-radius:14px;cursor:pointer;transition:.2s;}
+  .lang-btn:active{transform:scale(.97);}
+  .lang-btn.on{border-color:var(--primary);background:var(--primary-soft);color:var(--primary);}
+
   /* ===== CATEGORY / AUTOBACKUP LISTS ===== */
   .field-wrap{margin:14px 0 6px;}
   .field-wrap .field{width:100%;}
@@ -284,6 +357,10 @@
   .pager .pg:active{transform:scale(.96);}
   .pager .pg:disabled{opacity:.4;cursor:default;}
   .pager .pg-info{font-size:13px;color:var(--text-sub);font-weight:600;}
+  /* ===== 底部主题诗句 ===== */
+  .poem-foot{text-align:center;padding:30px 40px 40px;margin-top:6px;}
+  .poem-foot .poem{font-size:15px;font-weight:600;color:var(--primary);letter-spacing:.5px;line-height:1.7;font-family:"Songti SC","STSong",serif;}
+  .poem-foot .poem-en{font-size:12px;color:var(--text-sub);margin-top:6px;line-height:1.6;font-style:italic;}
 </style>
 </head>
 <body>
@@ -297,36 +374,36 @@
     <h3 id="f_title">添一件好物</h3>
     <div class="sub" id="f_sub">认真记录，物尽其用 ✨</div>
     <div class="field">
-      <label>物品名称</label>
-      <input id="f_name" type="text" placeholder="例如：复古胶片相机" maxlength="40" />
+      <label data-i18n="lblName">物品名称</label>
+      <input id="f_name" type="text" placeholder="例如：复古胶片相机" data-i18n-ph="phName" maxlength="40" />
     </div>
     <div class="row2">
       <div class="field">
-        <label>购买价格 (¥)</label>
-        <input id="f_price" type="number" inputmode="decimal" placeholder="0.00" min="0" step="0.01" />
+        <label data-i18n="lblPrice">购买价格 (¥)</label>
+        <input id="f_price" type="number" inputmode="decimal" placeholder="0.00" data-i18n-ph="phPrice" min="0" step="0.01" />
       </div>
       <div class="field">
-        <label>入手日期</label>
+        <label data-i18n="lblDate">入手日期</label>
         <input id="f_date" type="date" />
       </div>
     </div>
     <div class="field">
-      <label>分类</label>
+      <label data-i18n="lblCat">分类</label>
       <select id="f_cat"></select>
     </div>
     <div class="field">
-      <label>计费模式</label>
+      <label data-i18n="lblMode">计费模式</label>
       <div class="seg" id="f_mode">
-        <button type="button" data-m="day" class="on">📅 按天数</button>
-        <button type="button" data-m="count">🔢 按次数</button>
+        <button type="button" data-m="day" class="on" data-i18n="modeDay">📅 按天数</button>
+        <button type="button" data-m="count" data-i18n="modeCount">🔢 按次数</button>
       </div>
     </div>
     <div class="field">
-      <label>随手备注 / 心情故事</label>
-      <textarea id="f_note" placeholder="它陪你做了什么？" maxlength="120"></textarea>
+      <label data-i18n="lblNote">随手备注 / 心情故事</label>
+      <textarea id="f_note" placeholder="它陪你做了什么？" data-i18n-ph="phNote" maxlength="120"></textarea>
     </div>
     <div class="field">
-      <label>物品照片（可选，或选个 emoji 当封面）</label>
+      <label data-i18n="lblPhoto">物品照片（可选，或选个 emoji 当封面）</label>
       <div class="upload" id="f_upload">
         <div class="ph" id="f_ph"><span class="ic">📷</span><span>点击上传 / 拍照</span></div>
         <img id="f_img" style="display:none" alt="" />
@@ -338,35 +415,35 @@
         <button type="button" class="chip" data-emoji="👟">👟</button>
         <button type="button" class="chip" data-emoji="📚">📚</button>
         <button type="button" class="chip" data-emoji="🌿">🌿</button>
-        <input id="f_emoji" type="text" maxlength="2" placeholder="或填 emoji" />
+        <input id="f_emoji" type="text" maxlength="2" placeholder="或填 emoji" data-i18n-ph="emojiPh" />
       </div>
       <input id="f_file" type="file" accept="image/*" capture="environment" style="display:none" />
     </div>
     <button class="btn-primary" id="f_submit">收入陪伴册</button>
-    <button class="btn-ghost" data-close="addOverlay">取消</button>
+    <button class="btn-ghost" data-close="addOverlay" data-i18n="btnCancel">取消</button>
   </div>
 </div>
 
 <!-- Farewell Sheet -->
 <div class="overlay" id="farewellOverlay">
   <div class="sheet">
-    <h3>断·舍·离</h3>
-    <div class="sub">放手，轻盈地生活。</div>
+    <h3 data-i18n="fwTitle">断·舍·离</h3>
+    <div class="sub" data-i18n="fwSub">放手，轻盈地生活。</div>
     <div class="farewell-card">
       <div class="heart">💜</div>
       <div class="msg" id="farewellMsg"></div>
     </div>
     <div class="reasons" id="reasons">
-      <label><input type="radio" name="reason" value="赠送他人" /> 🎁 赠送他人</label>
-      <label><input type="radio" name="reason" value="回收丢弃" /> ♻️ 回收丢弃</label>
-      <label><input type="radio" name="reason" value="闲置处理" /> 📦 闲置处理</label>
+      <label><input type="radio" name="reason" value="gift" /> <span data-i18n="fwReasonGift">🎁 赠送他人</span></label>
+      <label><input type="radio" name="reason" value="recycle" /> <span data-i18n="fwReasonRecycle">♻️ 回收丢弃</span></label>
+      <label><input type="radio" name="reason" value="idle" /> <span data-i18n="fwReasonIdle">📦 闲置处理</span></label>
     </div>
     <div class="field">
-      <label>给它的告别评语</label>
-      <textarea id="farewellNote" placeholder="写句心里话，比如：谢谢你陪我走过那段日子，希望下一位主人也喜欢你。" maxlength="140"></textarea>
+      <label data-i18n="fwNoteLbl">给它的告别评语</label>
+      <textarea id="farewellNote" placeholder="写句心里话，比如：谢谢你陪我走过那段日子，希望下一位主人也喜欢你。" data-i18n-ph="fwNotePh" maxlength="140"></textarea>
     </div>
-    <button class="btn-primary" id="farewellConfirm">圆满告别</button>
-    <button class="btn-ghost" data-close="farewellOverlay">再想想</button>
+    <button class="btn-primary" id="farewellConfirm" data-i18n="fwConfirm">圆满告别</button>
+    <button class="btn-ghost" data-close="farewellOverlay" data-i18n="fwCancel">再想想</button>
   </div>
 </div>
 
@@ -374,11 +451,11 @@
 <div class="overlay" id="statusOverlay">
   <div class="sheet">
     <div class="ctx-handle"></div>
-    <h3>状态与关系规则</h3>
-    <div class="sub">按你和物品的关系自定义状态；标记为「消极」的状态会拉低轻盈度，提醒你断舍离。</div>
+    <h3 data-i18n="stTitle">状态与关系规则</h3>
+    <div class="sub" data-i18n="stSub">按你和物品的关系自定义状态；标记为「消极」的状态会拉低轻盈度，提醒你断舍离。</div>
     <div id="statusList"></div>
-    <button class="btn-primary" id="addStatus">+ 新增状态</button>
-    <button class="ctx-cancel" data-close="statusOverlay">关闭</button>
+    <button class="btn-primary" id="addStatus" data-i18n="stAdd">+ 新增状态</button>
+    <button class="ctx-cancel" data-close="statusOverlay" data-i18n="btnClose">关闭</button>
   </div>
 </div>
 
@@ -386,13 +463,28 @@
 <div class="overlay" id="settingsOverlay">
   <div class="sheet">
     <div class="ctx-handle"></div>
-    <h3>设置</h3>
-    <div class="sub">管理你的物品陪伴方式</div>
-    <button class="menu-row" data-set="rules"><span class="mr-ico">⚙️</span><span class="mr-tx">状态与关系规则</span><span class="mr-ar">›</span></button>
-    <button class="menu-row" data-set="guide"><span class="mr-ico">📖</span><span class="mr-tx">使用指南</span><span class="mr-ar">›</span></button>
-    <button class="menu-row" data-set="cats"><span class="mr-ico">🏷️</span><span class="mr-tx">物品分类管理</span><span class="mr-ar">›</span></button>
-    <button class="menu-row" data-set="data"><span class="mr-ico">💾</span><span class="mr-tx">数据备份与恢复</span><span class="mr-ar">›</span></button>
-    <button class="ctx-cancel" data-close="settingsOverlay">关闭</button>
+    <h3 data-i18n="settingsTitle">设置</h3>
+    <div class="sub" data-i18n="settingsSub">管理你的物品陪伴方式</div>
+    <div class="settings-block">
+      <div class="sb-label" data-i18n="themeLabel">主题</div>
+      <div class="theme-row" id="themeRow">
+        <button class="theme-btn" data-theme="mint"><span class="tdot" style="background:#3fae8e"></span><span data-i18n="themeMint">竹杖</span></button>
+        <button class="theme-btn" data-theme="purple"><span class="tdot" style="background:#8B5CF6"></span><span data-i18n="themePurple">鸢尾</span></button>
+        <button class="theme-btn" data-theme="night"><span class="tdot" style="background:#6fd3b5"></span><span data-i18n="themeNight">星夜</span></button>
+      </div>
+    </div>
+    <div class="settings-block">
+      <div class="sb-label" data-i18n="langLabel">语言</div>
+      <div class="lang-row" id="langRow">
+        <button class="lang-btn" data-lang="zh" data-i18n="langZh">中文</button>
+        <button class="lang-btn" data-lang="en" data-i18n="langEn">English</button>
+      </div>
+    </div>
+    <button class="menu-row" data-set="rules"><span class="mr-ico">⚙️</span><span class="mr-tx" data-i18n="setRules">状态与关系规则</span><span class="mr-ar">›</span></button>
+    <button class="menu-row" data-set="guide"><span class="mr-ico">📖</span><span class="mr-tx" data-i18n="setGuide">使用指南</span><span class="mr-ar">›</span></button>
+    <button class="menu-row" data-set="cats"><span class="mr-ico">🏷️</span><span class="mr-tx" data-i18n="setCats">物品分类管理</span><span class="mr-ar">›</span></button>
+    <button class="menu-row" data-set="data"><span class="mr-ico">💾</span><span class="mr-tx" data-i18n="setData">数据备份与恢复</span><span class="mr-ar">›</span></button>
+    <button class="ctx-cancel" data-close="settingsOverlay" data-i18n="btnClose">关闭</button>
   </div>
 </div>
 
@@ -400,11 +492,11 @@
 <div class="overlay" id="catsOverlay">
   <div class="sheet">
     <div class="ctx-handle"></div>
-    <h3>物品分类管理</h3>
-    <div class="sub">自定义你常用的分类；删除前会先把在用的物品改派到其它分类。</div>
+    <h3 data-i18n="catsTitle">物品分类管理</h3>
+    <div class="sub" data-i18n="catsSub">自定义你常用的分类；删除前会先把在用的物品改派到其它分类。</div>
     <div id="catsList"></div>
-    <button class="btn-primary" id="addCat">+ 新增分类</button>
-    <button class="ctx-cancel" data-close="catsOverlay">关闭</button>
+    <button class="btn-primary" id="addCat" data-i18n="catAdd">+ 新增分类</button>
+    <button class="ctx-cancel" data-close="catsOverlay" data-i18n="btnClose">关闭</button>
   </div>
 </div>
 
@@ -412,8 +504,8 @@
 <div class="overlay" id="catEditOverlay">
   <div class="sheet">
     <h3 id="catEditTitle">新增分类</h3>
-    <div class="field-wrap"><input class="field" id="cat_name" placeholder="例如：乐器 / 户外装备" maxlength="12" /></div>
-    <div class="row"><button class="btn-primary" id="catSave">保存</button><button class="btn-ghost" data-close="catEditOverlay">取消</button></div>
+    <div class="field-wrap"><input class="field" id="cat_name" placeholder="例如：乐器 / 户外装备" maxlength="12" data-i18n-ph="catPh" /></div>
+    <div class="row"><button class="btn-primary" id="catSave" data-i18n="catSave">保存</button><button class="btn-ghost" data-close="catEditOverlay" data-i18n="btnCancel">取消</button></div>
   </div>
 </div>
 
@@ -421,16 +513,16 @@
 <div class="overlay" id="dataBakOverlay">
   <div class="sheet">
     <div class="ctx-handle"></div>
-    <h3>数据备份与恢复</h3>
-    <div class="sub">每次改动都会自动留一份带时间戳的备份（最近 5 份，存在本机），可随时回退；换手机时导出 / 导入文件即可。</div>
-    <h4 style="margin:16px 0 6px;font-size:14px">自动备份（可回退）</h4>
+    <h3 data-i18n="bakTitle">数据备份与恢复</h3>
+    <div class="sub" data-i18n="bakSub">每次改动都会自动留一份带时间戳的备份（最近 5 份，存在本机），可随时回退；换手机时导出 / 导入文件即可。</div>
+    <h4 style="margin:16px 0 6px;font-size:14px" data-i18n="bakAuto">自动备份（可回退）</h4>
     <div id="autoBakList"></div>
     <div class="row" style="margin-top:14px">
-      <button class="btn-primary" id="exportBtn">📤 备份到文件</button>
-      <button class="btn-ghost" id="importBtn">📥 从文件还原</button>
+      <button class="btn-primary" id="exportBtn" data-i18n="bakExport">📤 备份到文件</button>
+      <button class="btn-ghost" id="importBtn" data-i18n="bakImport">📥 从文件还原</button>
     </div>
     <input id="importFile" type="file" accept="application/json,.json" style="display:none" />
-    <button class="ctx-cancel" data-close="dataBakOverlay" style="margin-top:14px">关闭</button>
+    <button class="ctx-cancel" data-close="dataBakOverlay" style="margin-top:14px" data-i18n="btnClose">关闭</button>
   </div>
 </div>
 
@@ -438,90 +530,10 @@
 <div class="overlay" id="guideOverlay">
   <div class="sheet">
     <div class="ctx-handle"></div>
-    <h3>使用指南</h3>
-    <div class="sub">一本会陪你算账的物品陪伴记录册 🌿</div>
-    <div class="guide-body">
-      <h4>为什么是「轻盈生活」</h4>
-      <p>我们买的每样东西，都在用两种方式陪伴我们：<b>钱</b> 和 <b>时间</b>。</p>
-      <ul>
-        <li>一支用了 300 天的键盘，日均成本可能只有几毛钱 —— 它值得被珍惜。</li>
-        <li>一台落灰的单反，买来从没拍过一张照片 —— 它的「每日陪伴总成本」里，藏着一个温柔的问号：<b>¥X ＋ ∞</b>。</li>
-      </ul>
-      <p>绝大多数记账 App 只告诉你「花了多少」，却从不问「值不值」。<b>轻盈生活</b>反其道而行：把成本摊薄到每一天、每一次使用，让你一眼看清「物尽其用」的快乐，也温柔地提醒你「是时候说再见了」。</p>
-      <p class="tip">🌿 我们相信：放手，轻盈地生活。</p>
-
-      <h4>添加第一件好物</h4>
-      <ul>
-        <li>点「＋ 添一件好物」，填写名称 / 价格 / 入手日期 / 分类。</li>
-        <li>选择计费模式（见下），可选封面（照片或 emoji）。</li>
-        <li>想改已添加的物品？<b>轻点它的封面缩略图</b>即可直接编辑。</li>
-      </ul>
-      <p class="tip">💡 首次打开会有几件示例好物（📸⌨️🕯️🧣 等），帮你快速看懂界面。</p>
-
-      <h4>两种计费模式，怎么选？</h4>
-      <table>
-        <tr><th>模式</th><th>适合</th><th>成本算法</th></tr>
-        <tr><td>按天 📅</td><td>天天在用的：键盘、衣服、家具</td><td>日均 = 价格 ÷ 陪伴天数（从第 1 天算起，刚买即 = 原价）</td></tr>
-        <tr><td>按次 ✋</td><td>偶尔用的：相机、健身环、游戏</td><td>单次 = 价格 ÷ 打卡次数；<b>0 次 = ∞</b></td></tr>
-      </table>
-      <p class="tip">💡 天天用的选「按天」，越用越便宜；偶尔用的选「按次」，每次用了点一下卡片上的 <b>＋1</b> 打卡。</p>
-
-      <h4>看懂首页看板</h4>
-      <ul>
-        <li><b>每日陪伴总成本</b>：所有「按天」物品的日均成本之和。<b>若有「按次」物品 0 次没用过，这里显示「¥X ＋ ∞」</b>——温柔提醒你为它每天在花「无限」的代价。</li>
-        <li><b>在册好物</b>：陪伴中的数量。</li>
-        <li><b>轻盈度</b>：环形进度条，积极状态占比越高越轻盈。</li>
-        <li><b>已圆满告别</b>：已送进回忆录的物品数。</li>
-      </ul>
-      <p class="tip">💡「陪伴天数」从 <b>1 天</b> 起算，刚入手显示「陪伴 1 天」，日均 = 原价，符合直觉。</p>
-
-      <h4>自定义状态与关系规则</h4>
-      <p>点设置里的「状态与关系规则」，按你和物品的关系自定义状态（✨ 物尽其用 / 🌫️ 独自吃灰 / 💜 新伙伴）。可增删改，标记积极 / 消极 / 中性；还能加判定条件，比如给「按次」物品设「<b>未使用天数 ≥ 30 天</b>」就自动贴「🌫️ 独自吃灰」。<b>消极状态</b>会拉低轻盈度并触发断舍离提醒。</p>
-
-      <h4>断舍离提醒</h4>
-      <p>消极状态物品会在首页顶部浮现温柔提醒，列出「已吃灰 X 天」。可「去告别」或「忽略」。这步不强求，轻盈生活从不制造焦虑。</p>
-
-      <h4>卡片的操作</h4>
-      <ul>
-        <li><b>轻点封面</b> ✏️：编辑这件物品。</li>
-        <li><b>长按卡片约 0.5 秒</b> ✋：弹出「编辑 / 圆满告别 / 删除」菜单。</li>
-        <li><b>＋1 按钮</b>（仅按次模式）：打卡一次。</li>
-      </ul>
-
-      <h4>圆满告别 · 断·舍·离</h4>
-      <p>物品要离场时，别直接删——给它一场圆满告别：长按卡片选「圆满告别」，选原因并写一句告别评语（必填），点「圆满告别」后会 <b>🎉 撒花 + 播放庆祝音效</b>，并收进「陪伴回忆录」。想反悔？在回忆录里长按选「恢复陪伴」即可。直接「删除」会永久清除且不可恢复。</p>
-
-      <h4>搜索、排序与分页</h4>
-      <ul>
-        <li><b>搜索</b>：同时匹配名称与备注 / 心情故事。</li>
-        <li><b>排序</b>：单位成本 高→低 / 低→高、陪伴时间、长久未见。</li>
-        <li><b>分页</b>：每页最多 5 件，底部「上一页 / 下一页」。</li>
-      </ul>
-
-      <h4>备份与还原（换手机不丢）</h4>
-      <p>每次改动都会<b>自动留一份带时间戳的备份</b>（最近 5 份，存在本机），可从「设置 → 数据备份与恢复」随时回退。要换手机时，在该面板点「备份到文件」导出 <code>light-living-备份-时间.json</code>，到新设备「从文件还原」导入即可。</p>
-
-      <h4>自定义分类</h4>
-      <p>分类不再写死——点「设置 → 物品分类管理」可新增 / 重命名 / 删除分类；删除时会自动把在用的物品改派到其它分类，不会丢失。</p>
-
-      <h4>封面与 emoji</h4>
-      <p>可上传照片（自动压缩 ≤1000px），或直接选 emoji 当封面；名字首字符是 emoji 且没传照片时，会自动用它当封面。</p>
-
-      <h4>常见问题</h4>
-      <ul>
-        <li><b>为什么有 ＋ ∞？</b> 有「按次」物品 0 次没用过，它每天都在无限占用你的心思，去用用或告别吧。</li>
-        <li><b>数据会丢吗？</b> 存在本机 LocalStorage，清 App 数据 / 卸载会丢，记得定期备份。</li>
-        <li><b>能云端同步吗？</b> 当前纯本地单机版，可手动导出 JSON 传给另一台设备导入。</li>
-        <li><b>长按没反应？</b> 在卡片空白处长按约 0.5 秒；桌面用右键。</li>
-        <li><b>怎么退出弹窗？</b> 手机用系统「返回」手势（屏幕边缘右滑 / 左滑）或返回键，会先关掉当前弹窗而不是退出 App；在首页再按一次才会退出。</li>
-        <li><b>庆祝音效没声？</b> 检查是否静音；音效由 Web Audio 实时合成，离线也能响。</li>
-      </ul>
-
-      <h4>隐私说明</h4>
-      <p>所有数据<b>仅存本机</b>，不联网、不上传、不分析，无账号、无广告、无追踪。只有你主动「导出」时数据才会离开本机。</p>
-      <p class="tip">🌿 轻盈生活，陪你认真对待拥有的每一件东西，也陪你轻盈地放手。</p>
-    </div>
-    <button class="btn-ghost" data-close="guideOverlay">关闭</button>
+    <h3 data-i18n="guideTitle">使用指南</h3>
+    <div class="sub" data-i18n="guideSub">一本会陪你算账的物品陪伴记录册 🌿</div>
+    <div class="guide-body" id="guideBody"></div>
+    <button class="btn-ghost" data-close="guideOverlay" data-i18n="btnClose">关闭</button>
   </div>
 </div>
 
@@ -529,48 +541,48 @@
 <div class="overlay" id="statusEditOverlay">
   <div class="sheet">
     <h3 id="seTitle">新增状态</h3>
-    <div class="sub">设定名称、外观与判定条件</div>
+    <div class="sub" data-i18n="seSub">设定名称、外观与判定条件</div>
     <div class="row2">
       <div class="field">
-        <label>名称</label>
-        <input id="se_name" type="text" maxlength="8" placeholder="如：物尽其用" />
+        <label data-i18n="seNameLbl">名称</label>
+        <input id="se_name" type="text" maxlength="8" placeholder="如：物尽其用" data-i18n-ph="seNamePh" />
       </div>
       <div class="field" style="flex:0 0 90px">
-        <label>图标</label>
-        <input id="se_emoji" type="text" maxlength="2" placeholder="✨" />
+        <label data-i18n="seEmojiLbl">图标</label>
+        <input id="se_emoji" type="text" maxlength="2" placeholder="✨" data-i18n-ph="seEmojiPh" />
       </div>
     </div>
     <div class="row2">
       <div class="field">
-        <label>颜色</label>
+        <label data-i18n="seColorLbl">颜色</label>
         <input id="se_color" type="color" value="#8B5CF6" />
       </div>
       <div class="field">
-        <label>适用模式</label>
-        <select id="se_apply"><option value="all">全部</option><option value="day">按天</option><option value="count">按次</option></select>
+        <label data-i18n="seApplyLbl">适用模式</label>
+        <select id="se_apply"><option value="all" data-i18n="seApplyAll">全部</option><option value="day" data-i18n="seApplyDay">按天</option><option value="count" data-i18n="seApplyCount">按次</option></select>
       </div>
     </div>
     <div class="field">
-      <label>关系倾向</label>
+      <label data-i18n="sePosLbl">关系倾向</label>
       <div class="seg" id="se_pos">
-        <button type="button" data-p="1" class="on">🌟 积极</button>
-        <button type="button" data-p="0">🌫️ 消极</button>
+        <button type="button" data-p="1" class="on" data-i18n="sePosPos">🌟 积极</button>
+        <button type="button" data-p="0" data-i18n="sePosNeg">🌫️ 消极</button>
       </div>
     </div>
     <div class="field">
-      <label>命中逻辑</label>
+      <label data-i18n="seMatchLbl">命中逻辑</label>
       <div class="seg" id="se_match">
-        <button type="button" data-m="all" class="on">满足全部</button>
-        <button type="button" data-m="any">满足任一</button>
+        <button type="button" data-m="all" class="on" data-i18n="seMatchAll">满足全部</button>
+        <button type="button" data-m="any" data-i18n="seMatchAny">满足任一</button>
       </div>
     </div>
     <div class="field">
-      <label>判定条件</label>
+      <label data-i18n="seCondLbl">判定条件</label>
       <div id="se_conds"></div>
-      <button class="btn-ghost" id="se_addCond" style="margin-top:4px">+ 添加条件</button>
+      <button class="btn-ghost" id="se_addCond" style="margin-top:4px" data-i18n="seAddCond">+ 添加条件</button>
     </div>
-    <button class="btn-primary" id="se_save">保存状态</button>
-    <button class="btn-ghost" data-close="statusEditOverlay">取消</button>
+    <button class="btn-primary" id="se_save" data-i18n="seSave">保存状态</button>
+    <button class="btn-ghost" data-close="statusEditOverlay" data-i18n="btnCancel">取消</button>
   </div>
 </div>
 
@@ -579,8 +591,8 @@
   <div class="sheet" style="max-width:420px">
     <h3 id="confirmTitle">确认操作</h3>
     <div class="sub" id="confirmMsg"></div>
-    <button class="btn-primary" id="confirmYes">确认</button>
-    <button class="btn-ghost" data-close="confirmOverlay">取消</button>
+<button class="btn-primary" id="confirmYes" data-i18n="confirmYes">确认</button>
+      <button class="btn-ghost" data-close="confirmOverlay" data-i18n="ctxCancel">取消</button>
   </div>
 </div>
 
@@ -589,7 +601,7 @@
   <div class="sheet ctx-sheet">
     <div class="ctx-handle"></div>
     <div id="ctxMenu"></div>
-    <button class="ctx-cancel" data-close="ctxOverlay">取消</button>
+    <button class="ctx-cancel" data-close="ctxOverlay" data-i18n="ctxCancel">取消</button>
   </div>
 </div>
 
@@ -627,8 +639,311 @@
   let dismissed=[];
   let confirmCb=null;
 
+  /* ===== 主题 / 语言 / i18n ===== */
+  const THEME_KEY='light_living_theme_v1';
+  const LANG_KEY='light_living_lang_v1';
+  const THEMES={
+    mint:{name:'竹杖',nameEn:'Bamboo',dot:'#3fae8e',poem:'竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。',poemEn:'A bamboo staff, straw sandals — lighter than a steed; who fears? A straw cloak braves the rain through life.'},
+    purple:{name:'鸢尾',nameEn:'Iris',dot:'#8B5CF6',poem:'一花一世界，一叶一菩提。',poemEn:'One flower, one world; one leaf, one awakening.'},
+    night:{name:'星夜',nameEn:'Starry Night',dot:'#6fd3b5',poem:'星垂平野阔，月涌大江流。',poemEn:'Stars hang low over the vast plain; the moon surges with the great river.'}
+  };
+  let theme='purple';
+  let lang='zh';
+
+  const I18N={
+    zh:{
+      brand:'轻盈生活',
+      heroCost:'每日陪伴总成本',
+      tabActive:'📦 陪伴中物品', tabArchived:'📖 断·舍·离',
+      catAll:'全部', searchPh:'🔍 搜索名称或备注…',
+      sortCostDesc:'单位成本 高→低', sortCostAsc:'单位成本 低→高',
+      sortDateDesc:'陪伴时间 最新→最久', sortUnseen:'长久未见',
+      count:'共 {n} 件',
+      emptyActive:'<div class="em">🪶</div><p>还没有陪伴中的好物。<br>点击右下角 + ，记录第一件认真拥有的东西。</p>',
+      emptyArchived:'<div class="em">🪶</div><p>断·舍·离里还是空空如也。<br>当一件物品圆满告别，它会被温柔地安放在这里。</p>',
+      pagerPrev:'上一页', pagerNext:'下一页',
+      ringTitle:'轻盈度分析',
+      insightEmpty:'添加第一件好物，开启轻盈生活 🌱',
+      insightGreat:'轻盈度优秀，好物都被好好善待 ✨',
+      insightGood:'渐入佳境，正在物尽其用 🌿',
+      insightNeg:'有些好物在独自吃灰，也许该断舍离了 🌫️',
+      insightSlow:'慢慢来，陪伴本身就是意义 🤍',
+      lightnessSub:'{pos} 件状态积极 · {neg} 件在吃灰',
+      statCompanion:'陪伴中好物', statAsset:'持有资产总额', statArchived:'已断舍离',
+      companion:'陪伴 <b>{n}</b> 天', originPrice:'原价 <b>{m}</b>',
+      perDay:'日均 <b>{x}</b>', usedCount:'已打卡 <b>{n}</b> 次',
+      idleUsed:'上次使用 <b>{n}</b> 天前', idleDust:'已吃灰 <b>{n}</b> 天', perUse:'单次 <b>{x}</b>',
+      archivedTag:'💜 断·舍·离 · {reason}',
+      restoreBtn:'恢复陪伴', delRecordBtn:'删除记录',
+      remHead:'🌫️ 断舍离提醒', ignoreAll:'忽略全部',
+      remBody:'有 <b>{n}</b> 件好物处于消极状态。与其占着空间，不如给它们一个体面的告别。',
+      remFarewell:'去告别', remIgnore:'忽略', remItemSub:'已 {n} 天未好好使用 · {c}',
+      menuAria:'告别',
+      settingsTitle:'设置', settingsSub:'管理你的物品陪伴方式',
+      setRules:'状态与关系规则', setGuide:'使用指南', setCats:'物品分类管理', setData:'数据备份与恢复',
+      guideTitle:'使用指南', guideSub:'一本会陪你算账的物品陪伴记录册 🌿',
+      btnClose:'关闭',
+      fTitleNew:'添一件好物', fTitleEdit:'编辑好物',
+      fSubNew:'认真记录，物尽其用 ✨', fSubEdit:'修改它的信息，继续好好陪伴 ✏️',
+      lblName:'物品名称', phName:'例如：复古胶片相机',
+      lblPrice:'购买价格 (¥)', phPrice:'0.00',
+      lblDate:'入手日期', lblCat:'分类', lblMode:'计费模式',
+      modeDay:'📅 按天数', modeCount:'🔢 按次数',
+      lblNote:'随手备注 / 心情故事', phNote:'它陪你做了什么？',
+      lblPhoto:'物品照片（可选，或选个 emoji 当封面）',
+      uploadText:'点击上传 / 拍照', emojiPh:'或填 emoji',
+      submitNew:'收入陪伴册', submitEdit:'保存修改', btnCancel:'取消',
+      fwTitle:'断·舍·离', fwSub:'放手，轻盈地生活。',
+      fwReasonGift:'🎁 赠送他人', fwReasonRecycle:'♻️ 回收丢弃', fwReasonIdle:'📦 闲置处理',
+      fwNoteLbl:'给它的告别评语', fwNotePh:'写句心里话，比如：谢谢你陪我走过那段日子，希望下一位主人也喜欢你。',
+      fwConfirm:'圆满告别', fwCancel:'再想想',
+      fwMsg:'感谢「{name}」陪伴了你 {days} 天。放手，轻盈地生活。',
+      stTitle:'状态与关系规则', stSub:'按你和物品的关系自定义状态；标记为「消极」的状态会拉低轻盈度，提醒你断舍离。',
+      stAdd:'+ 新增状态', stPositive:'积极', stNegative:'消极', stEdit:'编辑', stDel:'删除',
+      catsTitle:'物品分类管理', catsSub:'自定义你常用的分类；删除前会先把在用的物品改派到其它分类。',
+      catsEmpty:'还没有分类，点下面新增一个吧', catAdd:'+ 新增分类', catRename:'改名', catDel:'删除',
+      catEditNew:'新增分类', catEditRename:'重命名分类', catPh:'例如：乐器 / 户外装备',
+      catNameEmpty:'分类名不能为空', catDup:'已存在相同分类', catSaved:'分类已保存 🏷️', catSave:'保存',
+      catDeleted:'已删除分类', catDeletedReassign:'已删除并改派物品',
+      catDelConfirm:'有 {n} 件物品正在使用「{name}」，删除后会改派到「{fb}」。确定继续？', catDelTitle:'删除分类',
+      bakTitle:'数据备份与恢复', bakSub:'每次改动都会自动留一份带时间戳的备份（最近 5 份，存在本机），可随时回退；换手机时导出 / 导入文件即可。',
+      bakAuto:'自动备份（可回退）', bakEmpty:'暂无自动备份，改动后会自动生成',
+      bakExport:'📤 备份到文件', bakImport:'📥 从文件还原', bakMeta:'{n} 件物品 · {m} 条状态',
+      bakRestore:'恢复', bakRestoreConfirm:'恢复将用这份自动备份覆盖当前数据，确定继续？',
+      bakRestoreTitle:'恢复自动备份', bakRestored:'已恢复到该时间点 🕑',
+      exportToast:'已导出带时间戳的备份 📤 建议同步到云盘 / 微信文件传输助手做双保险',
+      importToast:'已从备份还原 📥 想再留一份？可在「设置 → 数据备份与恢复」重新导出',
+      importInvalid:'备份文件无效，请检查', importConfirm:'导入备份将覆盖当前所有物品与状态规则，确定继续？', importTitle:'导入备份',
+      seTitleNew:'新增状态', seTitleEdit:'编辑状态', seSub:'设定名称、外观与判定条件',
+      seNameLbl:'名称', seNamePh:'如：物尽其用', seEmojiLbl:'图标', seEmojiPh:'✨', seColorLbl:'颜色', seApplyLbl:'适用模式',
+      seApplyAll:'全部', seApplyDay:'按天', seApplyCount:'按次',
+      sePosLbl:'关系倾向', sePosPos:'🌟 积极', sePosNeg:'🌫️ 消极',
+      seMatchLbl:'命中逻辑', seMatchAll:'满足全部', seMatchAny:'满足任一',
+      seCondLbl:'判定条件', seAddCond:'+ 添加条件', seSave:'保存状态',
+      seNameEmpty:'给状态起个名字', seCondEmpty:'至少添加一个判定条件', seSaved:'状态已保存 ✨',
+      m_unit:'单位成本', m_days:'陪伴天数', m_count:'打卡次数', m_idle:'未使用天数',
+      u_unit:'¥', u_days:'天', u_count:'次', u_idle:'天',
+      ruleAll:'全部', ruleDay:'按天', ruleCount:'按次', ruleMatchAll:'满足全部', ruleMatchAny:'满足任一', ruleNoCond:'无条件',
+      confirmTitle:'确认操作', confirmYes:'确认',
+      ctxEdit:'✏️ 编辑物品', ctxFarewell:'💜 圆满告别', ctxDel:'🗑️ 删除记录', ctxRestore:'↩️ 恢复陪伴', ctxCancel:'取消',
+      nameRequired:'给好物起个名字吧', priceInvalid:'请填写有效的价格', dateRequired:'请选择入手日期',
+      noteRequired:'写句告别评语再走吧 💬', updated:'已更新 ✏️', added:'已收入陪伴册 💜',
+      farewellDone:'🎉 已圆满告别，轻装上阵！', welcomeBack:'欢迎回到陪伴中 💜', deleted:'已删除',
+      delConfirm:'确定删除这条回忆记录吗？此操作不可撤销。', delTitle:'删除记录',
+      ignoredAll:'已忽略提醒', checkinToast:'已打卡 +1 ✨', statusDeleted:'已删除状态', photoEmoji:'emoji 封面',
+      themeLabel:'主题', langLabel:'语言', langZh:'中文', langEn:'English',
+      themeMint:'竹杖', themePurple:'鸢尾', themeNight:'星夜'
+    },
+    en:{
+      brand:'Light Living',
+      heroCost:'Daily companionship cost',
+      tabActive:'📦 Active items', tabArchived:'📖 Let go',
+      catAll:'All', searchPh:'🔍 Search name or note…',
+      sortCostDesc:'Unit cost high → low', sortCostAsc:'Unit cost low → high',
+      sortDateDesc:'Companionship newest → oldest', sortUnseen:'Longest unseen',
+      count:'{n} items',
+      emptyActive:'<div class="em">🪶</div><p>No companions yet.<br>Tap the + at the bottom-right to record your first cherished thing.</p>',
+      emptyArchived:'<div class="em">🪶</div><p>The "let go" shelf is empty.<br>When an item is gracefully farewelled, it rests here with care.</p>',
+      pagerPrev:'Prev', pagerNext:'Next',
+      ringTitle:'Lightness analysis',
+      insightEmpty:'Add your first item to begin a lighter life 🌱',
+      insightGreat:'Excellent lightness — your things are well loved ✨',
+      insightGood:'Getting there — making the most of what you own 🌿',
+      insightNeg:'Some items are gathering dust — maybe time to let go 🌫️',
+      insightSlow:'Take your time — companionship is the meaning 🤍',
+      lightnessSub:'{pos} positive · {neg} gathering dust',
+      statCompanion:'Active items', statAsset:'Total owned value', statArchived:'Let go',
+      companion:'Companion <b>{n}</b> days', originPrice:'Paid <b>{m}</b>',
+      perDay:'Daily <b>{x}</b>', usedCount:'Checked in <b>{n}</b> times',
+      idleUsed:'Last used <b>{n}</b> days ago', idleDust:'Dusty for <b>{n}</b> days', perUse:'Per use <b>{x}</b>',
+      archivedTag:'💜 Let go · {reason}',
+      restoreBtn:'Restore', delRecordBtn:'Delete record',
+      remHead:'🌫️ Let-go reminder', ignoreAll:'Ignore all',
+      remBody:'<b>{n}</b> items are in a negative state. Rather than take up space, give them a graceful farewell.',
+      remFarewell:'Farewell', remIgnore:'Ignore', remItemSub:'unused for {n} days · {c}',
+      menuAria:'Farewell',
+      settingsTitle:'Settings', settingsSub:'Manage how you companion your items',
+      setRules:'Status & relationship rules', setGuide:'User guide', setCats:'Category management', setData:'Backup & restore',
+      guideTitle:'User guide', guideSub:'A companion book that keeps accounts with you 🌿',
+      btnClose:'Close',
+      fTitleNew:'Add an item', fTitleEdit:'Edit item',
+      fSubNew:'Record mindfully, make the most of it ✨', fSubEdit:'Update its info, keep companioning well ✏️',
+      lblName:'Item name', phName:'e.g. Vintage film camera',
+      lblPrice:'Purchase price (¥)', phPrice:'0.00',
+      lblDate:'Purchase date', lblCat:'Category', lblMode:'Billing mode',
+      modeDay:'📅 By days', modeCount:'🔢 By uses',
+      lblNote:'Casual note / mood story', phNote:'What has it accompanied you through?',
+      lblPhoto:'Photo (optional, or pick an emoji cover)',
+      uploadText:'Tap to upload / capture', emojiPh:'or type an emoji',
+      submitNew:'Add to companion book', submitEdit:'Save changes', btnCancel:'Cancel',
+      fwTitle:'Letting go', fwSub:'Let go, live lightly.',
+      fwReasonGift:'🎁 Gift to others', fwReasonRecycle:'♻️ Recycle / discard', fwReasonIdle:'📦 Idle disposal',
+      fwNoteLbl:'A farewell note for it', fwNotePh:'Write something from the heart, e.g. Thank you for the days we shared; may your next owner love you too.',
+      fwConfirm:'Farewell gracefully', fwCancel:'Think again',
+      fwMsg:'Thank you, "{name}", for {days} days of companionship. Let go, live lightly.',
+      stTitle:'Status & relationship rules', stSub:'Customize statuses by your relationship with items; "negative" statuses lower lightness and remind you to let go.',
+      stAdd:'+ Add status', stPositive:'Positive', stNegative:'Negative', stEdit:'Edit', stDel:'Delete',
+      catsTitle:'Category management', catsSub:'Customize your common categories; before deleting, items in use are reassigned to another category.',
+      catsEmpty:'No categories yet — tap below to add one', catAdd:'+ Add category', catRename:'Rename', catDel:'Delete',
+      catEditNew:'New category', catEditRename:'Rename category', catPh:'e.g. Instruments / Outdoor gear',
+      catNameEmpty:'Category name cannot be empty', catDup:'Category already exists', catSaved:'Category saved 🏷️', catSave:'Save',
+      catDeleted:'Category deleted', catDeletedReassign:'Deleted and reassigned items',
+      catDelConfirm:'{n} items are using "{name}". After deletion they will be reassigned to "{fb}". Continue?', catDelTitle:'Delete category',
+      bakTitle:'Backup & restore', bakSub:'Every change auto-saves a timestamped backup (last 5, on this device); roll back anytime. When switching phones, export / import a file.',
+      bakAuto:'Auto backups (rollback)', bakEmpty:'No auto backup yet; one is created after changes',
+      bakExport:'📤 Backup to file', bakImport:'📥 Restore from file', bakMeta:'{n} items · {m} statuses',
+      bakRestore:'Restore', bakRestoreConfirm:'Restoring will overwrite current data with this auto backup. Continue?',
+      bakRestoreTitle:'Restore auto backup', bakRestored:'Restored to that point in time 🕑',
+      exportToast:'Exported a timestamped backup 📤 Suggest syncing to cloud / WeChat file helper as double insurance',
+      importToast:'Restored from backup 📥 Want another copy? Re-export in Settings → Backup & restore',
+      importInvalid:'Invalid backup file, please check', importConfirm:'Importing will overwrite all current items and status rules. Continue?', importTitle:'Import backup',
+      seTitleNew:'New status', seTitleEdit:'Edit status', seSub:'Set name, appearance and conditions',
+      seNameLbl:'Name', seNamePh:'e.g. Making the most', seEmojiLbl:'Icon', seEmojiPh:'✨', seColorLbl:'Color', seApplyLbl:'Applies to',
+      seApplyAll:'All', seApplyDay:'By days', seApplyCount:'By uses',
+      sePosLbl:'Tendency', sePosPos:'🌟 Positive', sePosNeg:'🌫️ Negative',
+      seMatchLbl:'Match logic', seMatchAll:'Match all', seMatchAny:'Match any',
+      seCondLbl:'Conditions', seAddCond:'+ Add condition', seSave:'Save status',
+      seNameEmpty:'Give the status a name', seCondEmpty:'Add at least one condition', seSaved:'Status saved ✨',
+      m_unit:'Unit cost', m_days:'Companion days', m_count:'Check-ins', m_idle:'Unused days',
+      u_unit:'¥', u_days:'days', u_count:'uses', u_idle:'days',
+      ruleAll:'All', ruleDay:'By days', ruleCount:'By uses', ruleMatchAll:'match all', ruleMatchAny:'match any', ruleNoCond:'no condition',
+      confirmTitle:'Confirm', confirmYes:'Confirm',
+      ctxEdit:'✏️ Edit item', ctxFarewell:'💜 Farewell', ctxDel:'🗑️ Delete record', ctxRestore:'↩️ Restore', ctxCancel:'Cancel',
+      nameRequired:'Give your item a name', priceInvalid:'Please enter a valid price', dateRequired:'Please pick a purchase date',
+      noteRequired:'Write a farewell note before leaving 💬', updated:'Updated ✏️', added:'Added to companion book 💜',
+      farewellDone:'🎉 Farewelled gracefully — traveling light!', welcomeBack:'Welcome back to companions 💜', deleted:'Deleted',
+      delConfirm:'Delete this memory record? This cannot be undone.', delTitle:'Delete record',
+      ignoredAll:'Reminders ignored', checkinToast:'Checked in +1 ✨', statusDeleted:'Status deleted', photoEmoji:'emoji cover',
+      themeLabel:'Theme', langLabel:'Language', langZh:'中文', langEn:'English',
+      themeMint:'Bamboo', themePurple:'Iris', themeNight:'Starry Night'
+    }
+  };
+  function t(k,vars){
+    let s;
+    if(I18N[lang]&&I18N[lang][k]!=null)s=I18N[lang][k];
+    else if(I18N.zh[k]!=null)s=I18N.zh[k];
+    else s=k;
+    if(vars){for(const key in vars){s=String(s).replace(new RegExp('\\{'+key+'\\}','g'),vars[key]);}}
+    return s;
+  }
+  function applyI18n(root){
+    const r=root||document;
+    r.querySelectorAll('[data-i18n]').forEach(function(el){el.textContent=t(el.getAttribute('data-i18n'));});
+    r.querySelectorAll('[data-i18n-ph]').forEach(function(el){el.setAttribute('placeholder',t(el.getAttribute('data-i18n-ph')));});
+    document.documentElement.lang=(lang==='zh')?'zh-CN':'en';
+  }
+  function setLang(l){
+    lang=l;
+    try{localStorage.setItem(LANG_KEY,l);}catch(e){}
+    applyI18n();renderGuide();render();
+  }
+  function applyTheme(){
+    document.documentElement.setAttribute('data-theme',theme);
+    const meta=document.querySelector('meta[name="theme-color"]');
+    if(meta)meta.setAttribute('content',THEMES[theme].dot);
+  }
+  function setTheme(key){
+    theme=key;
+    try{localStorage.setItem(THEME_KEY,key);}catch(e){}
+    applyTheme();
+    const row=document.getElementById('themeRow');
+    if(row)row.querySelectorAll('.theme-btn').forEach(function(b){b.classList.toggle('on',b.dataset.theme===theme);});
+  }
+
+  /* ===== 使用指南（中英双语数据） ===== */
+  const GUIDE={
+    zh:[
+      {t:'h4',x:'为什么是「轻盈生活」'},
+      {t:'p',x:'我们买的每样东西，都在用两种方式陪伴我们：<b>钱</b> 和 <b>时间</b>。'},
+      {t:'ul',x:['一支用了 300 天的键盘，日均成本可能只有几毛钱 —— 它值得被珍惜。','一台落灰的单反，买来从没拍过一张照片 —— 它的「每日陪伴总成本」里，藏着一个温柔的问号：<b>¥X ＋ ∞</b>。']},
+      {t:'p',x:'绝大多数记账 App 只告诉你「花了多少」，却从不问「值不值」。<b>轻盈生活</b>反其道而行：把成本摊薄到每一天、每一次使用，让你一眼看清「物尽其用」的快乐，也温柔地提醒你「是时候说再见了」。'},
+      {t:'tip',x:'🌿 我们相信：放手，轻盈地生活。'},
+      {t:'h4',x:'添加第一件好物'},
+      {t:'ul',x:['点「＋ 添一件好物」，填写名称 / 价格 / 入手日期 / 分类。','选择计费模式（见下），可选封面（照片或 emoji）。','想改已添加的物品？<b>轻点它的封面缩略图</b>即可直接编辑。']},
+      {t:'tip',x:'💡 首次打开会有几件示例好物（📸⌨️🕯️🧣 等），帮你快速看懂界面。'},
+      {t:'h4',x:'两种计费模式，怎么选？'},
+      {t:'table',h:['模式','适合','成本算法'],r:[['按天 📅','天天在用的：键盘、衣服、家具','日均 = 价格 ÷ 陪伴天数（从第 1 天算起，刚买即 = 原价）'],['按次 🔢','偶尔用的：相机、健身环、游戏','单次 = 价格 ÷ 打卡次数；<b>0 次 = ∞</b>']]},
+      {t:'tip',x:'💡 天天用的选「按天」，越用越便宜；偶尔用的选「按次」，每次用了点一下卡片上的 <b>＋1</b> 打卡。'},
+      {t:'h4',x:'看懂首页看板'},
+      {t:'ul',x:['<b>每日陪伴总成本</b>：所有「按天」物品的日均成本之和。<b>若有「按次」物品 0 次没用过，这里显示「¥X ＋ ∞」</b>——温柔提醒你为它每天在花「无限」的代价。','<b>在册好物</b>：陪伴中的数量。','<b>轻盈度</b>：环形进度条，积极状态占比越高越轻盈。','<b>已圆满告别</b>：已送进回忆录的物品数。']},
+      {t:'tip',x:'💡「陪伴天数」从 <b>1 天</b> 起算，刚入手显示「陪伴 1 天」，日均 = 原价，符合直觉。'},
+      {t:'h4',x:'自定义状态与关系规则'},
+      {t:'p',x:'点设置里的「状态与关系规则」，按你和物品的关系自定义状态（✨ 物尽其用 / 🌫️ 独自吃灰 / 💜 新伙伴）。可增删改，标记积极 / 消极 / 中性；还能加判定条件，比如给「按次」物品设「<b>未使用天数 ≥ 30 天</b>」就自动贴「🌫️ 独自吃灰」。<b>消极状态</b>会拉低轻盈度并触发断舍离提醒。'},
+      {t:'h4',x:'断舍离提醒'},
+      {t:'p',x:'消极状态物品会在首页顶部浮现温柔提醒，列出「已吃灰 X 天」。可「去告别」或「忽略」。这步不强求，轻盈生活从不制造焦虑。'},
+      {t:'h4',x:'卡片的操作'},
+      {t:'ul',x:['<b>轻点封面</b> ✏️：编辑这件物品。','<b>长按卡片约 0.5 秒</b> ✋：弹出「编辑 / 圆满告别 / 删除」菜单。','<b>＋1 按钮</b>（仅按次模式）：打卡一次。']},
+      {t:'h4',x:'圆满告别 · 断·舍·离'},
+      {t:'p',x:'物品要离场时，别直接删——给它一场圆满告别：长按卡片选「圆满告别」，选原因并写一句告别评语（必填），点「圆满告别」后会 <b>🎉 撒花 + 播放庆祝音效</b>，并收进「陪伴回忆录」。想反悔？在回忆录里长按选「恢复陪伴」即可。直接「删除」会永久清除且不可恢复。'},
+      {t:'h4',x:'搜索、排序与分页'},
+      {t:'ul',x:['<b>搜索</b>：同时匹配名称与备注 / 心情故事。','<b>排序</b>：单位成本 高→低 / 低→高、陪伴时间、长久未见。','<b>分页</b>：每页最多 5 件，底部「上一页 / 下一页」。']},
+      {t:'h4',x:'备份与还原（换手机不丢）'},
+      {t:'p',x:'每次改动都会<b>自动留一份带时间戳的备份</b>（最近 5 份，存在本机），可从「设置 → 数据备份与恢复」随时回退。要换手机时，在该面板点「备份到文件」导出 <code>light-living-备份-时间.json</code>，到新设备「从文件还原」导入即可。'},
+      {t:'h4',x:'自定义分类'},
+      {t:'p',x:'分类不再写死——点「设置 → 物品分类管理」可新增 / 重命名 / 删除分类；删除时会自动把在用的物品改派到其它分类，不会丢失。'},
+      {t:'h4',x:'封面与 emoji'},
+      {t:'p',x:'可上传照片（自动压缩 ≤1000px），或直接选 emoji 当封面；名字首字符是 emoji 且没传照片时，会自动用它当封面。'},
+      {t:'h4',x:'常见问题'},
+      {t:'ul',x:['<b>为什么有 ＋ ∞？</b> 有「按次」物品 0 次没用过，它每天都在无限占用你的心思，去用用或告别吧。','<b>数据会丢吗？</b> 存在本机 LocalStorage，清 App 数据 / 卸载会丢，记得定期备份。','<b>能云端同步吗？</b> 当前纯本地单机版，可手动导出 JSON 传给另一台设备导入。','<b>长按没反应？</b> 在卡片空白处长按约 0.5 秒；桌面用右键。','<b>怎么退出弹窗？</b> 手机用系统「返回」手势（屏幕边缘右滑 / 左滑）或返回键，会先关掉当前弹窗而不是退出 App；在首页再按一次才会退出。','<b>庆祝音效没声？</b> 检查是否静音；音效由 Web Audio 实时合成，离线也能响。']},
+      {t:'h4',x:'隐私说明'},
+      {t:'p',x:'所有数据<b>仅存本机</b>，不联网、不上传、不分析，无账号、无广告、无追踪。只有你主动「导出」时数据才会离开本机。'},
+      {t:'tip',x:'🌿 轻盈生活，陪你认真对待拥有的每一件东西，也陪你轻盈地放手。'}
+    ],
+    en:[
+      {t:'h4',x:'Why "Light Living"'},
+      {t:'p',x:'Everything we buy companions us in two ways: <b>money</b> and <b>time</b>.'},
+      {t:'ul',x:['A keyboard used for 300 days may cost only cents per day — it deserves to be cherished.','A dusty DSLR you never photographed — hidden in its "daily companionship cost" is a gentle question mark: <b>¥X ＋ ∞</b>.']},
+      {t:'p',x:'Most budgeting apps only tell you "how much you spent", never "was it worth it". <b>Light Living</b> does the opposite: spread the cost across every day and every use, so you can see at a glance the joy of "making the most", and be gently reminded "maybe it is time to say goodbye".'},
+      {t:'tip',x:'🌿 We believe: let go, live lightly.'},
+      {t:'h4',x:'Add your first item'},
+      {t:'ul',x:['Tap "＋ Add an item" and fill in name / price / purchase date / category.','Pick a billing mode (see below); you may add a cover (photo or emoji).','To edit an item? <b>Tap its cover thumbnail</b> to edit directly.']},
+      {t:'tip',x:'💡 On first open you will see a few sample items (📸⌨️🕯️🧣 …) to help you understand the interface.'},
+      {t:'h4',x:'Two billing modes, which to pick?'},
+      {t:'table',h:['Mode','Best for','Cost formula'],r:[['By days 📅','Daily use: keyboard, clothes, furniture','Daily = price ÷ companion days (counts from day 1, so brand-new = full price)'],['By uses 🔢','Occasional use: camera, fitness ring, games','Per use = price ÷ check-ins; <b>0 uses = ∞</b>']]},
+      {t:'tip',x:'💡 Daily items → "By days" (cheaper the more you use); occasional items → "By uses", tap <b>＋1</b> on the card each time you use it.'},
+      {t:'h4',x:'Reading the home dashboard'},
+      {t:'ul',x:['<b>Daily companionship cost</b>: sum of daily costs of all "by days" items. <b>If a "by uses" item has 0 uses, it shows "¥X ＋ ∞"</b> — a gentle reminder it costs you "infinite" every day.','<b>Active items</b>: count of items being companioned.','<b>Lightness</b>: ring bar; higher share of positive statuses = lighter.','<b>Let go</b>: number of items sent to the memory book.']},
+      {t:'tip',x:'💡 "Companion days" counts from <b>day 1</b>; a brand-new item shows "1 day", daily cost = full price — intuitive.'},
+      {t:'h4',x:'Custom status & relationship rules'},
+      {t:'p',x:'In Settings → Status & relationship rules, define statuses by your relationship with items (✨ making the most / 🌫️ gathering dust / 💜 new companion). Add, edit, delete, and mark positive / negative / neutral; you can even add conditions, e.g. for "by uses" items set "unused days ≥ 30" to auto-tag "🌫️ gathering dust". <b>Negative statuses</b> lower lightness and trigger let-go reminders.'},
+      {t:'h4',x:'Let-go reminders'},
+      {t:'p',x:'Items in a negative status surface a gentle reminder at the top of the home page, listing "gathered dust for X days". You can "farewell" or "ignore". This step is optional — Light Living never manufactures anxiety.'},
+      {t:'h4',x:'Card actions'},
+      {t:'ul',x:['<b>Tap the cover</b> ✏️: edit the item.','<b>Long-press the card ~0.5s</b> ✋: opens the "edit / farewell / delete" menu.','<b>＋1 button</b> (by-uses mode only): check in once.']},
+      {t:'h4',x:'Farewell gracefully · letting go'},
+      {t:'p',x:"When an item leaves, do not just delete — give it a graceful farewell: long-press the card and choose \"farewell\", pick a reason and write a farewell note (required), then tap \"farewell gracefully\" to <b>🎉 confetti + celebration sound</b> and send it to the \"memory book\". Changed your mind? Long-press in the memory book and choose \"restore\". A direct \"delete\" is permanent and unrecoverable."},
+      {t:'h4',x:'Search, sort & pagination'},
+      {t:'ul',x:['<b>Search</b>: matches both name and note / mood story.','<b>Sort</b>: unit cost high→low / low→high, companionship time, longest unseen.','<b>Pagination</b>: at most 5 items per page, "Prev / Next" at the bottom.']},
+      {t:'h4',x:'Backup & restore (safe across phones)'},
+      {t:'p',x:'Every change auto-saves a <b>timestamped backup</b> (last 5, on this device); roll back anytime from Settings → Backup & restore. To switch phones, tap "Backup to file" to export <code>light-living-backup-time.json</code>, then "Restore from file" on the new device.'},
+      {t:'h4',x:'Custom categories'},
+      {t:'p',x:'Categories are no longer hard-coded — in Settings → Category management you can add / rename / delete categories; on deletion, items in use are reassigned to another category, nothing is lost.'},
+      {t:'h4',x:'Cover & emoji'},
+      {t:'p',x:'Upload a photo (auto-compressed ≤1000px), or pick an emoji as the cover; if the name starts with an emoji and no photo is uploaded, it is used as the cover automatically.'},
+      {t:'h4',x:'FAQ'},
+      {t:'ul',x:['<b>Why ＋ ∞?</b> A "by uses" item with 0 uses occupies your mind infinitely every day — go use it or say goodbye.','<b>Will data be lost?</b> It lives in LocalStorage on this device; clearing app data / uninstalling loses it, so back up regularly.','<b>Cloud sync?</b> Currently a local-only single-device version; you can manually export JSON and import on another device.','<b>Long-press not working?</b> Long-press on empty area of the card ~0.5s; on desktop use right-click.','<b>How to exit a popup?</b> On mobile use the system back gesture (edge swipe) or back key — it closes the current popup first, not the app; tap back again on the home page to exit.','<b>No celebration sound?</b> Check if muted; the sound is synthesized live by Web Audio and works offline.']},
+      {t:'h4',x:'Privacy'},
+      {t:'p',x:'All data is <b>stored only on this device</b> — no network, no upload, no analytics, no account, no ads, no tracking. Data only leaves the device when you actively "export".'},
+      {t:'tip',x:'🌿 Light Living companions you in taking every possession seriously, and in letting go lightly.'}
+    ]
+  };
+  function renderGuide(){
+    const box=document.getElementById('guideBody');if(!box)return;
+    const blocks=GUIDE[lang]||GUIDE.zh;
+    box.innerHTML=blocks.map(function(b){
+      if(b.t==='h4')return '<h4>'+b.x+'</h4>';
+      if(b.t==='p')return '<p>'+b.x+'</p>';
+      if(b.t==='tip')return '<p class="tip">'+b.x+'</p>';
+      if(b.t==='ul')return '<ul>'+b.x.map(function(li){return '<li>'+li+'</li>';}).join('')+'</ul>';
+      if(b.t==='table')return '<table><tr>'+b.h.map(function(h){return '<th>'+h+'</th>';}).join('')+'</tr>'+b.r.map(function(row){return '<tr>'+row.map(function(c){return '<td>'+c+'</td>';}).join('')+'</tr>';}).join('')+'</table>';
+      return '';
+    }).join('');
+  }
+
   /* ---------- storage ---------- */
   function load(){
+    try{const th=localStorage.getItem(THEME_KEY);if(th&&THEMES[th])theme=th;}catch(e){}
+    try{const lg=localStorage.getItem(LANG_KEY);if(lg==='en'||lg==='zh')lang=lg;}catch(e){}
     try{state.items=JSON.parse(localStorage.getItem(STORE_KEY))||[];}catch(e){state.items=[];}
     try{state.statuses=JSON.parse(localStorage.getItem(STATUS_KEY))||[];}catch(e){state.statuses=[];}
     try{categories=JSON.parse(localStorage.getItem(CAT_KEY))||[];}catch(e){categories=[];}
@@ -663,7 +978,7 @@
     a.href=url;a.download=fn;
     document.body.appendChild(a);a.click();a.remove();
     URL.revokeObjectURL(url);
-    toast('已导出带时间戳的备份 📤 建议同步到云盘 / 微信文件传输助手做双保险');
+    toast(t('exportToast'));
   }
   function importBackup(file){
     const reader=new FileReader();
@@ -671,13 +986,13 @@
       try{
         const data=JSON.parse(e.target.result);
         if(!data||!Array.isArray(data.items))throw new Error('格式不符');
-        askConfirm('导入备份将覆盖当前所有物品与状态规则，确定继续？',()=>{
+        askConfirm(t('importConfirm'),()=>{
           state.items=data.items;
           if(Array.isArray(data.statuses))state.statuses=data.statuses;
           save();saveStatuses();closeOverlay('settingsOverlay');render();renderStatusList?.();
-          toast('已从备份还原 📥 想再留一份？可在「设置 → 数据备份与恢复」重新导出');
-        },'导入备份');
-      }catch(err){toast('备份文件无效，请检查');}
+          toast(t('importToast'));
+        },t('importTitle'));
+      }catch(err){toast(t('importInvalid'));}
     };
     reader.readAsText(file);
   }
@@ -806,11 +1121,11 @@
     return {finiteDaily,hasInfinite,asset,archived,count:active.length,score,positive,negative};
   }
   function insight(s){
-    if(s.count===0)return '添加第一件好物，开启轻盈生活 🌱';
-    if(s.score>=70)return '轻盈度优秀，好物都被好好善待 ✨';
-    if(s.score>=40)return '渐入佳境，正在物尽其用 🌿';
-    if(s.negative>0)return '有些好物在独自吃灰，也许该断舍离了 🌫️';
-    return '慢慢来，陪伴本身就是意义 🤍';
+    if(s.count===0)return t('insightEmpty');
+    if(s.score>=70)return t('insightGreat');
+    if(s.score>=40)return t('insightGood');
+    if(s.negative>0)return t('insightNeg');
+    return t('insightSlow');
   }
 
   /* ---------- 断舍离提醒 ---------- */
@@ -824,16 +1139,21 @@
     const list=negativeItems().filter(it=>!dismissed.includes(it.id));
     if(list.length===0)return '';
     return `<div class="reminder">
-      <div class="rem-head">🌫️ 断舍离提醒<button class="rem-ignore-all" data-act="ignoreAll">忽略全部</button></div>
-      <div class="rem-body">有 <b>${list.length}</b> 件好物处于消极状态。与其占着空间，不如给它们一个体面的告别。</div>
+      <div class="rem-head">${t('remHead')}<button class="rem-ignore-all" data-act="ignoreAll">${t('ignoreAll')}</button></div>
+      <div class="rem-body">${t('remBody',{n:list.length})}</div>
       ${list.map(it=>`<div class="rem-item">
-        <div><b>${esc(it.name)}</b><small>已 ${idleDays(it)} 天未好好使用 · ${esc(it.category)}</small></div>
+        <div><b>${esc(it.name)}</b><small>${t('remItemSub',{n:idleDays(it),c:esc(it.category)})}</small></div>
         <div class="rem-btns">
-          <button class="rem-farewell" data-act="farewell" data-id="${it.id}">去告别</button>
-          <button class="rem-ignore" data-act="ignore" data-id="${it.id}">忽略</button>
+          <button class="rem-farewell" data-act="farewell" data-id="${it.id}">${t('remFarewell')}</button>
+          <button class="rem-ignore" data-act="ignore" data-id="${it.id}">${t('remIgnore')}</button>
         </div>
       </div>`).join('')}
     </div>`;
+  }
+
+  function poemHTML(){
+    const th=THEMES[theme]||THEMES.purple;
+    return `<div class="poem-foot"><div class="poem">${esc(th.poem)}</div><div class="poem-en">${esc(th.poemEn)}</div></div>`;
   }
 
   /* ---------- render ---------- */
@@ -847,46 +1167,47 @@
     html+=`
       <header class="hero">
         <button class="gear" id="gearBtn" aria-label="设置">⚙️</button>
-        <div class="brand"><span class="dot"></span> 轻盈生活 <small>LIGHT LIVING</small></div>
+        <div class="brand"><span class="dot"></span> ${t('brand')} <small>LIGHT LIVING</small></div>
         <div class="hero-cost">
-          <div class="label">每日陪伴总成本</div>
+          <div class="label">${t('heroCost')}</div>
           <div class="amount"><span>${s.hasInfinite?(s.finiteDaily>0?money(s.finiteDaily)+' ＋ ∞':'∞'):money(s.finiteDaily)}</span></div>
         </div>
         <div class="hero-stats">
-          <div class="col"><b>${s.count}</b><span>陪伴中好物</span></div>
-          <div class="col"><b>${moneyShort(s.asset)}</b><span>持有资产总额</span></div>
-          <div class="col"><b>${s.archived}</b><span>已断舍离</span></div>
+          <div class="col"><b>${s.count}</b><span>${t('statCompanion')}</span></div>
+          <div class="col"><b>${moneyShort(s.asset)}</b><span>${t('statAsset')}</span></div>
+          <div class="col"><b>${s.archived}</b><span>${t('statArchived')}</span></div>
         </div>
       </header>
       <div class="lightness">
         <div class="ring" style="--p:${s.score}"><b>${s.score}%</b></div>
-        <div class="txt"><b>轻盈度分析</b><br><small>${insight(s)}<br>${s.positive} 件状态积极 · ${s.negative} 件在吃灰</small></div>
+        <div class="txt"><b>${t('ringTitle')}</b><br><small>${insight(s)}<br>${t('lightnessSub',{pos:s.positive,neg:s.negative})}</small></div>
       </div>
       ${reminderHTML()}
       <div class="tabs">
-        <button data-tab="active" class="${state.tab==='active'?'on':''}">📦 陪伴中物品</button>
-        <button data-tab="archived" class="${state.tab==='archived'?'on':''}">📖 断·舍·离</button>
+        <button data-tab="active" class="${state.tab==='active'?'on':''}">${t('tabActive')}</button>
+        <button data-tab="archived" class="${state.tab==='archived'?'on':''}">${t('tabArchived')}</button>
       </div>
       <div class="cats">
-        ${['全部',...getCats()].map(c=>`<div class="pill ${state.category===c?'on':''}" data-cat="${esc(c)}">${esc(c)}</div>`).join('')}
+        ${[t('catAll'),...getCats()].map(c=>`<div class="pill ${state.category===c?'on':''}" data-cat="${esc(c)}">${esc(c)}</div>`).join('')}
       </div>
       <div class="searchbar">
-        <input id="searchInput" type="search" placeholder="🔍 搜索名称或备注…" value="${esc(state.search)}" />
+        <input id="searchInput" type="search" placeholder="${t('searchPh')}" value="${esc(state.search)}" />
         <button class="clr" id="searchClear" aria-label="清除搜索">✕</button>
       </div>
       <div class="sortbar">
-        <div class="count">共 ${visible().length} 件</div>
+        <div class="count">${t('count',{n:visible().length})}</div>
         <div class="sortsel">
           <select id="sortSel">
-            <option value="cost_desc">单位成本 高→低</option>
-            <option value="cost_asc">单位成本 低→高</option>
-            <option value="date_desc">陪伴时间 最新→最久</option>
-            <option value="unseen_desc">长久未见</option>
+            <option value="cost_desc">${t('sortCostDesc')}</option>
+            <option value="cost_asc">${t('sortCostAsc')}</option>
+            <option value="date_desc">${t('sortDateDesc')}</option>
+            <option value="unseen_desc">${t('sortUnseen')}</option>
           </select>
         </div>
       </div>
       <div class="list">${renderList()}</div>
       ${pagerHTML()}
+      ${poemHTML()}
     `;
     app.innerHTML=html;
     const sel=document.getElementById('sortSel');if(sel)sel.value=state.sort;
@@ -895,9 +1216,7 @@
   function renderList(){
     const all=visible();
     if(all.length===0){
-      const emptyMsg=state.tab==='active'
-        ?'<div class="em">🪶</div><p>还没有陪伴中的好物。<br>点击右下角 + ，记录第一件认真拥有的东西。</p>'
-        :'<div class="em">🪶</div><p>断·舍·离里还是空空如也。<br>当一件物品圆满告别，它会被温柔地安放在这里。</p>';
+      const emptyMsg=state.tab==='active'?t('emptyActive'):t('emptyArchived');
       return `<div class="empty">${emptyMsg}</div>`;
     }
     const paged=all.slice((state.page-1)*PAGE_SIZE, state.page*PAGE_SIZE);
@@ -909,9 +1228,9 @@
     if(pages<=1)return '';
     const p=state.page;
     return `<div class="pager">
-      <button class="pg" data-act="page" data-page="${p-1}" ${p<=1?'disabled':''}>上一页</button>
+      <button class="pg" data-act="page" data-page="${p-1}" ${p<=1?'disabled':''}>${t('pagerPrev')}</button>
       <span class="pg-info">${p} / ${pages}</span>
-      <button class="pg" data-act="page" data-page="${p+1}" ${p>=pages?'disabled':''}>下一页</button>
+      <button class="pg" data-act="page" data-page="${p+1}" ${p>=pages?'disabled':''}>${t('pagerNext')}</button>
     </div>`;
   }
 
@@ -921,7 +1240,7 @@
     if(list){list.classList.add('noanim');list.innerHTML=renderList();}
     if(pag)pag.innerHTML=pagerHTML();
     const count=document.querySelector('#app .sortbar .count');
-    if(count)count.textContent='共 '+visible().length+' 件';
+    if(count)count.textContent=t('count',{n:visible().length});
     const clr=document.getElementById('searchClear');
     if(clr)clr.style.display=state.search?'flex':'none';
   }
@@ -947,20 +1266,20 @@
     const thumb=thumbHTML(it);
     let meta,cost;
     if(it.mode==='day'){
-      meta=`<span>陪伴 <b>${companionDays(it)}</b> 天</span><span>原价 <b>${moneyShort(it.price)}</b></span>`;
-      cost=`日均 <b>${money(perDay(it))}</b>`;
+      meta=`<span>${t('companion',{n:companionDays(it)})}</span><span>${t('originPrice',{m:moneyShort(it.price)})}</span>`;
+      cost=t('perDay',{x:money(perDay(it))});
     }else{
       const idle=unseenDays(it);
-      const idleText=it.lastCheckin?`上次使用 <b>${idle}</b> 天前`:`已吃灰 <b>${idle}</b> 天`;
-      meta=`<span>已打卡 <b>${it.useCount}</b> 次</span><span>原价 <b>${moneyShort(it.price)}</b></span><span>${idleText}</span>`;
-      cost=`单次 <b>${money(perUse(it))}</b>`;
+      const idleText=it.lastCheckin?t('idleUsed',{n:idle}):t('idleDust',{n:idle});
+      meta=`<span>${t('usedCount',{n:it.useCount})}</span><span>${t('originPrice',{m:moneyShort(it.price)})}</span><span>${idleText}</span>`;
+      cost=t('perUse',{x:money(perUse(it))});
     }
     const note=it.note?`<div class="note">“${esc(it.note)}”</div>`:'';
     const pill=statusPill(it);
 
     if(it.status==='active'){
-      const menu=`<button class="menu-btn" data-act="farewell" data-id="${it.id}" aria-label="告别">⋯</button>`;
-      const checkin=it.mode==='count'?`<button class="checkin" data-act="checkin" data-id="${it.id}" aria-label="打卡">+1</button>`:'';
+      const menu=`<button class="menu-btn" data-act="farewell" data-id="${it.id}" aria-label="${t('menuAria')}">⋯</button>`;
+      const checkin=it.mode==='count'?`<button class="checkin" data-act="checkin" data-id="${it.id}" aria-label="${t('checkinToast')}">+1</button>`:'';
       return `<div class="card" data-id="${esc(it.id)}" style="animation-delay:${delay}s">
         ${thumb}
         <div class="body">
@@ -980,11 +1299,11 @@
           <div class="meta">${meta}</div>
           <div class="cost">${cost}</div>
           ${note}
-          <div class="archived-tag">💜 断·舍·离 · ${esc(it.archiveReason||'')}</div>
+          <div class="archived-tag">${t('archivedTag',{reason:esc(t('fwReason_'+(it.archiveReason||'idle'))||it.archiveReason||'')})}</div>
           ${fn}
           <div class="arch-actions">
-            <button class="restore" data-act="restore" data-id="${it.id}">恢复陪伴</button>
-            <button data-act="del" data-id="${it.id}">删除记录</button>
+            <button class="restore" data-act="restore" data-id="${it.id}">${t('restoreBtn')}</button>
+            <button data-act="del" data-id="${it.id}">${t('delRecordBtn')}</button>
           </div>
         </div>
       </div>`;
@@ -1061,7 +1380,7 @@
     }
   });
   function askConfirm(msg,onYes,title){
-    document.getElementById('confirmTitle').textContent=title||'确认操作';
+    document.getElementById('confirmTitle').textContent=title||t('confirmTitle');
     document.getElementById('confirmMsg').textContent=msg;
     confirmCb=onYes;openOverlay('confirmOverlay');
   }
@@ -1087,17 +1406,17 @@
     if(newImage&&newImage.indexOf('data:')===0){
       img.src=newImage;img.style.display='block';ph.style.display='none';
     }else if(newImage){
-      ph.innerHTML='<span style="font-size:30px">'+esc(newImage)+'</span><span>emoji 封面</span>';
+      ph.innerHTML='<span style="font-size:30px">'+esc(newImage)+'</span><span>'+t('photoEmoji')+'</span>';
       ph.style.display='flex';img.style.display='none';
     }else{
-      ph.innerHTML='<span class="ic">📷</span><span>点击上传 / 拍照</span>';ph.style.display='flex';img.style.display='none';
+      ph.innerHTML='<span class="ic">📷</span><span>'+t('uploadText')+'</span>';ph.style.display='flex';img.style.display='none';
     }
     document.querySelectorAll('#f_emojiRow .chip').forEach(c=>c.classList.toggle('on',c.dataset.emoji===newImage));
   }
   function setFormModeUI(isEdit){
-    document.getElementById('f_title').textContent=isEdit?'编辑好物':'添一件好物';
-    document.getElementById('f_sub').textContent=isEdit?'修改它的信息，继续好好陪伴 ✏️':'认真记录，物尽其用 ✨';
-    document.getElementById('f_submit').textContent=isEdit?'保存修改':'收入陪伴册';
+    document.getElementById('f_title').textContent=isEdit?t('fTitleEdit'):t('fTitleNew');
+    document.getElementById('f_sub').textContent=isEdit?t('fSubEdit'):t('fSubNew');
+    document.getElementById('f_submit').textContent=isEdit?t('submitEdit'):t('submitNew');
   }
   function openAdd(){resetForm();setFormModeUI(false);openOverlay('addOverlay');}
   function openEdit(id){
@@ -1140,9 +1459,9 @@
     const date=document.getElementById('f_date').value;
     const cat=document.getElementById('f_cat').value;
     const note=document.getElementById('f_note').value.trim();
-    if(!name){toast('给好物起个名字吧');return;}
-    if(isNaN(price)||price<0){toast('请填写有效的价格');return;}
-    if(!date){toast('请选择入手日期');return;}
+    if(!name){toast(t('nameRequired'));return;}
+    if(isNaN(price)||price<0){toast(t('priceInvalid'));return;}
+    if(!date){toast(t('dateRequired'));return;}
     if(editingId){
       const it=state.items.find(x=>x.id===editingId);
       if(it){
@@ -1152,13 +1471,13 @@
         if(formMode==='count'&&(typeof it.useCount!=='number'||it.useCount<0))it.useCount=0;
         save();
       }
-      closeOverlay('addOverlay');render();toast('已更新 ✏️');vibrate(20);
+      closeOverlay('addOverlay');render();toast(t('updated'));vibrate(20);
     }else{
       const item={
         id:'it_'+Date.now(),name,price,purchaseDate:date,category:cat,mode:formMode,
         useCount:formMode==='count'?0:1,lastCheckin:null,image:newImage||'',note,status:'active',archiveReason:'',farewellNote:''
       };
-      state.items.unshift(item);save();closeOverlay('addOverlay');render();toast('已收入陪伴册 💜');vibrate(20);
+      state.items.unshift(item);save();closeOverlay('addOverlay');render();toast(t('added'));vibrate(20);
     }
   }
 
@@ -1167,7 +1486,7 @@
     const it=state.items.find(x=>x.id===id);if(!it)return;
     pendingId=id;
     document.getElementById('farewellMsg').textContent=
-      `感谢「${it.name}」陪伴了你 ${companionDays(it)} 天。放手，轻盈地生活。`;
+      t('fwMsg',{name:it.name,days:companionDays(it)});
     document.getElementById('farewellNote').value='';
     document.querySelectorAll('#reasons input').forEach(r=>r.checked=false);
     document.querySelectorAll('#reasons label').forEach(l=>l.classList.remove('on'));
@@ -1177,17 +1496,17 @@
     const it=state.items.find(x=>x.id===pendingId);if(!it){closeOverlay('farewellOverlay');return;}
     const r=document.querySelector('#reasons input:checked');
     const note=document.getElementById('farewellNote').value.trim();
-    if(!note){toast('写句告别评语再走吧 💬');return;}
-    it.status='archived';it.archiveReason=r?r.value:'闲置处理';it.farewellNote=note;
-    save();closeOverlay('farewellOverlay');render();celebrate();playChime();toast('🎉 已圆满告别，轻装上阵！');vibrate(30);
+    if(!note){toast(t('noteRequired'));return;}
+    it.status='archived';it.archiveReason=r?r.value:'idle';it.farewellNote=note;
+    save();closeOverlay('farewellOverlay');render();celebrate();playChime();toast(t('farewellDone'));vibrate(30);
   }
 
   /* ---------- status management ---------- */
   function ruleSummary(st){
-    const scope=st.applyTo==='all'?'全部':st.applyTo==='day'?'按天':'按次';
-    const join=st.match==='all'?' 且 ':' 或 ';
-    const parts=(st.conditions||[]).map(c=>METRICS[c.metric].label+OPS[c.op]+c.value+METRICS[c.metric].unit).join(join);
-    return scope+' · '+(st.match==='all'?'满足全部':'满足任一')+' · '+(parts||'无条件');
+    const scope=st.applyTo==='all'?t('ruleAll'):st.applyTo==='day'?t('ruleDay'):t('ruleCount');
+    const join=st.match==='all'?t('ruleMatchAll'):t('ruleMatchAny');
+    const parts=(st.conditions||[]).map(c=>t('m_'+c.metric)+OPS[c.op]+c.value+t('u_'+c.metric)).join(' '+join+' ');
+    return scope+' · '+(st.match==='all'?t('ruleMatchAll'):t('ruleMatchAny'))+' · '+(parts||t('ruleNoCond'));
   }
   function renderStatusList(){
     const list=document.getElementById('statusList');
@@ -1195,30 +1514,36 @@
       <div class="status-card">
         <div class="ic" style="background:color-mix(in srgb, ${st.color} 16%, white);color:${st.color}">${st.emoji||'•'}</div>
         <div class="info">
-          <b>${esc(st.name)} ${st.positive?'<span style="color:#16a34a;font-size:11px">积极</span>':'<span style="color:#dc2626;font-size:11px">消极</span>'}</b>
+          <b>${esc(st.name)} ${st.positive?'<span style="color:#16a34a;font-size:11px">'+t('stPositive')+'</span>':'<span style="color:#dc2626;font-size:11px">'+t('stNegative')+'</span>'}</b>
           <small>${ruleSummary(st)}</small>
         </div>
         <div class="ops">
-          <button data-se-edit="${st.id}">编辑</button>
-          <button data-se-del="${st.id}">删除</button>
+          <button data-se-edit="${st.id}">${t('stEdit')}</button>
+          <button data-se-del="${st.id}">${t('stDel')}</button>
           <button data-se-up="${st.id}" ${i===0?'disabled style="opacity:.4"':''}>↑</button>
           <button data-se-down="${st.id}" ${i===state.statuses.length-1?'disabled style="opacity:.4"':''}>↓</button>
         </div>
       </div>`).join('');
   }
-  function openSettings(){openOverlay('settingsOverlay');}
+  function refreshSettingsSelection(){
+    const tr=document.getElementById('themeRow');
+    if(tr)tr.querySelectorAll('.theme-btn').forEach(function(b){b.classList.toggle('on',b.dataset.theme===theme);});
+    const lr=document.getElementById('langRow');
+    if(lr)lr.querySelectorAll('.lang-btn').forEach(function(b){b.classList.toggle('on',b.dataset.lang===lang);});
+  }
+  function openSettings(){refreshSettingsSelection();openOverlay('settingsOverlay');}
   function openStatusManage(){renderStatusList();swapOverlay('settingsOverlay','statusOverlay');}
 
   /* ---------- categories ---------- */
   function saveCats(){localStorage.setItem(CAT_KEY,JSON.stringify(categories));}
   function renderCatsList(){
     const box=document.getElementById('catsList');
-    if(categories.length===0){box.innerHTML='<div class="empty-tip">还没有分类，点下面新增一个吧</div>';return;}
-    box.innerHTML=categories.map((c,i)=>`<div class="cat-item"><span class="cat-name">${esc(c)}</span><button class="cat-act" data-cat-edit="${i}">改名</button><button class="cat-act del" data-cat-del="${i}">删除</button></div>`).join('');
+    if(categories.length===0){box.innerHTML='<div class="empty-tip">'+t('catsEmpty')+'</div>';return;}
+    box.innerHTML=categories.map((c,i)=>`<div class="cat-item"><span class="cat-name">${esc(c)}</span><button class="cat-act" data-cat-edit="${i}">${t('catRename')}</button><button class="cat-act del" data-cat-del="${i}">${t('catDel')}</button></div>`).join('');
   }
   function openCatEdit(idx){
     editingCatIdx=idx;
-    document.getElementById('catEditTitle').textContent=idx==null?'新增分类':'重命名分类';
+    document.getElementById('catEditTitle').textContent=idx==null?t('catEditNew'):t('catEditRename');
     document.getElementById('cat_name').value=idx==null?'':categories[idx];
     openOverlay('catEditOverlay');
     setTimeout(()=>{const el=document.getElementById('cat_name');if(el)el.focus();},60);
@@ -1240,14 +1565,14 @@
     const used=state.items.filter(it=>it.category===name).length;
     if(used>0){
       const rest=categories.filter((_,i)=>i!==idx);
-      askConfirm(`有 ${used} 件物品正在使用「${name}」，删除后会改派到「${rest[0]||'其他'}」。确定继续？`,()=>{
+      askConfirm(t('catDelConfirm',{n:used,name:name,fb:rest[0]||'其他'}),()=>{
         const fallback=rest[0];
         state.items.forEach(it=>{if(it.category===name)it.category=fallback;});
-        categories.splice(idx,1);saveCats();save();renderCatsList();render();toast('已删除并改派物品');
-      },'删除分类');
+        categories.splice(idx,1);saveCats();save();renderCatsList();render();toast(t('catDeletedReassign'));
+      },t('catDelTitle'));
       return;
     }
-    categories.splice(idx,1);saveCats();renderCatsList();render();toast('已删除分类');
+    categories.splice(idx,1);saveCats();renderCatsList();render();toast(t('catDeleted'));
   }
   function openCats(){renderCatsList();swapOverlay('settingsOverlay','catsOverlay');}
 
@@ -1255,27 +1580,27 @@
   function renderAutoBak(){
     const box=document.getElementById('autoBakList');
     let list=[];try{list=JSON.parse(localStorage.getItem(AUTOBAK_KEY))||[];}catch(e){}
-    if(list.length===0){box.innerHTML='<div class="empty-tip">暂无自动备份，改动后会自动生成</div>';return;}
+    if(list.length===0){box.innerHTML='<div class="empty-tip">'+t('bakEmpty')+'</div>';return;}
     list=list.slice().reverse();
     box.innerHTML=list.map(b=>{
       const d=new Date(b.ts);const pad=n=>String(n).padStart(2,'0');
       const ts=`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
-      return `<div class="bak-item" data-bak-ts="${b.ts}"><div class="bak-info"><div class="bak-ts">${ts}</div><div class="bak-meta">${b.items.length} 件物品 · ${b.statuses.length} 条状态</div></div><button class="cat-act" data-bak-restore="${b.ts}">恢复</button></div>`;
+      return `<div class="bak-item" data-bak-ts="${b.ts}"><div class="bak-info"><div class="bak-ts">${ts}</div><div class="bak-meta">${t('bakMeta',{n:b.items.length,m:b.statuses.length})}</div></div><button class="cat-act" data-bak-restore="${b.ts}">${t('bakRestore')}</button></div>`;
     }).join('');
   }
   function restoreAutoBak(ts){
     let list=[];try{list=JSON.parse(localStorage.getItem(AUTOBAK_KEY))||[];}catch(e){}
     const b=list.find(x=>String(x.ts)===String(ts));if(!b)return;
-    askConfirm('恢复将用这份自动备份覆盖当前数据，确定继续？',()=>{
+    askConfirm(t('bakRestoreConfirm'),()=>{
       state.items=b.items;state.statuses=b.statuses;
-      save();saveStatuses();closeOverlay('dataBakOverlay');render();toast('已恢复到该时间点 🕑');
-    },'恢复自动备份');
+      save();saveStatuses();closeOverlay('dataBakOverlay');render();toast(t('bakRestored'));
+    },t('bakRestoreTitle'));
   }
   function openStatusEdit(id){
     editingIsNew=!id;
     if(id){const s=state.statuses.find(x=>x.id===id);editingStatus=JSON.parse(JSON.stringify(s));}
     else{editingStatus={id:'st_'+Date.now(),name:'',emoji:'💭',color:'#8B5CF6',applyTo:'all',match:'all',positive:true,conditions:[{metric:'unit',op:'lte',value:3}]};}
-    document.getElementById('seTitle').textContent=editingIsNew?'新增状态':'编辑状态';
+    document.getElementById('seTitle').textContent=editingIsNew?t('seTitleNew'):t('seTitleEdit');
     document.getElementById('se_name').value=editingStatus.name;
     document.getElementById('se_emoji').value=editingStatus.emoji;
     document.getElementById('se_color').value=editingStatus.color;
@@ -1289,7 +1614,7 @@
     const box=document.getElementById('se_conds');
     box.innerHTML=(editingStatus.conditions||[]).map((c,i)=>`
       <div class="cond-row" data-i="${i}">
-        <select class="c-metric">${Object.entries(METRICS).map(([k,v])=>`<option value="${k}" ${c.metric===k?'selected':''}>${v.label}</option>`).join('')}</select>
+        <select class="c-metric">${Object.entries(METRICS).map(([k,v])=>`<option value="${k}" ${c.metric===k?'selected':''}>${t('m_'+k)}</option>`).join('')}</select>
         <select class="c-op">${Object.entries(OPS).map(([k,v])=>`<option value="${k}" ${c.op===k?'selected':''}>${v}</option>`).join('')}</select>
         <input class="c-val" type="number" value="${c.value}" />
         <button class="c-del" data-del="${i}">✕</button>
@@ -1297,11 +1622,11 @@
   }
   function saveStatusEdit(){
     editingStatus.name=document.getElementById('se_name').value.trim();
-    if(!editingStatus.name){toast('给状态起个名字');return;}
-    if(!editingStatus.conditions||editingStatus.conditions.length===0){toast('至少添加一个判定条件');return;}
+    if(!editingStatus.name){toast(t('seNameEmpty'));return;}
+    if(!editingStatus.conditions||editingStatus.conditions.length===0){toast(t('seCondEmpty'));return;}
     if(editingIsNew)state.statuses.push(editingStatus);
     else{const idx=state.statuses.findIndex(x=>x.id===editingStatus.id);if(idx>=0)state.statuses[idx]=editingStatus;}
-    saveStatuses();closeOverlay('statusEditOverlay');render();toast('状态已保存 ✨');
+    saveStatuses();closeOverlay('statusEditOverlay');render();toast(t('seSaved'));
   }
 
   /* ---------- shared actions ---------- */
@@ -1309,12 +1634,12 @@
   function actFarewell(id){openFarewell(id);}
   function actRestore(id){
     const it=state.items.find(x=>x.id===id);if(!it)return;
-    it.status='active';it.archiveReason='';it.farewellNote='';save();render();toast('欢迎回到陪伴中 💜');
+    it.status='active';it.archiveReason='';it.farewellNote='';save();render();toast(t('welcomeBack'));
   }
   function actDel(id){
-    askConfirm('确定删除这条回忆记录吗？此操作不可撤销。',()=>{
-      state.items=state.items.filter(x=>x.id!==id);save();render();toast('已删除');
-    },'删除记录');
+    askConfirm(t('delConfirm'),()=>{
+      state.items=state.items.filter(x=>x.id!==id);save();render();toast(t('deleted'));
+    },t('delTitle'));
   }
 
   /* ---------- events ---------- */
@@ -1331,7 +1656,7 @@
       it.useCount++;it.lastCheckin=new Date().toISOString().slice(0,10);save();render();
       const btn=document.querySelector('.checkin[data-id="'+id+'"]');
       if(btn){btn.classList.add('pop');setTimeout(()=>btn.classList.remove('pop'),420);}
-      toast('已打卡 +1 ✨');vibrate(15);
+      toast(t('checkinToast'));vibrate(15);
     }else if(act==='farewell'){actFarewell(id);}
     else if(act==='restore'){actRestore(id);}
     else if(act==='ignore'){
@@ -1339,12 +1664,16 @@
       localStorage.setItem(REMIND_KEY,JSON.stringify(dismissed));render();
     }else if(act==='ignoreAll'){
       negativeItems().forEach(it=>{if(!dismissed.includes(it.id))dismissed.push(it.id);});
-      localStorage.setItem(REMIND_KEY,JSON.stringify(dismissed));render();toast('已忽略提醒');
+      localStorage.setItem(REMIND_KEY,JSON.stringify(dismissed));render();toast(t('ignoredAll'));
     }else if(act==='del'){actDel(id);}
   });
 
   /* ---------- settings menu ---------- */
   document.getElementById('settingsOverlay').addEventListener('click',e=>{
+    const th=e.target.closest('[data-theme]');
+    if(th){setTheme(th.dataset.theme);return;}
+    const lg=e.target.closest('[data-lang]');
+    if(lg){setLang(lg.dataset.lang);return;}
     const r=e.target.closest('[data-set]');if(!r)return;
     const k=r.dataset.set;
     if(k==='rules'){renderStatusList();swapOverlay('settingsOverlay','statusOverlay');}
@@ -1358,8 +1687,8 @@
     const it=state.items.find(x=>x.id===id);if(!it)return;
     const menu=document.getElementById('ctxMenu');
     const items=it.status==='active'
-      ?[['✏️ 编辑物品','edit',id],['💜 圆满告别','farewell',id],['🗑️ 删除记录','del',id]]
-      :[['✏️ 编辑物品','edit',id],['↩️ 恢复陪伴','restore',id],['🗑️ 删除记录','del',id]];
+      ?[[t('ctxEdit'),'edit',id],[t('ctxFarewell'),'farewell',id],[t('ctxDel'),'del',id]]
+      :[[t('ctxEdit'),'edit',id],[t('ctxRestore'),'restore',id],[t('ctxDel'),'del',id]];
     menu.innerHTML=items.map(([label,a,iid])=>`<button class="ctx-item" data-ctx="${a}" data-id="${iid}">${label}</button>`).join('');
     openOverlay('ctxOverlay');
   }
@@ -1491,7 +1820,7 @@
   document.getElementById('se_save').addEventListener('click',saveStatusEdit);
 
   /* ---------- init ---------- */
-  load();render();
+  load();applyTheme();applyI18n();renderGuide();render();
 })();
 </script>
 </body>
