@@ -2,6 +2,24 @@
 
   <nav-bar title="数据备份与恢复" showBack="{{true}}" />
 
+  <!-- 数据守护状态横幅 -->
+  <view class="card guard">
+    <view class="guard-head">
+      <view class="guard-ico">🛡️</view>
+      <view class="guard-tx">
+        <view class="guard-title">数据守护</view>
+        <view class="guard-sub">自动备份已开启 · 本地优先，不上传云端</view>
+      </view>
+    </view>
+    <view class="guard-row">
+      <view class="guard-info">
+        <text class="guard-label">最近一次备份</text>
+        <text class="guard-val">{{lastBackup}}</text>
+      </view>
+    </view>
+    <view class="guard-tip">每次改动都会自动留痕，无需手动操作。换手机或卸载前，记得点下方「备份到文件」。</view>
+  </view>
+
   <view class="card intro">
     <view class="title">数据备份与恢复</view>
     <view class="sub">每次改动都会自动留一份带时间戳的备份（最近 5 份）。换手机时，点「备份到文件」导出 JSON，到新设备「从文件还原」。</view>

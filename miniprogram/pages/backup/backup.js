@@ -8,16 +8,34 @@ function fmt(ts) {
   return d.getFullYear() + p(d.getMonth() + 1) + p(d.getDate()) + '-' + p(d.getHours()) + p(d.getMinutes());
 }
 
+// 最近一次自动备份 → 「今天 14:30 / 昨天 / N 天前 / 暂无记录」
+function fmtLastBackup() {
+  const arr = store.getAutoBackups();
+  if (!arr.length) return '暂无记录';
+  const ts = arr[arr.length - 1].ts;
+  const d = new Date(ts);
+  const now = new Date();
+  const p = n => (n < 10 ? '0' + n : '' + n);
+  const hm = p(d.getHours()) + ':' + p(d.getMinutes());
+  const startOfDay = t => new Date(t.getFullYear(), t.getMonth(), t.getDate()).getTime();
+  const diffDay = Math.floor((startOfDay(now) - startOfDay(d)) / 86400000);
+  if (diffDay <= 0) return '今天 ' + hm;
+  if (diffDay === 1) return '昨天 ' + hm;
+  if (diffDay < 30) return diffDay + ' 天前';
+  return (d.getMonth() + 1) + '月' + d.getDate() + '日';
+}
+
 Page({
   data: {
     theme: 'mint',
     backups: [],
-    exportedAt: ''
+    exportedAt: '',
+    lastBackup: '暂无记录'
   },
 
   onShow() {
     const t = app.globalData.theme;
-    this.setData({ theme: t });
+    this.setData({ theme: t, lastBackup: fmtLastBackup() });
     theme.applyNav(t);
     this.load();
   },

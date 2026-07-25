@@ -31,7 +31,12 @@
 
   <view class="card">
     <view class="g-h2">💾 数据备份与恢复</view>
-    <view class="g-p">每次改动都会<text class="hl">自动留一份带时间戳的备份</text>（最近 5 份），可从「数据备份与恢复」随时回退。换手机时，点「备份到文件」导出 JSON，到新设备「从文件还原」即可。</view>
+    <view class="g-p"><text class="hl">自动备份一直在</text>：你每次添加、编辑、打卡、告别，系统都会<text class="hl">自动留一份带时间戳的备份</text>（保留最近 5 份）。平时你什么都不用做，它默默在后台守护你的数据。</view>
+    <view class="g-p">打开「我的 → 数据备份与恢复」，顶部「数据守护」会显示<text class="hl">最近一次备份时间</text>，随时能确认它在正常工作。</view>
+    <view class="g-quote">什么时候需要手动管？——换手机、卸载重装、或重装微信之前。</view>
+    <view class="g-p"><text class="hl">① 备份到文件</text>：点一下把全部数据导出成 JSON，发到「文件传输助手」或微信云盘。这是跨设备、防丢失最关键的一步。</view>
+    <view class="g-p"><text class="hl">② 从文件还原</text>：到新设备，在同页点「从文件还原」，从聊天里选那份 JSON，数据就搬过来了。</view>
+    <view class="g-p"><text class="hl">③ 回退到旧版本</text>：万一改错了，在「自动备份」列表里点某次的时间戳，即可恢复当时的状态。</view>
   </view>
 
   <view class="card">

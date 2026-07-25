@@ -3,3 +3,15 @@
 .bk-row { display: flex; align-items: center; justify-content: space-between; padding: 20rpx 0; border-top: 1rpx solid var(--border); }
 .bk-time { font-size: 28rpx; }
 .link { font-size: 28rpx; color: var(--primary); }
+
+/* 数据守护状态横幅 */
+.guard { background: var(--primary-soft); }
+.guard-head { display: flex; align-items: center; }
+.guard-ico { font-size: 40rpx; width: 64rpx; text-align: center; margin-right: 18rpx; }
+.guard-title { font-size: 30rpx; font-weight: 700; color: var(--text); }
+.guard-sub { font-size: 23rpx; color: var(--text-soft); margin-top: 6rpx; }
+.guard-row { display: flex; align-items: center; justify-content: space-between; margin-top: 24rpx; padding-top: 22rpx; border-top: 1rpx solid var(--border); }
+.guard-info { display: flex; flex-direction: column; }
+.guard-label { font-size: 22rpx; color: var(--text-soft); }
+.guard-val { font-size: 30rpx; font-weight: 700; color: var(--text); margin-top: 6rpx; }
+.guard-tip { font-size: 24rpx; color: var(--text-soft); margin-top: 20rpx; line-height: 1.6; }
