@@ -98,6 +98,7 @@
     background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);
     padding:14px;display:flex;gap:14px;position:relative;align-items:flex-start;
     animation:fadeUp .42s cubic-bezier(.22,1,.36,1) both;
+    transition:transform .12s ease;
   }
   @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
   .thumb{width:84px;height:84px;border-radius:18px;flex:0 0 auto;object-fit:cover;background:linear-gradient(135deg,var(--primary-soft),var(--secondary-soft));display:flex;align-items:center;justify-content:center;font-size:30px;}
@@ -150,6 +151,15 @@
   .sheet{width:100%;max-width:480px;background:var(--surface);border-top-left-radius:28px;border-top-right-radius:28px;
     padding:22px 22px calc(env(safe-area-inset-bottom) + 26px);transform:translateY(100%);transition:transform .32s cubic-bezier(.22,1,.36,1);max-height:92vh;overflow-y:auto;}
   .overlay.show .sheet{transform:translateY(0);}
+  .ctx-sheet{max-width:420px;padding:14px 14px calc(env(safe-area-inset-bottom) + 16px);}
+  .ctx-handle{width:38px;height:4px;border-radius:999px;background:#E5E1F5;margin:2px auto 12px;}
+  .ctx-item{display:block;width:100%;text-align:left;border:0;background:transparent;color:var(--text-main);font-size:16px;font-weight:600;padding:15px 14px;border-radius:14px;cursor:pointer;transition:background .15s;}
+  .ctx-item:active{background:var(--primary-soft);}
+  .ctx-cancel{width:100%;border:0;background:#F1EEFB;color:var(--text-sub);font-size:14px;font-weight:600;padding:13px 0;border-radius:14px;margin-top:8px;cursor:pointer;}
+  .confetti{position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden;}
+  .confetti span{position:absolute;top:64%;animation:floatUp 1.5s ease-out forwards;opacity:0;will-change:transform,opacity;}
+  @keyframes floatUp{0%{transform:translateY(0) scale(.6) rotate(0);opacity:0;}12%{opacity:1;}100%{transform:translateY(-72vh) scale(1.15) rotate(20deg);opacity:0;}}
+  .card.pressing{transform:scale(.97);}
   .sheet h3{margin:0 0 4px;font-size:19px;font-weight:800;color:var(--text-main);}
   .sheet .sub{font-size:13px;color:var(--text-sub);margin-bottom:18px;line-height:1.5;}
 
@@ -221,6 +231,22 @@
   .rem-farewell:active{transform:scale(.96);}
   .rem-ignore{border:1px solid #FAD7DC;background:transparent;color:#b91c4b;font-size:12px;font-weight:600;padding:8px 12px;border-radius:10px;cursor:pointer;}
   .rem-ignore:active{transform:scale(.96);}
+
+  /* ===== thumb editable / emoji / pager ===== */
+  .thumb{cursor:pointer;transition:transform .15s;position:relative;}
+  .thumb:active{transform:scale(.96);}
+  .thumb .edit-hint{position:absolute;right:3px;bottom:3px;font-size:10px;background:rgba(30,27,75,.55);color:#fff;border-radius:6px;padding:1px 4px;line-height:1.2;}
+  .emoji-row{display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap;}
+  .emoji-row .chip{flex:0 0 auto;width:40px;height:40px;border:1px solid var(--line);background:var(--surface);border-radius:12px;font-size:20px;cursor:pointer;transition:.15s;display:flex;align-items:center;justify-content:center;padding:0;}
+  .emoji-row .chip:active{transform:scale(.92);}
+  .emoji-row .chip.on{border-color:var(--primary);background:var(--primary-soft);}
+  .emoji-row input{flex:1;min-width:90px;border:1px solid var(--line);border-radius:12px;padding:10px;font-size:15px;font-family:inherit;color:var(--text-main);outline:none;}
+  .emoji-row input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(139,92,246,.12);}
+  .pager{display:flex;align-items:center;justify-content:center;gap:14px;padding:14px 0 6px;}
+  .pager .pg{border:1px solid var(--line);background:var(--surface);color:var(--text-main);font-size:13px;font-weight:600;padding:9px 18px;border-radius:999px;cursor:pointer;transition:.15s;}
+  .pager .pg:active{transform:scale(.96);}
+  .pager .pg:disabled{opacity:.4;cursor:default;}
+  .pager .pg-info{font-size:13px;color:var(--text-sub);font-weight:600;}
 </style>
 </head>
 <body>
@@ -231,8 +257,8 @@
 <!-- Add Sheet -->
 <div class="overlay" id="addOverlay">
   <div class="sheet">
-    <h3>添一件好物</h3>
-    <div class="sub">认真记录，物尽其用 ✨</div>
+    <h3 id="f_title">添一件好物</h3>
+    <div class="sub" id="f_sub">认真记录，物尽其用 ✨</div>
     <div class="field">
       <label>物品名称</label>
       <input id="f_name" type="text" placeholder="例如：复古胶片相机" maxlength="40" />
@@ -263,10 +289,19 @@
       <textarea id="f_note" placeholder="它陪你做了什么？" maxlength="120"></textarea>
     </div>
     <div class="field">
-      <label>物品照片（可选）</label>
+      <label>物品照片（可选，或选个 emoji 当封面）</label>
       <div class="upload" id="f_upload">
         <div class="ph" id="f_ph"><span class="ic">📷</span><span>点击上传 / 拍照</span></div>
         <img id="f_img" style="display:none" alt="" />
+      </div>
+      <div class="emoji-row" id="f_emojiRow">
+        <button type="button" class="chip" data-emoji="📷">📷</button>
+        <button type="button" class="chip" data-emoji="⌚">⌚</button>
+        <button type="button" class="chip" data-emoji="🎧">🎧</button>
+        <button type="button" class="chip" data-emoji="👟">👟</button>
+        <button type="button" class="chip" data-emoji="📚">📚</button>
+        <button type="button" class="chip" data-emoji="🌿">🌿</button>
+        <input id="f_emoji" type="text" maxlength="2" placeholder="或填 emoji" />
       </div>
       <input id="f_file" type="file" accept="image/*" capture="environment" style="display:none" />
     </div>
@@ -278,7 +313,7 @@
 <!-- Farewell Sheet -->
 <div class="overlay" id="farewellOverlay">
   <div class="sheet">
-    <h3>圆满告别</h3>
+    <h3>断·舍·离</h3>
     <div class="sub">放手，也是一种轻盈。</div>
     <div class="farewell-card">
       <div class="heart">💜</div>
@@ -293,7 +328,7 @@
       <label>给它的告别评语</label>
       <textarea id="farewellNote" placeholder="写句心里话，比如：谢谢你陪我走过那段日子，希望下一位主人也喜欢你。" maxlength="140"></textarea>
     </div>
-    <button class="btn-primary" id="farewellConfirm">温柔归档</button>
+    <button class="btn-primary" id="farewellConfirm">圆满告别</button>
     <button class="btn-ghost" data-close="farewellOverlay">再想想</button>
   </div>
 </div>
@@ -370,6 +405,15 @@
   </div>
 </div>
 
+<!-- Context menu (long press / right click) -->
+<div class="overlay" id="ctxOverlay">
+  <div class="sheet ctx-sheet">
+    <div class="ctx-handle"></div>
+    <div id="ctxMenu"></div>
+    <button class="ctx-cancel" data-close="ctxOverlay">取消</button>
+  </div>
+</div>
+
 <script>
 (function(){
   "use strict";
@@ -378,15 +422,19 @@
   const STATUS_KEY='light_living_statuses_v1';
   const REMIND_KEY='light_living_remind_dismissed_v1';
   const SAMPLE_MIG_FLAG='light_living_sample4_v1';
+  const SAMPLE_EMOJI_FLAG='light_living_sample_emoji_v1';
+  const SAMPLE_EMOJI={'seed1':'📸','seed2':'⌨️','seed3':'🕯️','seed4':'🧣','seed5':'🔊','seed6':'🎮','seed7':'⌚','seed8':'🌿','seed9':'📷'};
   const CATEGORIES=['数码电子','服饰鞋包','居家生活','个人爱好','其他'];
+  const PAGE_SIZE=5;
 
   const METRICS={unit:{label:'单位成本',unit:'¥'},days:{label:'陪伴天数',unit:'天'},count:{label:'打卡次数',unit:'次'}};
   const OPS={lte:'≤',gte:'≥',lt:'<',gt:'>'};
   const NEUTRAL={id:'neutral',name:'相伴中',emoji:'',color:'#9aa0b4',positive:false};
 
-  let state={items:[],statuses:[],tab:'active',category:'全部',sort:'cost_desc',search:''};
+  let state={items:[],statuses:[],tab:'active',category:'全部',sort:'cost_desc',search:'',page:1};
   let formMode='day';
   let newImage=null;
+  let editingId=null;
   let pendingId=null;
   let editingStatus=null;
   let editingIsNew=false;
@@ -403,6 +451,7 @@
     }
     if(state.statuses.length===0){state.statuses=defaultStatuses();saveStatuses();}
     migrateSamples();
+    migrateEmoji();
   }
   function save(){localStorage.setItem(STORE_KEY,JSON.stringify(state.items));}
   function saveStatuses(){localStorage.setItem(STATUS_KEY,JSON.stringify(state.statuses));}
@@ -436,10 +485,10 @@
 
   function sampleFour(){
     return [
-      {id:'seed6',name:'健身环大冒险',price:499,purchaseDate:new Date(2025,11,17).toISOString().slice(0,10),category:'个人爱好',mode:'count',useCount:3,lastCheckin:'2026-01-20',image:'',note:'买来立志减肥，结果成了摆设。',status:'active',archiveReason:'',farewellNote:''},
-      {id:'seed7',name:'智能运动手环',price:299,purchaseDate:new Date(2025,8,5).toISOString().slice(0,10),category:'数码电子',mode:'day',useCount:1,lastCheckin:null,image:'',note:'每天记录步数，已经离不开它。',status:'active',archiveReason:'',farewellNote:''},
-      {id:'seed8',name:'香薰精油套装',price:129,purchaseDate:new Date(2026,4,10).toISOString().slice(0,10),category:'居家生活',mode:'day',useCount:1,lastCheckin:null,image:'',note:'睡前扩香，助眠小确幸。',status:'active',archiveReason:'',farewellNote:''},
-      {id:'seed9',name:'单反相机镜头',price:2200,purchaseDate:new Date(2025,9,20).toISOString().slice(0,10),category:'数码电子',mode:'count',useCount:1,lastCheckin:'2025-11-01',image:'',note:'想学摄影，结果手机拍拍也够了。',status:'active',archiveReason:'',farewellNote:''}
+      {id:'seed6',name:'健身环大冒险',price:499,purchaseDate:new Date(2025,11,17).toISOString().slice(0,10),category:'个人爱好',mode:'count',useCount:3,lastCheckin:'2026-01-20',image:'🎮',note:'买来立志减肥，结果成了摆设。',status:'active',archiveReason:'',farewellNote:''},
+      {id:'seed7',name:'智能运动手环',price:299,purchaseDate:new Date(2025,8,5).toISOString().slice(0,10),category:'数码电子',mode:'day',useCount:1,lastCheckin:null,image:'⌚',note:'每天记录步数，已经离不开它。',status:'active',archiveReason:'',farewellNote:''},
+      {id:'seed8',name:'香薰精油套装',price:129,purchaseDate:new Date(2026,4,10).toISOString().slice(0,10),category:'居家生活',mode:'day',useCount:1,lastCheckin:null,image:'🌿',note:'睡前扩香，助眠小确幸。',status:'active',archiveReason:'',farewellNote:''},
+      {id:'seed9',name:'单反相机镜头',price:2200,purchaseDate:new Date(2025,9,20).toISOString().slice(0,10),category:'数码电子',mode:'count',useCount:1,lastCheckin:'2025-11-01',image:'📷',note:'想学摄影，结果手机拍拍也够了。',status:'active',archiveReason:'',farewellNote:''}
     ];
   }
   function migrateSamples(){
@@ -447,6 +496,17 @@
     state.items=state.items.concat(sampleFour());
     localStorage.setItem(SAMPLE_MIG_FLAG,'1');
     save();
+  }
+  function migrateEmoji(){
+    if(localStorage.getItem(SAMPLE_EMOJI_FLAG))return;
+    let changed=false;
+    state.items.forEach(it=>{
+      if(SAMPLE_EMOJI[it.id] && (!it.image || it.image.indexOf('data:')!==0)){
+        it.image=SAMPLE_EMOJI[it.id];changed=true;
+      }
+    });
+    if(changed)save();
+    localStorage.setItem(SAMPLE_EMOJI_FLAG,'1');
   }
 
   function defaultStatuses(){
@@ -462,11 +522,11 @@
     const t=new Date();
     const d=(y,m,day)=>new Date(t.getFullYear()-y, m, day).toISOString().slice(0,10);
     return [
-      {id:'seed1',name:'复古胶片相机',price:1280,purchaseDate:d(1,8,12),category:'个人爱好',mode:'count',useCount:46,lastCheckin:'2026-07-18',image:'',note:'记录生活的眼睛，每一卷都值得。',status:'active',archiveReason:'',farewellNote:''},
-      {id:'seed2',name:'机械键盘',price:499,purchaseDate:d(1,0,15),category:'数码电子',mode:'day',useCount:1,lastCheckin:null,image:'',note:'敲字的手感，是每天的仪式感。',status:'active',archiveReason:'',farewellNote:''},
-      {id:'seed3',name:'香薰蜡烛',price:89,purchaseDate:d(0,5,20),category:'居家生活',mode:'day',useCount:1,lastCheckin:null,image:'',note:'睡前的一束微光与气息。',status:'active',archiveReason:'',farewellNote:''},
-      {id:'seed4',name:'羊绒围巾',price:259,purchaseDate:d(1,10,2),category:'服饰鞋包',mode:'count',useCount:2,lastCheckin:'2026-01-05',image:'',note:'冬天的温柔铠甲，可惜很少戴。',status:'active',archiveReason:'',farewellNote:''},
-      {id:'seed5',name:'便携蓝牙音箱',price:399,purchaseDate:d(2,2,1),category:'数码电子',mode:'day',useCount:1,lastCheckin:null,image:'',note:'露营与阳台的bgm。',status:'archived',archiveReason:'闲置处理',farewellNote:'用了几次就闲置了，希望下个人常带它出门。'}
+      {id:'seed1',name:'复古胶片相机',price:1280,purchaseDate:d(1,8,12),category:'个人爱好',mode:'count',useCount:46,lastCheckin:'2026-07-18',image:'📸',note:'记录生活的眼睛，每一卷都值得。',status:'active',archiveReason:'',farewellNote:''},
+      {id:'seed2',name:'机械键盘',price:499,purchaseDate:d(1,0,15),category:'数码电子',mode:'day',useCount:1,lastCheckin:null,image:'⌨️',note:'敲字的手感，是每天的仪式感。',status:'active',archiveReason:'',farewellNote:''},
+      {id:'seed3',name:'香薰蜡烛',price:89,purchaseDate:d(0,5,20),category:'居家生活',mode:'day',useCount:1,lastCheckin:null,image:'🕯️',note:'睡前的一束微光与气息。',status:'active',archiveReason:'',farewellNote:''},
+      {id:'seed4',name:'羊绒围巾',price:259,purchaseDate:d(1,10,2),category:'服饰鞋包',mode:'count',useCount:2,lastCheckin:'2026-01-05',image:'🧣',note:'冬天的温柔铠甲，可惜很少戴。',status:'active',archiveReason:'',farewellNote:''},
+      {id:'seed5',name:'便携蓝牙音箱',price:399,purchaseDate:d(2,2,1),category:'数码电子',mode:'day',useCount:1,lastCheckin:null,image:'🔊',note:'露营与阳台的bgm。',status:'archived',archiveReason:'闲置处理',farewellNote:'用了几次就闲置了，希望下个人常带它出门。'}
     ];
   }
 
@@ -475,14 +535,23 @@
     const d=new Date(dateStr+'T00:00:00');const now=new Date();
     return Math.max(0,Math.floor((now-d)/86400000));
   }
-  function perDay(it){const days=daysSince(it.purchaseDate)+1;return it.price/Math.max(1,days);}
-  function perUse(it){return it.price/Math.max(1,it.useCount);}
+  function companionDays(it){return daysSince(it.purchaseDate)+1;}
+  function perDay(it){return it.price/companionDays(it);}
+  function perUse(it){return it.useCount>0?it.price/it.useCount:Infinity;}
   function unitCost(it){return it.mode==='count'?perUse(it):perDay(it);}
+  function cmpCost(a,b,desc){
+    const x=unitCost(a),y=unitCost(b);
+    const infX=!isFinite(x),infY=!isFinite(y);
+    if(infX&&infY)return 0;
+    if(infX)return desc?-1:1;
+    if(infY)return desc?1:-1;
+    return desc?y-x:x-y;
+  }
   function unseenDays(it){return it.mode==='day'?0:daysSince(it.lastCheckin||it.purchaseDate);}
 
   function metricValue(it,m){
     if(m==='unit')return unitCost(it);
-    if(m==='days')return daysSince(it.purchaseDate);
+    if(m==='days')return companionDays(it);
     if(m==='count')return it.useCount;
     return 0;
   }
@@ -505,8 +574,8 @@
 
   /* ---------- helpers ---------- */
   function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-  function money(n){return '¥'+Number(n).toLocaleString('zh-CN',{minimumFractionDigits:2,maximumFractionDigits:2});}
-  function moneyShort(n){return '¥'+Number(n).toLocaleString('zh-CN',{maximumFractionDigits:0});}
+  function money(n){if(!isFinite(n))return '∞';return '¥'+Number(n).toLocaleString('zh-CN',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function moneyShort(n){if(!isFinite(n))return '∞';return '¥'+Number(n).toLocaleString('zh-CN',{maximumFractionDigits:0});}
 
   /* ---------- derived ---------- */
   function visible(){
@@ -517,8 +586,8 @@
       arr=arr.filter(it=>(it.name||'').toLowerCase().includes(q)||(it.note||'').toLowerCase().includes(q));
     }
     const by={
-      cost_desc:(a,b)=>unitCost(a)-unitCost(b),
-      cost_asc:(a,b)=>unitCost(b)-unitCost(a),
+      cost_desc:(a,b)=>cmpCost(a,b,true),
+      cost_asc:(a,b)=>cmpCost(a,b,false),
       date_desc:(a,b)=>new Date(b.purchaseDate)-new Date(a.purchaseDate),
       unseen_desc:(a,b)=>unseenDays(b)-unseenDays(a)
     };
@@ -527,13 +596,14 @@
   }
   function heroStats(){
     const active=state.items.filter(it=>it.status==='active');
-    const daily=active.filter(it=>it.mode==='day').reduce((s,it)=>s+perDay(it),0);
+    let finiteDaily=0,hasInfinite=false;
+    active.forEach(it=>{const c=unitCost(it);if(!isFinite(c))hasInfinite=true;else finiteDaily+=c;});
     const asset=active.reduce((s,it)=>s+it.price,0);
     const archived=state.items.filter(it=>it.status==='archived').length;
     const positive=active.filter(it=>evalStatus(it).positive).length;
     const negative=active.filter(it=>{const s=evalStatus(it);return !s.positive&&s.id!=='neutral';}).length;
     const score=active.length?Math.round(positive/active.length*100):0;
-    return {daily,asset,archived,count:active.length,score,positive,negative};
+    return {finiteDaily,hasInfinite,asset,archived,count:active.length,score,positive,negative};
   }
   function insight(s){
     if(s.count===0)return '添加第一件好物，开启轻盈生活 🌱';
@@ -569,6 +639,9 @@
   /* ---------- render ---------- */
   function render(){
     const s=heroStats();
+    const _pages=Math.max(1,Math.ceil(visible().length/PAGE_SIZE));
+    if(state.page>_pages)state.page=_pages;
+    if(state.page<1)state.page=1;
     const app=document.getElementById('app');
     let html='';
     html+=`
@@ -577,12 +650,12 @@
         <div class="brand"><span class="dot"></span> 轻盈生活 <small>LIGHT LIVING</small></div>
         <div class="hero-cost">
           <div class="label">每日陪伴总成本</div>
-          <div class="amount"><span>${money(s.daily)}</span></div>
+          <div class="amount"><span>${s.hasInfinite?(s.finiteDaily>0?money(s.finiteDaily)+' ＋ ∞':'∞'):money(s.finiteDaily)}</span></div>
         </div>
         <div class="hero-stats">
           <div class="col"><b>${s.count}</b><span>陪伴中好物</span></div>
           <div class="col"><b>${moneyShort(s.asset)}</b><span>持有资产总额</span></div>
-          <div class="col"><b>${s.archived}</b><span>已圆满告别</span></div>
+          <div class="col"><b>${s.archived}</b><span>已断舍离</span></div>
         </div>
       </header>
       <div class="lightness">
@@ -592,7 +665,7 @@
       ${reminderHTML()}
       <div class="tabs">
         <button data-tab="active" class="${state.tab==='active'?'on':''}">📦 陪伴中物品</button>
-        <button data-tab="archived" class="${state.tab==='archived'?'on':''}">📖 陪伴回忆录</button>
+        <button data-tab="archived" class="${state.tab==='archived'?'on':''}">📖 断·舍·离</button>
       </div>
       <div class="cats">
         ${['全部',...CATEGORIES].map(c=>`<div class="pill ${state.category===c?'on':''}" data-cat="${esc(c)}">${esc(c)}</div>`).join('')}
@@ -613,25 +686,40 @@
         </div>
       </div>
       <div class="list">${renderList()}</div>
+      ${pagerHTML()}
     `;
     app.innerHTML=html;
     const sel=document.getElementById('sortSel');if(sel)sel.value=state.sort;
   }
 
   function renderList(){
-    const arr=visible();
-    if(arr.length===0){
+    const all=visible();
+    if(all.length===0){
       const emptyMsg=state.tab==='active'
         ?'<div class="em">🪶</div><p>还没有陪伴中的好物。<br>点击右下角 + ，记录第一件认真拥有的东西。</p>'
-        :'<div class="em">📖</div><p>回忆录还是空的。<br>当一件物品圆满告别，它会被温柔地归档在这里。</p>';
+        :'<div class="em">🪶</div><p>断·舍·离里还是空空如也。<br>当一件物品圆满告别，它会被温柔地安放在这里。</p>';
       return `<div class="empty">${emptyMsg}</div>`;
     }
-    return arr.map((it,i)=>cardHTML(it,i)).join('');
+    const paged=all.slice((state.page-1)*PAGE_SIZE, state.page*PAGE_SIZE);
+    return paged.map((it,i)=>cardHTML(it,i)).join('');
+  }
+  function pagerHTML(){
+    const total=visible().length;
+    const pages=Math.max(1,Math.ceil(total/PAGE_SIZE));
+    if(pages<=1)return '';
+    const p=state.page;
+    return `<div class="pager">
+      <button class="pg" data-act="page" data-page="${p-1}" ${p<=1?'disabled':''}>上一页</button>
+      <span class="pg-info">${p} / ${pages}</span>
+      <button class="pg" data-act="page" data-page="${p+1}" ${p>=pages?'disabled':''}>下一页</button>
+    </div>`;
   }
 
   function updateList(){
     const list=document.querySelector('#app .list');
+    const pag=document.getElementById('pager');
     if(list){list.classList.add('noanim');list.innerHTML=renderList();}
+    if(pag)pag.innerHTML=pagerHTML();
     const count=document.querySelector('#app .sortbar .count');
     if(count)count.textContent='共 '+visible().length+' 件';
     const clr=document.getElementById('searchClear');
@@ -644,15 +732,27 @@
     return `<div class="status-pill" style="color:${st.color};background:color-mix(in srgb, ${st.color} 14%, white)">${st.emoji} ${esc(st.name)}</div>`;
   }
 
+  function isEmoji(ch){return !!ch && /\p{Extended_Pictographic}/u.test(ch);}
+  function thumbHTML(it){
+    const id=esc(it.id);
+    const img=it.image||'';
+    if(img.indexOf('data:')===0)return `<img class="thumb" src="${esc(img)}" alt="" data-act="edit" data-id="${id}">`;
+    let emoji=img;
+    if(!emoji){const ch=Array.from(it.name||'')[0]||'';if(isEmoji(ch))emoji=ch;}
+    if(!emoji)emoji='📦';
+    return `<div class="thumb" data-act="edit" data-id="${id}">${emoji}<span class="edit-hint">✎</span></div>`;
+  }
   function cardHTML(it,i){
     const delay=(i%8)*0.04;
-    const thumb=it.image?`<img class="thumb" src="${esc(it.image)}" alt="">`:`<div class="thumb">📦</div>`;
+    const thumb=thumbHTML(it);
     let meta,cost;
     if(it.mode==='day'){
-      meta=`<span>陪伴 <b>${daysSince(it.purchaseDate)}</b> 天</span><span>原价 <b>${moneyShort(it.price)}</b></span>`;
+      meta=`<span>陪伴 <b>${companionDays(it)}</b> 天</span><span>原价 <b>${moneyShort(it.price)}</b></span>`;
       cost=`日均 <b>${money(perDay(it))}</b>`;
     }else{
-      meta=`<span>已打卡 <b>${it.useCount}</b> 次</span><span>原价 <b>${moneyShort(it.price)}</b></span>`;
+      const idle=unseenDays(it);
+      const idleText=it.lastCheckin?`上次使用 <b>${idle}</b> 天前`:`已吃灰 <b>${idle}</b> 天`;
+      meta=`<span>已打卡 <b>${it.useCount}</b> 次</span><span>原价 <b>${moneyShort(it.price)}</b></span><span>${idleText}</span>`;
       cost=`单次 <b>${money(perUse(it))}</b>`;
     }
     const note=it.note?`<div class="note">“${esc(it.note)}”</div>`:'';
@@ -661,7 +761,7 @@
     if(it.status==='active'){
       const menu=`<button class="menu-btn" data-act="farewell" data-id="${it.id}" aria-label="告别">⋯</button>`;
       const checkin=it.mode==='count'?`<button class="checkin" data-act="checkin" data-id="${it.id}" aria-label="打卡">+1</button>`:'';
-      return `<div class="card" style="animation-delay:${delay}s">
+      return `<div class="card" data-id="${esc(it.id)}" style="animation-delay:${delay}s">
         ${thumb}
         <div class="body">
           <div class="name">${esc(it.name)}<span class="cat-pill">${esc(it.category)}</span></div>
@@ -673,14 +773,14 @@
       </div>`;
     }else{
       const fn=it.farewellNote?`<div class="farewell-note">💬 ${esc(it.farewellNote)}</div>`:'';
-      return `<div class="card" style="animation-delay:${delay}s">
+      return `<div class="card" data-id="${esc(it.id)}" style="animation-delay:${delay}s">
         ${thumb}
         <div class="body">
           <div class="name">${esc(it.name)}<span class="cat-pill">${esc(it.category)}</span></div>
           <div class="meta">${meta}</div>
           <div class="cost">${cost}</div>
           ${note}
-          <div class="archived-tag">💜 圆满告别 · ${esc(it.archiveReason||'')}</div>
+          <div class="archived-tag">💜 断·舍·离 · ${esc(it.archiveReason||'')}</div>
           ${fn}
           <div class="arch-actions">
             <button class="restore" data-act="restore" data-id="${it.id}">恢复陪伴</button>
@@ -698,6 +798,41 @@
     clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),1800);
   }
   function vibrate(ms){if(navigator.vibrate)try{navigator.vibrate(ms);}catch(e){}}
+  let _audioCtx;
+  function playChime(){
+    try{
+      const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+      _audioCtx=_audioCtx||new AC();
+      if(_audioCtx.state==='suspended')_audioCtx.resume();
+      const now=_audioCtx.currentTime;
+      const notes=[523.25,659.25,783.99,1046.5];
+      notes.forEach((f,i)=>{
+        const o=_audioCtx.createOscillator(),g=_audioCtx.createGain();
+        o.type='triangle';o.frequency.value=f;
+        const t=now+i*0.12;
+        g.gain.setValueAtTime(0.0001,t);
+        g.gain.exponentialRampToValueAtTime(0.22,t+0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001,t+0.4);
+        o.connect(g).connect(_audioCtx.destination);
+        o.start(t);o.stop(t+0.45);
+      });
+    }catch(e){}
+  }
+  function celebrate(){
+    if(document.querySelector('.confetti'))return;
+    const wrap=document.createElement('div');wrap.className='confetti';
+    const emojis=['🎉','✨','💜','🌟','🎊'];
+    for(let i=0;i<16;i++){
+      const s=document.createElement('span');
+      s.textContent=emojis[i%emojis.length];
+      s.style.left=(Math.random()*94+3)+'%';
+      s.style.animationDelay=(Math.random()*0.35)+'s';
+      s.style.fontSize=(14+Math.random()*18)+'px';
+      wrap.appendChild(s);
+    }
+    document.body.appendChild(wrap);
+    setTimeout(()=>wrap.remove(),1800);
+  }
 
   /* ---------- overlay ---------- */
   function openOverlay(id){document.getElementById(id).classList.add('show');}
@@ -710,18 +845,56 @@
 
   /* ---------- add form ---------- */
   function resetForm(){
-    formMode='day';newImage=null;
+    formMode='day';newImage=null;editingId=null;
     document.getElementById('f_name').value='';
     document.getElementById('f_price').value='';
     document.getElementById('f_date').value=new Date().toISOString().slice(0,10);
     document.getElementById('f_note').value='';
-    document.getElementById('f_img').style.display='none';
-    document.getElementById('f_ph').style.display='flex';
+    document.getElementById('f_emoji').value='';
+    document.querySelectorAll('#f_emojiRow .chip').forEach(c=>c.classList.remove('on'));
     document.getElementById('f_file').value='';
     const sel=document.getElementById('f_cat');
     if(sel.options.length===0)CATEGORIES.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;sel.appendChild(o);});
     sel.value=CATEGORIES[0];
     document.querySelectorAll('#f_mode button').forEach(b=>b.classList.toggle('on',b.dataset.m==='day'));
+    updateImagePreview();
+  }
+  function updateImagePreview(){
+    const img=document.getElementById('f_img');
+    const ph=document.getElementById('f_ph');
+    if(newImage&&newImage.indexOf('data:')===0){
+      img.src=newImage;img.style.display='block';ph.style.display='none';
+    }else if(newImage){
+      ph.innerHTML='<span style="font-size:30px">'+esc(newImage)+'</span><span>emoji 封面</span>';
+      ph.style.display='flex';img.style.display='none';
+    }else{
+      ph.innerHTML='<span class="ic">📷</span><span>点击上传 / 拍照</span>';ph.style.display='flex';img.style.display='none';
+    }
+    document.querySelectorAll('#f_emojiRow .chip').forEach(c=>c.classList.toggle('on',c.dataset.emoji===newImage));
+  }
+  function setFormModeUI(isEdit){
+    document.getElementById('f_title').textContent=isEdit?'编辑好物':'添一件好物';
+    document.getElementById('f_sub').textContent=isEdit?'修改它的信息，继续好好陪伴 ✏️':'认真记录，物尽其用 ✨';
+    document.getElementById('f_submit').textContent=isEdit?'保存修改':'收入陪伴册';
+  }
+  function openAdd(){resetForm();setFormModeUI(false);openOverlay('addOverlay');}
+  function openEdit(id){
+    const it=state.items.find(x=>x.id===id);if(!it)return;
+    editingId=id;
+    document.getElementById('f_name').value=it.name;
+    document.getElementById('f_price').value=it.price;
+    document.getElementById('f_date').value=it.purchaseDate;
+    document.getElementById('f_note').value=it.note||'';
+    const sel=document.getElementById('f_cat');
+    if(sel.options.length===0)CATEGORIES.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;sel.appendChild(o);});
+    sel.value=it.category;
+    formMode=it.mode;
+    document.querySelectorAll('#f_mode button').forEach(b=>b.classList.toggle('on',b.dataset.m===formMode));
+    newImage=it.image||null;
+    document.getElementById('f_emoji').value=(newImage&&newImage.indexOf('data:')!==0)?newImage:'';
+    updateImagePreview();
+    setFormModeUI(true);
+    openOverlay('addOverlay');
   }
 
   function compressImage(file,cb){
@@ -740,7 +913,7 @@
     reader.readAsDataURL(file);
   }
 
-  function submitAdd(){
+  function submitForm(){
     const name=document.getElementById('f_name').value.trim();
     const price=parseFloat(document.getElementById('f_price').value);
     const date=document.getElementById('f_date').value;
@@ -749,11 +922,23 @@
     if(!name){toast('给好物起个名字吧');return;}
     if(isNaN(price)||price<0){toast('请填写有效的价格');return;}
     if(!date){toast('请选择入手日期');return;}
-    const item={
-      id:'it_'+Date.now(),name,price,purchaseDate:date,category:cat,mode:formMode,
-      useCount:formMode==='count'?0:1,lastCheckin:null,image:newImage||'',note,status:'active',archiveReason:'',farewellNote:''
-    };
-    state.items.unshift(item);save();closeOverlay('addOverlay');render();toast('已收入陪伴册 💜');vibrate(20);
+    if(editingId){
+      const it=state.items.find(x=>x.id===editingId);
+      if(it){
+        it.name=name;it.price=price;it.purchaseDate=date;it.category=cat;
+        it.mode=formMode;it.note=note;
+        it.image=newImage!=null?newImage:it.image;
+        if(formMode==='count'&&(typeof it.useCount!=='number'||it.useCount<0))it.useCount=0;
+        save();
+      }
+      closeOverlay('addOverlay');render();toast('已更新 ✏️');vibrate(20);
+    }else{
+      const item={
+        id:'it_'+Date.now(),name,price,purchaseDate:date,category:cat,mode:formMode,
+        useCount:formMode==='count'?0:1,lastCheckin:null,image:newImage||'',note,status:'active',archiveReason:'',farewellNote:''
+      };
+      state.items.unshift(item);save();closeOverlay('addOverlay');render();toast('已收入陪伴册 💜');vibrate(20);
+    }
   }
 
   /* ---------- farewell ---------- */
@@ -761,7 +946,7 @@
     const it=state.items.find(x=>x.id===id);if(!it)return;
     pendingId=id;
     document.getElementById('farewellMsg').textContent=
-      `感谢「${it.name}」陪伴了你 ${daysSince(it.purchaseDate)} 天。放手，也是一种轻盈。`;
+      `感谢「${it.name}」陪伴了你 ${companionDays(it)} 天。放手，也是一种轻盈。`;
     document.getElementById('farewellNote').value='';
     document.querySelectorAll('#reasons input').forEach(r=>r.checked=false);
     document.querySelectorAll('#reasons label').forEach(l=>l.classList.remove('on'));
@@ -773,7 +958,7 @@
     const note=document.getElementById('farewellNote').value.trim();
     if(!note){toast('写句告别评语再走吧 💬');return;}
     it.status='archived';it.archiveReason=r?r.value:'闲置处理';it.farewellNote=note;
-    save();closeOverlay('farewellOverlay');render();toast('已移入陪伴回忆录 📖');vibrate(30);
+    save();closeOverlay('farewellOverlay');render();celebrate();playChime();toast('🎉 已圆满告别，轻装上阵！');vibrate(30);
   }
 
   /* ---------- status management ---------- */
@@ -834,50 +1019,95 @@
     saveStatuses();closeOverlay('statusEditOverlay');render();toast('状态已保存 ✨');
   }
 
+  /* ---------- shared actions ---------- */
+  function actEdit(id){openEdit(id);}
+  function actFarewell(id){openFarewell(id);}
+  function actRestore(id){
+    const it=state.items.find(x=>x.id===id);if(!it)return;
+    it.status='active';it.archiveReason='';it.farewellNote='';save();render();toast('欢迎回到陪伴中 💜');
+  }
+  function actDel(id){
+    askConfirm('确定删除这条回忆记录吗？此操作不可撤销。',()=>{
+      state.items=state.items.filter(x=>x.id!==id);save();render();toast('已删除');
+    },'删除记录');
+  }
+
   /* ---------- events ---------- */
   document.getElementById('app').addEventListener('click',e=>{
     const t=e.target.closest('[data-act],[data-tab],[data-cat],#gearBtn');if(!t)return;
     if(t.id==='gearBtn'){openStatusManage();return;}
-    if(t.dataset.tab){state.tab=t.dataset.tab;render();return;}
-    if(t.dataset.cat){state.category=t.dataset.cat;render();return;}
+    if(t.dataset.tab){state.tab=t.dataset.tab;state.page=1;render();return;}
+    if(t.dataset.cat){state.category=t.dataset.cat;state.page=1;render();return;}
     const act=t.dataset.act,id=t.dataset.id;
+    if(act==='page'){const np=+t.dataset.page;if(np>=1){state.page=np;render();}return;}
+    if(act==='edit'){actEdit(id);return;}
     if(act==='checkin'){
       const it=state.items.find(x=>x.id===id);if(!it)return;
       it.useCount++;it.lastCheckin=new Date().toISOString().slice(0,10);save();render();
       const btn=document.querySelector('.checkin[data-id="'+id+'"]');
       if(btn){btn.classList.add('pop');setTimeout(()=>btn.classList.remove('pop'),420);}
       toast('已打卡 +1 ✨');vibrate(15);
-    }else if(act==='farewell'){openFarewell(id);}
-    else if(act==='restore'){
-      const it=state.items.find(x=>x.id===id);if(!it)return;
-      it.status='active';it.archiveReason='';it.farewellNote='';save();render();toast('欢迎回到陪伴中 💜');
-    }else if(act==='ignore'){
+    }else if(act==='farewell'){actFarewell(id);}
+    else if(act==='restore'){actRestore(id);}
+    else if(act==='ignore'){
       if(!dismissed.includes(id))dismissed.push(id);
       localStorage.setItem(REMIND_KEY,JSON.stringify(dismissed));render();
     }else if(act==='ignoreAll'){
       negativeItems().forEach(it=>{if(!dismissed.includes(it.id))dismissed.push(it.id);});
       localStorage.setItem(REMIND_KEY,JSON.stringify(dismissed));render();toast('已忽略提醒');
-    }else if(act==='del'){
-      askConfirm('确定删除这条回忆记录吗？此操作不可撤销。',()=>{
-        state.items=state.items.filter(x=>x.id!==id);save();render();toast('已删除');
-      },'删除记录');
-    }
+    }else if(act==='del'){actDel(id);}
   });
 
+  /* ---------- long press / context menu ---------- */
+  function openCtx(id){
+    const it=state.items.find(x=>x.id===id);if(!it)return;
+    const menu=document.getElementById('ctxMenu');
+    const items=it.status==='active'
+      ?[['✏️ 编辑物品','edit',id],['💜 圆满告别','farewell',id],['🗑️ 删除记录','del',id]]
+      :[['✏️ 编辑物品','edit',id],['↩️ 恢复陪伴','restore',id],['🗑️ 删除记录','del',id]];
+    menu.innerHTML=items.map(([label,a,iid])=>`<button class="ctx-item" data-ctx="${a}" data-id="${iid}">${label}</button>`).join('');
+    openOverlay('ctxOverlay');
+  }
+  document.getElementById('ctxMenu').addEventListener('click',e=>{
+    const b=e.target.closest('[data-ctx]');if(!b)return;
+    const act=b.dataset.ctx,id=b.dataset.id;closeOverlay('ctxOverlay');
+    if(act==='edit')actEdit(id);
+    else if(act==='farewell')actFarewell(id);
+    else if(act==='restore')actRestore(id);
+    else if(act==='del')actDel(id);
+  });
+  (function(){
+    const appEl=document.getElementById('app');
+    let lpTimer=null;
+    function clear(){if(lpTimer){clearTimeout(lpTimer);lpTimer=null;}}
+    function press(card,on){if(card)card.classList.toggle('pressing',on);}
+    appEl.addEventListener('touchstart',e=>{
+      const card=e.target.closest('.card');if(!card||!card.dataset.id)return;
+      press(card,true);clear();lpTimer=setTimeout(()=>{lpTimer=null;press(card,false);openCtx(card.dataset.id);},480);
+    },{passive:true});
+    appEl.addEventListener('touchmove',()=>{clear();appEl.querySelectorAll('.card.pressing').forEach(c=>c.classList.remove('pressing'));},{passive:true});
+    appEl.addEventListener('touchend',()=>{clear();appEl.querySelectorAll('.card.pressing').forEach(c=>c.classList.remove('pressing'));},{passive:true});
+    appEl.addEventListener('touchcancel',()=>{clear();appEl.querySelectorAll('.card.pressing').forEach(c=>c.classList.remove('pressing'));},{passive:true});
+    appEl.addEventListener('contextmenu',e=>{
+      const card=e.target.closest('.card');if(!card||!card.dataset.id)return;
+      e.preventDefault();openCtx(card.dataset.id);
+    });
+  })();
+
   document.getElementById('app').addEventListener('change',e=>{
-    if(e.target.id==='sortSel'){state.sort=e.target.value;render();}
+    if(e.target.id==='sortSel'){state.sort=e.target.value;state.page=1;render();}
   });
   document.getElementById('app').addEventListener('input',e=>{
-    if(e.target.id==='searchInput'){state.search=e.target.value;updateList();}
+    if(e.target.id==='searchInput'){state.search=e.target.value;state.page=1;updateList();}
   });
   document.getElementById('app').addEventListener('click',e=>{
     if(e.target.id==='searchClear'){
       const inp=document.getElementById('searchInput');
-      if(inp){inp.value='';state.search='';updateList();inp.focus();}
+      if(inp){inp.value='';state.search='';state.page=1;updateList();inp.focus();}
     }
   });
 
-  document.getElementById('fab').addEventListener('click',()=>{resetForm();openOverlay('addOverlay');});
+  document.getElementById('fab').addEventListener('click',openAdd);
   document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>closeOverlay(b.dataset.close)));
   document.getElementById('confirmYes').addEventListener('click',()=>{const cb=confirmCb;confirmCb=null;closeOverlay('confirmOverlay');if(cb)cb();});
   document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)closeOverlay(o.id);}));
@@ -890,9 +1120,20 @@
   document.getElementById('f_upload').addEventListener('click',()=>document.getElementById('f_file').click());
   document.getElementById('f_file').addEventListener('change',e=>{
     const f=e.target.files[0];if(!f)return;
-    compressImage(f,data=>{newImage=data;const img=document.getElementById('f_img');img.src=data;img.style.display='block';document.getElementById('f_ph').style.display='none';});
+    compressImage(f,data=>{newImage=data;document.getElementById('f_emoji').value='';updateImagePreview();});
   });
-  document.getElementById('f_submit').addEventListener('click',submitAdd);
+  document.getElementById('f_emojiRow').addEventListener('click',e=>{
+    const chip=e.target.closest('.chip');if(!chip)return;
+    newImage=chip.dataset.emoji;
+    document.getElementById('f_emoji').value=newImage;
+    updateImagePreview();
+  });
+  document.getElementById('f_emoji').addEventListener('input',e=>{
+    const v=e.target.value.trim();
+    newImage=v?v:null;
+    updateImagePreview();
+  });
+  document.getElementById('f_submit').addEventListener('click',submitForm);
 
   document.querySelectorAll('#reasons label').forEach(l=>l.addEventListener('click',()=>{
     document.querySelectorAll('#reasons label').forEach(x=>x.classList.remove('on'));
