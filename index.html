@@ -163,6 +163,27 @@
   .sheet h3{margin:0 0 4px;font-size:19px;font-weight:800;color:var(--text-main);}
   .sheet .sub{font-size:13px;color:var(--text-sub);margin-bottom:18px;line-height:1.5;}
 
+  /* ===== SETTINGS MENU ROWS ===== */
+  .menu-row{display:flex;align-items:center;width:100%;text-align:left;border:0;background:transparent;color:var(--text-main);font-size:15.5px;font-weight:600;padding:15px 14px;border-radius:14px;cursor:pointer;transition:background .15s;gap:12px;}
+  .menu-row:active{background:var(--primary-soft);}
+  .menu-row .mr-ico{font-size:20px;width:26px;text-align:center;flex:0 0 auto;}
+  .menu-row .mr-tx{flex:1;min-width:0;}
+  .menu-row .mr-ar{color:#c7c3e0;font-size:20px;flex:0 0 auto;}
+
+  /* ===== GUIDE BODY ===== */
+  .guide-body{max-height:62vh;overflow-y:auto;margin-bottom:14px;-webkit-overflow-scrolling:touch;}
+  .guide-body h4{margin:18px 0 6px;font-size:15px;font-weight:800;color:var(--text-main);}
+  .guide-body h4:first-child{margin-top:0;}
+  .guide-body p{margin:0 0 8px;font-size:13.5px;line-height:1.65;color:var(--text-sub);}
+  .guide-body ul{margin:0 0 8px;padding-left:20px;}
+  .guide-body li{font-size:13.5px;line-height:1.6;color:var(--text-sub);margin-bottom:4px;}
+  .guide-body b{color:var(--text-main);font-weight:700;}
+  .guide-body table{width:100%;border-collapse:collapse;margin:0 0 8px;font-size:12.5px;}
+  .guide-body th,.guide-body td{border:1px solid var(--line);padding:7px 9px;text-align:left;color:var(--text-sub);vertical-align:top;}
+  .guide-body th{background:var(--primary-soft);color:var(--primary);font-weight:700;}
+  .guide-body code{background:#F1EEFB;padding:1px 6px;border-radius:6px;font-size:12px;color:var(--primary);}
+  .guide-body .tip{background:#F7F6FC;border-radius:12px;padding:10px 12px;margin:0 0 10px;font-size:13px;color:#7c8196;line-height:1.6;}
+
   .field{margin-bottom:15px;}
   .field label{display:block;font-size:13px;font-weight:600;color:var(--text-main);margin-bottom:7px;}
   .field input,.field textarea,.field select{
@@ -340,9 +361,104 @@
     <div class="sub">按你和物品的关系自定义状态；标记为「消极」的状态会拉低轻盈度，提醒你断舍离。</div>
     <div id="statusList"></div>
     <button class="btn-primary" id="addStatus">+ 新增状态</button>
-    <button class="btn-ghost" id="exportBtn">📤 导出备份</button>
-    <button class="btn-ghost" id="importBtn">📥 导入备份</button>
+  </div>
+</div>
+
+<!-- Settings -->
+<div class="overlay" id="settingsOverlay">
+  <div class="sheet">
+    <div class="ctx-handle"></div>
+    <h3>设置</h3>
+    <div class="sub">管理你的物品陪伴方式</div>
+    <button class="menu-row" data-set="rules"><span class="mr-ico">⚙️</span><span class="mr-tx">状态与关系规则</span><span class="mr-ar">›</span></button>
+    <button class="menu-row" data-set="guide"><span class="mr-ico">📖</span><span class="mr-tx">使用指南</span><span class="mr-ar">›</span></button>
+    <button class="menu-row" id="exportBtn"><span class="mr-ico">📤</span><span class="mr-tx">备份数据</span><span class="mr-ar">›</span></button>
+    <button class="menu-row" id="importBtn"><span class="mr-ico">📥</span><span class="mr-tx">还原数据</span><span class="mr-ar">›</span></button>
     <input id="importFile" type="file" accept="application/json,.json" style="display:none" />
+    <button class="ctx-cancel" data-close="settingsOverlay">关闭</button>
+  </div>
+</div>
+
+<!-- User Guide -->
+<div class="overlay" id="guideOverlay">
+  <div class="sheet">
+    <div class="ctx-handle"></div>
+    <h3>使用指南</h3>
+    <div class="sub">一本会陪你算账的物品陪伴记录册 🌿</div>
+    <div class="guide-body">
+      <h4>这是什么？</h4>
+      <p>轻盈生活不是普通记账 App。它不只问「花了多少钱」，更问「<b>值不值</b>」——把每件物品的成本摊薄到每一天或每一次使用，让你看清物尽其用的快乐，也温柔提醒你该说再见。</p>
+
+      <h4>第一次打开</h4>
+      <p>电脑双击 <code>index.html</code> 即可；或在该文件夹运行 <code>python -m http.server 8123</code> 后访问 <code>http://127.0.0.1:8123/</code>。手机连同一局域网访问 <code>http://&lt;电脑IP&gt;:8123/</code>。首次打开有几件示例好物。所有数据只存在本机浏览器，<b>不上传任何服务器</b>。</p>
+
+      <h4>添加第一件好物</h4>
+      <ul>
+        <li>点「＋ 添一件好物」，填写名称 / 价格 / 入手日期 / 分类。</li>
+        <li>选择计费模式（见下），可选封面（照片或 emoji）。</li>
+        <li>想改已添加的物品？<b>轻点它的封面缩略图</b>即可直接编辑。</li>
+      </ul>
+
+      <h4>两种计费模式，怎么选？</h4>
+      <table>
+        <tr><th>模式</th><th>适合</th><th>成本算法</th></tr>
+        <tr><td>按天 📅</td><td>天天在用的：键盘、衣服、家具</td><td>日均 = 价格 ÷ 陪伴天数（从第 1 天算起，刚买即 = 原价）</td></tr>
+        <tr><td>按次 ✋</td><td>偶尔用的：相机、健身环、游戏</td><td>单次 = 价格 ÷ 打卡次数；<b>0 次 = ∞</b></td></tr>
+      </table>
+      <p class="tip">💡 天天用的选「按天」，越用越便宜；偶尔用的选「按次」，每次用了点一下卡片上的 <b>＋1</b> 打卡。</p>
+
+      <h4>看懂首页看板</h4>
+      <ul>
+        <li><b>每日陪伴总成本</b>：所有「按天」物品的日均成本之和。<b>若有「按次」物品 0 次没用过，这里显示「¥X ＋ ∞」</b>——温柔提醒你为它每天在花「无限」的代价。</li>
+        <li><b>在册好物</b>：陪伴中的数量。</li>
+        <li><b>轻盈度</b>：环形进度条，积极状态占比越高越轻盈。</li>
+        <li><b>已圆满告别</b>：已送进回忆录的物品数。</li>
+      </ul>
+      <p class="tip">💡「陪伴天数」从 <b>1 天</b> 起算，刚入手显示「陪伴 1 天」，日均 = 原价，符合直觉。</p>
+
+      <h4>自定义状态与关系规则</h4>
+      <p>点设置里的「状态与关系规则」，按你和物品的关系自定义状态（✨ 物尽其用 / 🌫️ 独自吃灰 / 💜 新伙伴）。可增删改，标记积极 / 消极 / 中性；还能设判定条件（如「按次且超 20 天没打卡」自动贴「🌫️ 独自吃灰」）。<b>消极状态</b>会拉低轻盈度并触发断舍离提醒。</p>
+
+      <h4>断舍离提醒</h4>
+      <p>消极状态物品会在首页顶部浮现温柔提醒，列出「已吃灰 X 天」。可「去告别」或「忽略」。这步不强求，轻盈生活从不制造焦虑。</p>
+
+      <h4>卡片的三种操作</h4>
+      <ul>
+        <li><b>轻点封面</b> ✏️：编辑这件物品。</li>
+        <li><b>长按卡片（手机）/ 右键（桌面）</b> ✋：弹出「编辑 / 圆满告别 / 删除」菜单。</li>
+        <li><b>＋1 按钮</b>（仅按次模式）：打卡一次。</li>
+      </ul>
+
+      <h4>圆满告别 · 断·舍·离</h4>
+      <p>物品要离场时，别直接删——给它一场圆满告别：长按卡片选「圆满告别」，选原因并写一句告别评语（必填），点「圆满告别」后会 <b>🎉 撒花 + 播放庆祝音效</b>，并收进「陪伴回忆录」。想反悔？在回忆录里长按选「恢复陪伴」即可。直接「删除」会永久清除且不可恢复。</p>
+
+      <h4>搜索、排序与分页</h4>
+      <ul>
+        <li><b>搜索</b>：同时匹配名称与备注 / 心情故事。</li>
+        <li><b>排序</b>：单位成本 高→低 / 低→高、陪伴时间、长久未见。</li>
+        <li><b>分页</b>：每页最多 5 件，底部「上一页 / 下一页」。</li>
+      </ul>
+
+      <h4>备份与还原（换手机不丢）</h4>
+      <p>数据存在浏览器，清缓存或换设备会丢。设置里点「备份数据」下载 <code>light-living-backup-日期.json</code>；「还原数据」选回该文件即可。</p>
+
+      <h4>封面与 emoji</h4>
+      <p>可上传照片（自动压缩 ≤1000px），或直接选 emoji 当封面；名字首字符是 emoji 且没传照片时，会自动用它当封面。</p>
+
+      <h4>常见问题</h4>
+      <ul>
+        <li><b>为什么有 ＋ ∞？</b> 有「按次」物品 0 次没用过，它每天都在无限占用你的心思，去用用或告别吧。</li>
+        <li><b>数据会丢吗？</b> 存在浏览器 LocalStorage，清缓存 / 卸载浏览器会丢，记得定期备份。</li>
+        <li><b>能云端同步吗？</b> 当前纯本地单机版，可手动导出 JSON 传给另一台设备导入。</li>
+        <li><b>长按没反应？</b> 在卡片空白处长按约 0.5 秒；桌面用右键。</li>
+        <li><b>庆祝音效没声？</b> 检查是否静音；音效由 Web Audio 实时合成，离线也能响。</li>
+      </ul>
+
+      <h4>隐私说明</h4>
+      <p>所有数据仅存本机浏览器，不联网、不上传、不分析，无账号、无广告、无追踪。只有你主动「导出」时数据才会离开本机。</p>
+      <p class="tip">🌿 轻盈生活，陪你认真对待拥有的每一件东西，也陪你轻盈地放手。</p>
+    </div>
+    <button class="btn-ghost" data-close="guideOverlay">关闭</button>
   </div>
 </div>
 
@@ -475,7 +591,7 @@
         askConfirm('导入备份将覆盖当前所有物品与状态规则，确定继续？',()=>{
           state.items=data.items;
           if(Array.isArray(data.statuses))state.statuses=data.statuses;
-          save();saveStatuses();closeOverlay('statusOverlay');render();renderStatusList?.();
+          save();saveStatuses();closeOverlay('settingsOverlay');render();renderStatusList?.();
           toast('已从备份还原 📥');
         },'导入备份');
       }catch(err){toast('备份文件无效，请检查');}
@@ -646,7 +762,7 @@
     let html='';
     html+=`
       <header class="hero">
-        <button class="gear" id="gearBtn" aria-label="状态规则">⚙️</button>
+        <button class="gear" id="gearBtn" aria-label="设置">⚙️</button>
         <div class="brand"><span class="dot"></span> 轻盈生活 <small>LIGHT LIVING</small></div>
         <div class="hero-cost">
           <div class="label">每日陪伴总成本</div>
@@ -985,6 +1101,7 @@
         </div>
       </div>`).join('');
   }
+  function openSettings(){openOverlay('settingsOverlay');}
   function openStatusManage(){renderStatusList();openOverlay('statusOverlay');}
   function openStatusEdit(id){
     editingIsNew=!id;
@@ -1035,7 +1152,7 @@
   /* ---------- events ---------- */
   document.getElementById('app').addEventListener('click',e=>{
     const t=e.target.closest('[data-act],[data-tab],[data-cat],#gearBtn');if(!t)return;
-    if(t.id==='gearBtn'){openStatusManage();return;}
+    if(t.id==='gearBtn'){openSettings();return;}
     if(t.dataset.tab){state.tab=t.dataset.tab;state.page=1;render();return;}
     if(t.dataset.cat){state.category=t.dataset.cat;state.page=1;render();return;}
     const act=t.dataset.act,id=t.dataset.id;
@@ -1056,6 +1173,14 @@
       negativeItems().forEach(it=>{if(!dismissed.includes(it.id))dismissed.push(it.id);});
       localStorage.setItem(REMIND_KEY,JSON.stringify(dismissed));render();toast('已忽略提醒');
     }else if(act==='del'){actDel(id);}
+  });
+
+  /* ---------- settings menu ---------- */
+  document.getElementById('settingsOverlay').addEventListener('click',e=>{
+    const r=e.target.closest('[data-set]');if(!r)return;
+    const k=r.dataset.set;
+    if(k==='rules'){closeOverlay('settingsOverlay');openStatusManage();}
+    else if(k==='guide'){closeOverlay('settingsOverlay');openOverlay('guideOverlay');}
   });
 
   /* ---------- long press / context menu ---------- */
