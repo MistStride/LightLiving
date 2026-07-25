@@ -1,5 +1,7 @@
 <view class="page theme-{{theme}} guide">
 
+  <nav-bar title="使用指南" showBack="{{true}}" />
+
   <view class="card">
     <view class="g-h1">为什么是「物尽其轻」</view>
     <view class="g-p">我们买下一件东西，往往是为了让生活更好。可日子久了，很多东西静静地躺在角落，既占地方，又悄悄消耗着我们的注意力与金钱。</view>

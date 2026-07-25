@@ -1,5 +1,7 @@
 <view class="page theme-{{theme}}">
 
+  <nav-bar title="状态与关系规则" showBack="{{true}}" />
+
   <view class="card intro">
     <view class="title">状态与关系规则</view>
     <view class="sub">按你和物品的关系自定义状态。标记为「消极」的状态会拉低轻盈度，并触发断舍离提醒。可设判定条件，例如「未使用天数 ≥ 30 天」自动贴「🌫️ 独自吃灰」。</view>

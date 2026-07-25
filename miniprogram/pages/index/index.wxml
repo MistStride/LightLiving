@@ -2,11 +2,14 @@
 
   <!-- 渐变页头 -->
   <view class="header">
-    <view class="brand">
-      <view class="brand-dot"></view>
-      <view class="brand-tx">物尽其轻<text class="brand-sub">LIGHT LIVING</text></view>
+    <view class="status-spacer" style="height: {{statusBarHeight}}px;"></view>
+    <view class="h-top">
+      <view class="brand">
+        <view class="brand-dot"></view>
+        <view class="brand-tx">物尽其轻<text class="brand-sub">LIGHT LIVING</text></view>
+      </view>
+      <view class="gear" bindtap="goSettings">⚙</view>
     </view>
-    <view class="gear" bindtap="goSettings">⚙</view>
 
     <view class="hero-cost">
       <view class="label">总投入</view>

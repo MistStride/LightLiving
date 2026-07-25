@@ -37,6 +37,7 @@ Page({
   data: {
     items: [],
     theme: 'mint',
+    statusBarHeight: 20,
     tab: 'active',
     cats: ['全部'],
     filterCat: '全部',
@@ -58,6 +59,13 @@ Page({
       { key: 'active', label: '陪伴中' },
       { key: 'gone', label: '圆满告别' }
     ]
+  },
+
+  onLoad() {
+    try {
+      const info = (wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync());
+      this.setData({ statusBarHeight: info.statusBarHeight || 20 });
+    } catch (e) { /* 忽略 */ }
   },
 
   onShow() {

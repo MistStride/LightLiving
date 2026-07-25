@@ -1,5 +1,7 @@
 <view class="page theme-{{theme}}">
 
+  <nav-bar title="物品分类" showBack="{{true}}" />
+
   <view class="card intro">
     <view class="title">物品分类管理</view>
     <view class="sub">点分类名可重命名，删除时其中的物品会自动改派到其他分类。新增分类让你统计更清晰。</view>

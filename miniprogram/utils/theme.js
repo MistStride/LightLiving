@@ -6,7 +6,8 @@ const THEMES = {
     navBg: '#3fae8e',
     navText: '#ffffff',
     bg: '#e6f6ee',
-    primary: '#3fae8e'
+    primary: '#3fae8e',
+    dot: '#3fae8e'
   },
   purple: {
     key: 'purple',
@@ -14,7 +15,8 @@ const THEMES = {
     navBg: '#7c6ff0',
     navText: '#ffffff',
     bg: '#f3eefe',
-    primary: '#8b5cf6'
+    primary: '#8b5cf6',
+    dot: '#8b5cf6'
   },
   night: {
     key: 'night',
@@ -22,16 +24,18 @@ const THEMES = {
     navBg: '#1f2624',
     navText: '#e6efeb',
     bg: '#15191a',
-    primary: '#6fd3b5'
+    primary: '#6fd3b5',
+    dot: '#000000'
   }
 };
 
-// 在页面 onShow 调用，按主题设置微信导航栏颜色 + 窗口背景（消除夜间白色 overscroll）
+// 在页面 onShow 调用，按主题设置微信状态栏/导航栏文字色 + 窗口背景
+// 说明：自定义导航栏下，状态栏背景由页面底色透出——薄荷/鸢尾底色浅，状态栏图标须用黑色；星夜底色深，用白色。
 function applyNav(themeKey) {
   const t = THEMES[themeKey] || THEMES.mint;
-  // 三套主题的导航栏底色都偏深（薄荷绿 / 鸢尾紫 / 星夜黑），统一用白字最清晰
+  const front = (t.key === 'night') ? '#ffffff' : '#000000';
   wx.setNavigationBarColor({
-    frontColor: '#ffffff',
+    frontColor: front,
     backgroundColor: t.navBg,
     animation: { duration: 200, timingFunc: 'easeIn' }
   });

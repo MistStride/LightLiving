@@ -1,0 +1,23 @@
+/* 自定义导航栏：透明背景，颜色由页面底色透出，避免夜间顶部白色块 */
+.nb { width: 100%; background: transparent; }
+.nb-status { width: 100%; }
+.nb-bar {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 0 24rpx;
+}
+.nb-back {
+  font-size: 52rpx;
+  line-height: 1;
+  color: var(--text);
+  margin-right: 6rpx;
+  padding: 0 8rpx;
+}
+.nb-back:active { opacity: .6; }
+.nb-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: var(--text);
+}

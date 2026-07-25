@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText": "添一件好物",
-  "usingComponents": {}
+  "usingComponents": {
+    "nav-bar": "/components/nav-bar/nav-bar"
+  }
 }

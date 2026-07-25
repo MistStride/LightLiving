@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText": "状态与关系规则",
-  "usingComponents": {}
+  "usingComponents": {
+    "nav-bar": "/components/nav-bar/nav-bar"
+  }
 }

@@ -9,6 +9,7 @@
     "pages/backup/backup"
   ],
   "window": {
+    "navigationStyle": "custom",
     "navigationBarBackgroundColor": "#57b89c",
     "navigationBarTitleText": "物尽其轻",
     "navigationBarTextStyle": "white",

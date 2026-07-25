@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText": "物品分类管理",
-  "usingComponents": {}
+  "usingComponents": {
+    "nav-bar": "/components/nav-bar/nav-bar"
+  }
 }

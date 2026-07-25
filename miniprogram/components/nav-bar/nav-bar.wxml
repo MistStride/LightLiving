@@ -1,0 +1,8 @@
+<view class="nb">
+  <view class="nb-status" style="height: {{statusBarHeight}}px;"></view>
+  <view class="nb-bar">
+    <view wx:if="{{showBack}}" class="nb-back" bindtap="onBack">‹</view>
+    <view class="nb-title">{{title}}</view>
+    <slot name="right"></slot>
+  </view>
+</view>

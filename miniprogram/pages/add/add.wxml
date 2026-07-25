@@ -1,5 +1,7 @@
 <view class="page theme-{{theme}}">
 
+  <nav-bar title="{{isEdit ? '编辑好物' : '添一件好物'}}" showBack="{{true}}" />
+
   <view class="card">
     <!-- 封面 + emoji：并排，照片与图标二选一 -->
     <view class="field-label">封面（拍照 / 图标，二选一）</view>

@@ -1,5 +1,7 @@
 <view class="page theme-{{theme}}">
 
+  <nav-bar title="数据备份与恢复" showBack="{{true}}" />
+
   <view class="card intro">
     <view class="title">数据备份与恢复</view>
     <view class="sub">每次改动都会自动留一份带时间戳的备份（最近 5 份）。换手机时，点「备份到文件」导出 JSON，到新设备「从文件还原」。</view>
