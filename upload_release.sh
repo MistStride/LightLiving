@@ -3,9 +3,9 @@
 # 脚本用本机已缓存的 GCM 令牌创建 GitHub Release 并上传 APK，令牌不落盘、仅存内存。
 set -e
 REPO="MistStride/LightLiving"
-TAG="v1.1.0"
-APK="/c/Users/shoyo/WorkBuddy/2026-07-24-02-11-13/light-living/android/app/build/outputs/apk/debug/app-debug.apk"
-ASSET="LightLiving-v1.1.0-debug.apk"
+TAG="v1.2.0"
+APK="/c/Users/shoyo/WorkBuddy/2026-07-24-02-11-13/light-living/android/app/build/outputs/apk/release/app-release.apk"
+ASSET="LightLiving-v1.2.0-release.apk"
 
 # curl 不会读 git 的代理配置，这里自动把 git 的 http.proxy 取出来给 curl 用。
 # 在中国网络下，api.github.com / uploads.github.com 必须走代理，否则会卡死。
@@ -30,22 +30,19 @@ fi
 echo "✅ 已获取令牌（长度 ${#TOKEN}）"
 
 NOTES=$(cat <<'EOF'
-# 轻盈生活 Light Living v1.1.0
+# 轻盈生活 Light Living v1.2.0
 
-本次 APK 同步了最新前端（上一个 Release 的 APK 停留在 v4，缺了以下功能）。
+本次 APK 同步了最新前端，并新增英语切换。
 
 ## 新增 / 优化
-- 点击封面即可编辑物品
-- 单位成本排序方向修正；长久未见显示「上次使用 X 天前 / 已吃灰 X 天」
-- 分页浏览（每页 5 个）、emoji 封面（名字首字符为 emoji 且无图时默认显示）
-- 陪伴从 1 天算起；按次模式 0 次 = ∞，看板显示「¥X ＋ ∞」
-- 长按卡片（或桌面右键）唤起操作菜单（编辑 / 圆满告别 / 删除）
-- 「温柔归档」→「圆满告别」；归档/统计/标签 →「断·舍·离」；圆满告别撒花 + 音效
-- 告别文案改为「放手，轻盈地生活。」
-- 完整《使用指南》内置到右上角 ⚙️ 设置面板
+- 三套主题：竹杖(mint) / 鸢尾(purple) / 星夜(night)，设置内一键切换
+- 首页底部主题诗句（中英双语），随主题变化
+- 全新功能：切换语言 → English，界面与使用指南全量英译
+- 修复：设置面板点 English 无反应、菜单跳转失效的 Bug
+- 主题 / 语言选择本地持久化
 
 ## 安装
-debug 签名 APK，自用与朋友分享足够。手机开启「允许安装未知来源应用」后点击 APK 安装（同机可覆盖旧版）。
+正式签名 APK。手机开启「允许安装未知来源应用」后点击安装（同机可覆盖旧版）。
 
 ## 隐私
 所有数据仅存于本机 LocalStorage，无网络请求、无账号。

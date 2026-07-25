@@ -1,0 +1,101 @@
+name: Build & Release APK
+
+# Builds the Light Living Android release APK and publishes it as a GitHub Release.
+# Triggers:
+#   - push of a tag matching v*  (recommended: bump android/app/build.gradle, commit, then `git tag vX.Y.Z && git push origin vX.Y.Z`)
+#   - manual "Run workflow" from the Actions tab (enter the tag name, e.g. v1.2.0)
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag (e.g. v1.2.0)'
+        required: true
+        default: 'v1.2.0'
+
+permissions:
+  contents: write   # needed to create the GitHub Release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'gradle'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Capacitor CLI
+        run: npm ci
+
+      - name: Sync web assets into the Android project
+        run: |
+          node copy-web.js
+          npx cap sync android
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          api-level: 36
+          build-tools: 36.0.0
+          # setup-android accepts licenses and installs platform-tools + the requested platform/build-tools
+
+      - name: Write local.properties (signing)
+        working-directory: android
+        env:
+          KEYPW: ${{ secrets.LIGHTLIVING_KEYSTORE_PASSWORD }}
+        run: |
+          # The release keystore (android/lightliving-release.keystore) is committed to the repo.
+          # Password: prefer the repo Secret; fall back to the known self-sign password so releases
+          # work out-of-the-box for this personal distribution. For production, set the Secret and
+          # remove the fallback, or rotate the keystore.
+          PW="${KEYPW:-gisFbA2-Q03XFI5_SMQlEQ}"
+          {
+            echo "sdk.dir=$ANDROID_HOME"
+            echo "lightliving_store_file=lightliving-release.keystore"
+            echo "lightliving_key_alias=lightliving"
+            echo "lightliving_store_password=$PW"
+            echo "lightliving_key_password=$PW"
+          } > local.properties
+
+      - name: Build release APK
+        working-directory: android
+        run: ./gradlew assembleRelease --no-daemon
+
+      - name: Upload APK to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.tag || github.ref_name }}
+          name: Light Living ${{ github.event.inputs.tag || github.ref_name }}
+          body: |
+            # 轻盈生活 Light Living — ${{ github.event.inputs.tag || github.ref_name }}
+
+            ## 新增 / 优化
+            - 三套主题：竹杖(mint) / 鸢尾(purple) / 星夜(night)，设置内一键切换，色系随 CSS 变量切换
+            - 首页底部主题诗句（中英双语），随主题变化
+            - **全新功能：切换语言 → English**，设置内一键切换，界面与使用指南全量英译
+            - 修复：设置面板点「English」无反应、且菜单跳转失效的 Bug（`<html data-theme>` 误拦截点击）
+            - 主题 / 语言选择均本地持久化，下次打开记住偏好
+
+            ## 安装
+            正式签名 APK。手机开启「允许安装未知来源应用」后点击安装（同机可覆盖旧版）。
+
+            ## 隐私
+            所有数据仅存于本机 LocalStorage，无网络请求、无账号。
+          files: android/app/build/outputs/apk/release/app-release.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
