@@ -22,4 +22,9 @@
 .mr-tx { flex: 1; font-size: 30rpx; }
 .mr-ar { color: var(--text-soft); font-size: 36rpx; }
 
-.foot { text-align: center; font-size: 22rpx; padding: 40rpx 40rpx; line-height: 1.7; }
+.foot { text-align: center; padding: 56rpx 48rpx 80rpx; line-height: 1.7; }
+.foot-poem {
+  font-size: 28rpx; font-weight: 600; color: var(--primary); letter-spacing: 1rpx;
+  font-family: "Songti SC", "STSong", serif;
+}
+.foot-from { font-size: 21rpx; margin-top: 14rpx; font-family: "Songti SC", "STSong", serif; }

@@ -7,7 +7,9 @@ const THEMES = {
     navText: '#ffffff',
     bg: '#e6f6ee',
     primary: '#3fae8e',
-    dot: '#3fae8e'
+    dot: '#3fae8e',
+    poem: '竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。',
+    poemFrom: '— 苏轼《定风波》'
   },
   purple: {
     key: 'purple',
@@ -16,7 +18,9 @@ const THEMES = {
     navText: '#ffffff',
     bg: '#f3eefe',
     primary: '#8b5cf6',
-    dot: '#8b5cf6'
+    dot: '#8b5cf6',
+    poem: '庄生晓梦迷蝴蝶，望帝春心托杜鹃。',
+    poemFrom: '— 李商隐《锦瑟》'
   },
   night: {
     key: 'night',
@@ -25,7 +29,9 @@ const THEMES = {
     navText: '#e6efeb',
     bg: '#15191a',
     primary: '#6fd3b5',
-    dot: '#000000'
+    dot: '#000000',
+    poem: '醉后不知天在水，满船清梦压星河。',
+    poemFrom: '— 唐珙《题龙阳县青草湖》'
   }
 };
 

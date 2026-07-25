@@ -5,13 +5,16 @@ const themeMod = require('../../utils/theme.js');
 Page({
   data: {
     theme: 'mint',
-    themes: []
+    themes: [],
+    poem: '',
+    poemFrom: ''
   },
 
   onShow() {
     const t = store.getTheme();
     app.globalData.theme = t;
-    this.setData({ theme: t, themes: themeMod.list() });
+    const th = themeMod.THEMES[t] || themeMod.THEMES.mint;
+    this.setData({ theme: t, themes: themeMod.list(), poem: th.poem, poemFrom: th.poemFrom });
     themeMod.applyNav(t);
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 1, theme: t });
@@ -21,7 +24,8 @@ Page({
   pickTheme(e) {
     const key = e.currentTarget.dataset.key;
     app.setTheme(key);
-    this.setData({ theme: key });
+    const th = themeMod.THEMES[key] || themeMod.THEMES.mint;
+    this.setData({ theme: key, poem: th.poem, poemFrom: th.poemFrom });
     themeMod.applyNav(key);
     const bar = (typeof this.getTabBar === 'function') ? this.getTabBar() : null;
     if (bar) bar.setData({ theme: key });
