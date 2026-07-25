@@ -1,33 +1,45 @@
-.field-label { font-size: 26rpx; color: var(--text-soft); margin: 24rpx 0 12rpx; }
+.field-label { font-size: 26rpx; color: var(--text-soft); margin: 28rpx 0 14rpx; }
+.field-label:first-child { margin-top: 4rpx; }
 
-.emoji-row { display: flex; flex-wrap: wrap; }
+/* 封面：大块可点区域 */
+.cover { display: flex; align-items: center; gap: 24rpx; }
+.cover-main {
+  width: 200rpx; height: 200rpx; border-radius: 24rpx; flex: 0 0 auto; overflow: hidden;
+  background: linear-gradient(135deg, var(--primary-soft), var(--secondary-soft));
+  display: flex; align-items: center; justify-content: center; position: relative;
+  box-shadow: 0 8rpx 24rpx var(--shadow);
+}
+.cover-main:active { transform: scale(.97); }
+.cover-img { width: 100%; height: 100%; }
+.cover-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12rpx; }
+.cover-ic { font-size: 60rpx; }
+.cover-tx { font-size: 22rpx; color: var(--text-soft); }
+.cover-remove {
+  font-size: 24rpx; color: var(--danger); background: var(--surface-2);
+  border: 1rpx solid var(--border); padding: 14rpx 24rpx; border-radius: 14rpx;
+}
+.cover-remove:active { opacity: .7; }
+
+/* emoji 网格 */
+.emoji-grid { display: flex; flex-wrap: wrap; gap: 16rpx; }
 .emoji-opt {
-  width: 78rpx; height: 78rpx; border-radius: 18rpx; margin: 0 12rpx 12rpx 0;
-  display: flex; align-items: center; justify-content: center; font-size: 42rpx;
+  width: 84rpx; height: 84rpx; border-radius: 18rpx;
+  display: flex; align-items: center; justify-content: center; font-size: 44rpx;
   background: var(--surface-2); border: 2rpx solid var(--border);
 }
-.emoji-opt.on { border-color: var(--primary); background: var(--primary-soft); }
+.emoji-opt.on { border-color: var(--primary); background: var(--primary-soft); box-shadow: 0 6rpx 16rpx -4rpx var(--shadow); }
+.emoji-opt.custom { width: 130rpx; padding: 0 12rpx; }
+.emoji-input { width: 100%; text-align: center; font-size: 26rpx; color: var(--text); }
 
-.cover-box { display: flex; align-items: center; gap: 24rpx; }
-.cover-img { width: 160rpx; height: 160rpx; border-radius: 20rpx; object-fit: cover; flex: 0 0 auto; }
-.cover-ph {
-  width: 160rpx; height: 160rpx; border-radius: 20rpx; flex: 0 0 auto;
-  background: linear-gradient(135deg, var(--primary-soft), var(--secondary-soft));
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8rpx;
-}
-.cover-ic { font-size: 48rpx; }
-.cover-tx { font-size: 20rpx; color: var(--text-soft); }
-.cover-actions { display: flex; flex-direction: column; gap: 14rpx; flex: 1; }
-.cover-btn {
-  background: var(--primary); color: #fff; font-size: 26rpx; font-weight: 600;
-  padding: 18rpx 0; border-radius: 14rpx; text-align: center;
-}
-.cover-btn.ghost { background: var(--surface-2); color: var(--text-soft); border: 1rpx solid var(--border); }
+/* 两列布局 */
+.row2 { display: flex; gap: 20rpx; }
+.row2 .col { flex: 1; min-width: 0; }
 
 .input {
   background: var(--surface-2); border: 1rpx solid var(--border); border-radius: 16rpx;
-  padding: 22rpx 24rpx; font-size: 30rpx;
+  padding: 22rpx 24rpx; font-size: 30rpx; width: 100%; box-sizing: border-box;
 }
+.input.area { height: 150rpx; }
 .picker {
   background: var(--surface-2); border: 1rpx solid var(--border); border-radius: 16rpx;
   padding: 22rpx 24rpx; font-size: 30rpx; color: var(--text);

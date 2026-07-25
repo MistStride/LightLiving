@@ -11,6 +11,7 @@ Page({
     isEdit: false,
     name: '',
     emoji: '✨',
+    customEmoji: '',
     emojis: EMOJIS,
     image: '',
     cats: [],
@@ -18,7 +19,8 @@ Page({
     price: '',
     mode: 'time',
     purchase: '',
-    useCount: ''
+    useCount: '',
+    note: ''
   },
 
   onLoad(q) {
@@ -38,11 +40,13 @@ Page({
         d.isEdit = true;
         d.name = it.name || '';
         d.emoji = it.emoji || '✨';
+        d.customEmoji = EMOJIS.indexOf(d.emoji) >= 0 ? '' : d.emoji;
         d.image = it.image || '';
         d.price = it.price != null ? String(it.price) : '';
         d.mode = it.mode || 'time';
         d.purchase = it.purchase || store.todayStr();
         d.useCount = it.useCount != null ? String(it.useCount) : '';
+        d.note = it.note || '';
         const ci = cats.indexOf(it.category);
         d.catIndex = ci >= 0 ? ci : 0;
       }
@@ -54,7 +58,13 @@ Page({
   onName(e) { this.setData({ name: e.detail.value }); },
   onPrice(e) { this.setData({ price: e.detail.value }); },
   onUseCount(e) { this.setData({ useCount: e.detail.value }); },
-  onEmoji(e) { this.setData({ emoji: e.detail.currentTarget.dataset.e, image: '' }); },
+  onNote(e) { this.setData({ note: e.detail.value }); },
+  // 注意：tap 事件要用 e.currentTarget.dataset，而不是 e.detail.currentTarget（旧写法会抛错导致点击无反应）
+  onEmoji(e) { this.setData({ emoji: e.currentTarget.dataset.e, customEmoji: '', image: '' }); },
+  onCustomEmoji(e) {
+    const v = e.detail.value;
+    this.setData({ customEmoji: v, emoji: v, image: '' });
+  },
   onCat(e) { this.setData({ catIndex: +e.detail.value }); },
   onMode(e) { this.setData({ mode: e.detail.value }); },
   onDate(e) { this.setData({ purchase: e.detail.value }); },
@@ -99,7 +109,8 @@ Page({
       category: d.cats[d.catIndex],
       price,
       mode: d.mode,
-      purchase: d.purchase
+      purchase: d.purchase,
+      note: (d.note || '').trim()
     };
     if (d.mode === 'use') {
       const uc = parseInt(d.useCount, 10);

@@ -26,7 +26,8 @@ function decorate(it) {
     _idleText: idleText,
     _statuses: sts,
     _neg: sts.some(s => s.positive === false),
-    _archived: !!it.archived
+    _archived: !!it.archived,
+    _note: it.note || ''
   });
 }
 
@@ -34,14 +35,17 @@ Page({
   data: {
     items: [],
     theme: 'mint',
-    tab: '',
+    tab: 'active',
     cats: ['全部'],
     filterCat: '全部',
     sort: 'recent',
+    search: '',
+    emptyTitle: '这里还空空如也',
+    emptySub: '点击右下角 ＋ ，记录第一件陪伴你的好物',
     stats: { total: '¥0', perDay: '¥0', neg: 0, inf: false, count: 0 },
     tabs: [
       { key: 'active', label: '陪伴中' },
-      { key: 'neg', label: '断舍离' }
+      { key: 'gone', label: '圆满告别' }
     ]
   },
 
@@ -59,8 +63,23 @@ Page({
     const cats = ['全部'].concat(store.getCats());
     const st = store.computeStats(store.getItems());
     const lightness = st.count ? Math.round((st.count - st.neg) / st.count * 100) : 0;
+    const kw = (this.data.search || '').trim();
+    const gone = this.data.tab === 'gone';
+    let emptyTitle, emptySub;
+    if (gone) {
+      emptyTitle = '圆满告别区还空着';
+      emptySub = '当一件物品与你温柔告别，它会安静地安放在这里，仍可随时找回。';
+    } else if (kw) {
+      emptyTitle = '没有匹配的好物';
+      emptySub = '换个关键词或分类试试。';
+    } else {
+      emptyTitle = '这里还空空如也';
+      emptySub = '点击右下角 ＋ ，记录第一件陪伴你的好物';
+    }
     this.setData({
       cats,
+      emptyTitle,
+      emptySub,
       stats: {
         total: store.money(st.total),
         perDay: store.money(st.perDay) + (st.inf ? ' ＋ ∞' : ''),
@@ -73,13 +92,15 @@ Page({
   },
 
   applyFilter() {
-    let list = store.getItems().map(decorate);
-    list = list.filter(i => !i._archived);
     const t = this.data.tab;
-    if (t === 'active') list = list.filter(i => !i._neg);
-    else if (t === 'neg') list = list.filter(i => i._neg);
+    let list = store.getItems().map(decorate);
+    if (t === 'gone') list = list.filter(i => i._archived);
+    else list = list.filter(i => !i._archived);
 
     if (this.data.filterCat !== '全部') list = list.filter(i => i.category === this.data.filterCat);
+
+    const kw = (this.data.search || '').trim().toLowerCase();
+    if (kw) list = list.filter(i => (i.name + ' ' + (i.note || '')).toLowerCase().indexOf(kw) >= 0);
 
     const s = this.data.sort;
     if (s === 'cost_desc') list.sort((a, b) => store.perDayCost(b) - store.perDayCost(a));
@@ -88,6 +109,15 @@ Page({
     else list.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
 
     this.setData({ items: list });
+  },
+
+  onSearch(e) {
+    this.setData({ search: e.detail.value });
+    this.applyFilter();
+  },
+  onClearSearch() {
+    this.setData({ search: '' });
+    this.applyFilter();
   },
 
   onTab(e) {

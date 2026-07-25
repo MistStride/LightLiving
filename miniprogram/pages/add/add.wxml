@@ -1,21 +1,28 @@
 <view class="page theme-{{theme}}">
 
   <view class="card">
-    <view class="field-label">封面（上传照片，或选个 emoji）</view>
-    <view class="cover-box">
-      <image wx:if="{{image}}" class="cover-img" src="{{image}}" mode="aspectFill" />
-      <view wx:else class="cover-ph" bindtap="chooseCover">
-        <view class="cover-ic">📷</view>
-        <view class="cover-tx">点击上传 / 拍照</view>
+    <!-- 封面：大块可点区域，照片优先，否则渐变占位 -->
+    <view class="field-label">封面</view>
+    <view class="cover">
+      <view class="cover-main" bindtap="chooseCover">
+        <image wx:if="{{image}}" class="cover-img" src="{{image}}" mode="aspectFill" />
+        <view wx:else class="cover-empty">
+          <view class="cover-ic">📷</view>
+          <view class="cover-tx">点击上传 / 拍照</view>
+        </view>
       </view>
-      <view class="cover-actions">
-        <view class="cover-btn" bindtap="chooseCover">{{image ? '重新上传' : '上传照片'}}</view>
-        <view wx:if="{{image}}" class="cover-btn ghost" bindtap="removeCover">移除照片</view>
-      </view>
+      <view wx:if="{{image}}" class="cover-remove" catchtap="removeCover">✕ 移除照片</view>
     </view>
-    <view class="emoji-row">
+
+    <!-- emoji 封面：一排基础 emoji + 末尾可自定义 -->
+    <view class="field-label">或用 emoji 当封面</view>
+    <view class="emoji-grid">
       <view wx:for="{{emojis}}" wx:key="*this" class="emoji-opt {{emoji === item ? 'on' : ''}}"
         data-e="{{item}}" bindtap="onEmoji">{{item}}</view>
+      <view class="emoji-opt custom {{customEmoji ? 'on' : ''}}">
+        <input class="emoji-input" value="{{customEmoji}}" bindinput="onCustomEmoji"
+          placeholder="自定义" maxlength="4" confirm-type="done" />
+      </view>
     </view>
 
     <view class="field-label">名字</view>
@@ -26,8 +33,18 @@
       <view class="picker">{{cats[catIndex]}} ›</view>
     </picker>
 
-    <view class="field-label">价格（¥）</view>
-    <input class="input" type="digit" placeholder="0.00" value="{{price}}" bindinput="onPrice" />
+    <view class="row2">
+      <view class="col">
+        <view class="field-label">价格（¥）</view>
+        <input class="input" type="digit" placeholder="0.00" value="{{price}}" bindinput="onPrice" />
+      </view>
+      <view class="col">
+        <view class="field-label">入手日期</view>
+        <picker mode="date" value="{{purchase}}" bindchange="onDate">
+          <view class="picker">{{purchase}} ›</view>
+        </picker>
+      </view>
+    </view>
 
     <view class="field-label">计费方式</view>
     <radio-group class="mode-group" bindchange="onMode">
@@ -39,13 +56,11 @@
       </label>
     </radio-group>
 
-    <view class="field-label">入手日期</view>
-    <picker mode="date" value="{{purchase}}" bindchange="onDate">
-      <view class="picker">{{purchase}} ›</view>
-    </picker>
-
     <view wx:if="{{mode === 'use'}}" class="field-label">已使用次数</view>
     <input wx:if="{{mode === 'use'}}" class="input" type="number" placeholder="0" value="{{useCount}}" bindinput="onUseCount" />
+
+    <view class="field-label">备注 / 心情故事</view>
+    <textarea class="input area" placeholder="它陪你做了什么？" value="{{note}}" bindinput="onNote" maxlength="120" />
   </view>
 
   <view class="tip muted">

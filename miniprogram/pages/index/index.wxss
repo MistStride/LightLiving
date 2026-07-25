@@ -1,8 +1,8 @@
 /* ===== 陪伴册首页：对齐原版视觉（渐变 / 磨砂 / 环 / 卡片） ===== */
 
-/* 渐变页头 */
+/* 渐变页头（用主题专属 hero-grad，夜间为深色，不再发绿） */
 .header {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary-soft) 100%);
+  background: var(--hero-grad);
   padding: 40rpx 40rpx 60rpx;
   border-bottom-left-radius: 40rpx;
   border-bottom-right-radius: 40rpx;
@@ -56,6 +56,14 @@
 
 /* 筛选 + 排序 */
 .filterbar { display: flex; align-items: center; gap: 16rpx; padding: 24rpx 32rpx 8rpx; }
+.search {
+  flex: 1; display: flex; align-items: center; gap: 14rpx;
+  background: var(--surface); border: 1rpx solid var(--border);
+  border-radius: 999rpx; padding: 16rpx 28rpx; box-shadow: 0 6rpx 24rpx var(--shadow);
+}
+.search-ic { font-size: 28rpx; opacity: .7; }
+.search-in { flex: 1; font-size: 28rpx; }
+.search-clr { font-size: 26rpx; color: var(--text-soft); padding: 0 6rpx; }
 .chips { flex: 1; white-space: nowrap; }
 .chip {
   display: inline-block; border: 1rpx solid var(--border); background: var(--surface);
@@ -85,6 +93,7 @@
 .meta .b { color: var(--text); font-weight: 700; }
 .tags { margin-top: 16rpx; display: flex; flex-wrap: wrap; gap: 10rpx; }
 .status-pill { font-size: 20rpx; font-weight: 700; padding: 8rpx 16rpx; border-radius: 999rpx; }
+.note { margin-top: 14rpx; font-size: 23rpx; color: var(--text-soft); background: var(--surface-2); padding: 12rpx 18rpx; border-radius: 14rpx; line-height: 1.5; }
 .cost { text-align: right; flex: 0 0 auto; align-self: center; }
 .cost-num { font-size: 36rpx; font-weight: 800; color: var(--primary); }
 .cost-label { font-size: 20rpx; margin-top: 4rpx; }

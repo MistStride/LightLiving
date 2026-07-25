@@ -39,7 +39,14 @@
       data-key="{{item.key}}" bindtap="onTab">{{item.label}}</view>
   </view>
 
-  <!-- 分类筛选 + 排序 -->
+  <!-- 搜索 + 分类筛选 + 排序 -->
+  <view class="filterbar">
+    <view class="search">
+      <text class="search-ic">🔍</text>
+      <input class="search-in" placeholder="搜索名称或备注" value="{{search}}" bindinput="onSearch" confirm-type="search" />
+      <text wx:if="{{search}}" class="search-clr" bindtap="onClearSearch">✕</text>
+    </view>
+  </view>
   <view class="filterbar">
     <scroll-view scroll-x class="chips" enhanced show-scrollbar="{{false}}">
       <view wx:for="{{cats}}" wx:key="*this"
@@ -54,8 +61,8 @@
   <!-- 物品列表 -->
   <view wx:if="{{items.length === 0}}" class="empty">
     <view class="em">🪶</view>
-    <view class="et">这里还空空如也</view>
-    <view class="es">点击右下角 ＋ ，记录第一件陪伴你的好物</view>
+    <view class="et">{{emptyTitle}}</view>
+    <view class="es">{{emptySub}}</view>
   </view>
 
   <view class="list">
@@ -72,6 +79,7 @@
         <view class="tags">
           <text wx:for="{{item._statuses}}" wx:for-item="s" wx:key="id" class="status-pill" style="color:{{s.color}};background:{{s.color}}22">{{s.emoji}} {{s.name}}</text>
         </view>
+        <view wx:if="{{item._note}}" class="note">💬 {{item._note}}</view>
       </view>
       <view class="cost">
         <view class="cost-num">{{item._perUse}}</view>

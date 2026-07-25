@@ -4,6 +4,7 @@
 .theme-mint {
   --bg: #e6f6ee;
   --bg-grad: linear-gradient(165deg, #C9ECDA 0%, #DDF3EC 100%);
+  --hero-grad: linear-gradient(135deg, #3fae8e 0%, #cdeede 100%);
   --surface: #ffffff;
   --surface-2: #f1faf5;
   --primary: #3fae8e;
@@ -20,6 +21,7 @@
 .theme-purple {
   --bg: #f3eefe;
   --bg-grad: linear-gradient(160deg, #E9E3FF 0%, #E0F2FE 100%);
+  --hero-grad: linear-gradient(135deg, #8b5cf6 0%, #e9e3ff 100%);
   --surface: #ffffff;
   --surface-2: #f5f0ff;
   --primary: #8b5cf6;
@@ -36,6 +38,7 @@
 .theme-night {
   --bg: #15191a;
   --bg-grad: linear-gradient(160deg, #1b2127 0%, #13181c 100%);
+  --hero-grad: linear-gradient(135deg, #23433a 0%, #12181c 100%);
   --surface: #1f2624;
   --surface-2: #232b29;
   --primary: #6fd3b5;
