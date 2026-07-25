@@ -39,9 +39,10 @@
 
 .input {
   background: var(--surface-2); border: 1rpx solid var(--border); border-radius: 16rpx;
-  padding: 22rpx 24rpx; font-size: 30rpx; width: 100%; box-sizing: border-box; color: var(--text);
+  padding: 0 24rpx; height: 86rpx; line-height: 86rpx;
+  font-size: 30rpx; width: 100%; box-sizing: border-box; color: var(--text);
 }
-.input.area { height: 160rpx; line-height: 1.5; }
+.input.area { height: 160rpx; line-height: 1.5; padding: 20rpx 24rpx; width: 100%; }
 .picker {
   background: var(--surface-2); border: 1rpx solid var(--border); border-radius: 16rpx;
   padding: 22rpx 24rpx; font-size: 30rpx; color: var(--text); box-sizing: border-box;
