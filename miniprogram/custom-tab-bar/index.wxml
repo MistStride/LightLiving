@@ -1,0 +1,8 @@
+<view class="tabbar theme-{{theme}}">
+  <view wx:for="{{list}}" wx:key="page"
+    class="tb-item {{selected === index ? 'on' : ''}}"
+    data-i="{{index}}" bindtap="onTap">
+    <view class="tb-ico">{{item.icon}}</view>
+    <view class="tb-tx">{{item.text}}</view>
+  </view>
+</view>

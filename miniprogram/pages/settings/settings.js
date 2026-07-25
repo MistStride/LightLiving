@@ -13,6 +13,9 @@ Page({
     const t = app.globalData.theme;
     this.setData({ theme: t, themes: themeMod.list() });
     themeMod.applyNav(t);
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({ selected: 1, theme: t });
+    }
   },
 
   pickTheme(e) {
@@ -21,6 +24,8 @@ Page({
     store.setTheme(key);
     this.setData({ theme: key });
     themeMod.applyNav(key);
+    const bar = (typeof this.getTabBar === 'function') ? this.getTabBar() : null;
+    if (bar) bar.setData({ theme: key });
     wx.showToast({ title: '已切换：' + (themeMod.THEMES[key] ? themeMod.THEMES[key].name : key), icon: 'none' });
   },
 

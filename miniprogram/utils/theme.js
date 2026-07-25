@@ -2,15 +2,15 @@
 const THEMES = {
   mint: {
     key: 'mint',
-    name: '薄荷绿',
-    navBg: '#57b89c',
+    name: '薄雾',
+    navBg: '#3fae8e',
     navText: '#ffffff',
-    bg: '#f3f9f6',
-    primary: '#57b89c'
+    bg: '#e6f6ee',
+    primary: '#3fae8e'
   },
   purple: {
     key: 'purple',
-    name: '梦幻紫',
+    name: '鸢尾',
     navBg: '#7c6ff0',
     navText: '#ffffff',
     bg: '#f3eefe',
@@ -18,7 +18,7 @@ const THEMES = {
   },
   night: {
     key: 'night',
-    name: '夜间版',
+    name: '星夜',
     navBg: '#1f2624',
     navText: '#e6efeb',
     bg: '#15191a',

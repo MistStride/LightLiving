@@ -12,21 +12,23 @@
       <view class="label">总投入</view>
       <view class="amount">{{stats.total}}</view>
     </view>
-    <view class="hero-stats">
-      <view class="col"><view class="b">{{stats.perDay}}</view><view class="s">每日陪伴成本</view></view>
-      <view class="col"><view class="b">{{stats.count}}</view><view class="s">在册好物</view></view>
-      <view class="col"><view class="b" style="color:{{stats.neg>0?'#e0638f':'inherit'}}">{{stats.neg}}</view><view class="s">在吃灰</view></view>
-    </view>
   </view>
 
-  <!-- 轻盈度环 -->
-  <view class="lightness">
-    <view class="ring" style="--p:{{stats.lightness}}">
-      <view class="ring-b">{{stats.lightness}}<text class="ring-p">%</text></view>
+  <!-- 数据面板（磨砂卡片） -->
+  <view class="panel">
+    <view class="lightness">
+      <view class="ring" style="--p:{{stats.lightness}}">
+        <view class="ring-b">{{stats.lightness}}<text class="ring-p">%</text></view>
+      </view>
+      <view class="l-txt">
+        <view class="l-title">轻盈度</view>
+        <view class="l-sub">{{stats.neg > 0 ? '有 ' + stats.neg + ' 件在吃灰，是时候断舍离了' : '物尽其用，轻盈生活'}}</view>
+      </view>
     </view>
-    <view class="l-txt">
-      <view class="l-title">轻盈度</view>
-      <view class="l-sub">{{stats.neg > 0 ? '有 ' + stats.neg + ' 件在吃灰，是时候断舍离了' : '物尽其用，轻盈生活'}}</view>
+    <view class="hero-stats">
+      <view class="hcol"><view class="hb">{{stats.perDay}}</view><view class="hs">每日陪伴成本</view></view>
+      <view class="hcol"><view class="hb">{{stats.count}}</view><view class="hs">在册好物</view></view>
+      <view class="hcol"><view class="hb neg">{{stats.neg}}</view><view class="hs">在吃灰</view></view>
     </view>
   </view>
 
@@ -69,9 +71,7 @@
         </view>
         <view class="tags">
           <text wx:for="{{item._statuses}}" wx:for-item="s" wx:key="id" class="status-pill" style="color:{{s.color}};background:{{s.color}}22">{{s.emoji}} {{s.name}}</text>
-          <text wx:if="{{item._archived}}" class="arch-tag">已告别</text>
         </view>
-        <view wx:if="{{item.farewellAt}}" class="farewell-note">已于 {{item.farewellAt}} 圆满告别 🕊️</view>
       </view>
       <view class="cost">
         <view class="cost-num">{{item._perUse}}</view>

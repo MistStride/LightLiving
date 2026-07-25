@@ -11,7 +11,7 @@
   <view class="card">
     <view class="field-label">主题配色</view>
     <view class="theme-row">
-      <view wx:for="{{themes}}" wx:key="key" class="theme-opt {{theme === item.key ? 'on' : ''}}"
+      <view wx:for="{{themes}}" wx:key="key" class="theme-chip {{theme === item.key ? 'on' : ''}}"
         data-key="{{item.key}}" bindtap="pickTheme">
         <view class="theme-dot" style="background:{{item.primary}}"></view>
         <text>{{item.name}}</text>

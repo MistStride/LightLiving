@@ -34,16 +34,14 @@ Page({
   data: {
     items: [],
     theme: 'mint',
-    tab: 'all',
+    tab: '',
     cats: ['全部'],
     filterCat: '全部',
     sort: 'recent',
     stats: { total: '¥0', perDay: '¥0', neg: 0, inf: false, count: 0 },
     tabs: [
-      { key: 'all', label: '全部' },
       { key: 'active', label: '陪伴中' },
-      { key: 'neg', label: '断舍离' },
-      { key: 'gone', label: '圆满告别' }
+      { key: 'neg', label: '断舍离' }
     ]
   },
 
@@ -51,6 +49,9 @@ Page({
     const t = app.globalData.theme;
     this.setData({ theme: t });
     theme.applyNav(t);
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({ selected: 0, theme: t });
+    }
     this.refresh();
   },
 
@@ -73,10 +74,11 @@ Page({
 
   applyFilter() {
     let list = store.getItems().map(decorate);
+    list = list.filter(i => !i._archived);
     const t = this.data.tab;
-    if (t === 'active') list = list.filter(i => !i._archived);
-    else if (t === 'gone') list = list.filter(i => i._archived);
-    else if (t === 'neg') list = list.filter(i => i._neg && !i._archived);
+    if (t === 'active') list = list.filter(i => !i._neg);
+    else if (t === 'neg') list = list.filter(i => i._neg);
+
     if (this.data.filterCat !== '全部') list = list.filter(i => i.category === this.data.filterCat);
 
     const s = this.data.sort;
@@ -89,7 +91,8 @@ Page({
   },
 
   onTab(e) {
-    this.setData({ tab: e.currentTarget.dataset.key });
+    const k = e.currentTarget.dataset.key;
+    this.setData({ tab: this.data.tab === k ? '' : k });
     this.applyFilter();
   },
   onFilter(e) {

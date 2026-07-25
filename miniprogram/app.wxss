@@ -2,19 +2,19 @@
 /* 主题通过页面根 view 的 class 切换：theme-mint / theme-purple / theme-night */
 
 .theme-mint {
-  --bg: #f1f9f5;
-  --bg-grad: linear-gradient(160deg, #E8F6EF 0%, #EAF4FE 100%);
+  --bg: #e6f6ee;
+  --bg-grad: linear-gradient(165deg, #C9ECDA 0%, #DDF3EC 100%);
   --surface: #ffffff;
-  --surface-2: #f4fbf8;
-  --primary: #57b89c;
-  --primary-soft: #e8f5f0;
-  --secondary-soft: #d9f0ea;
-  --text: #283330;
-  --text-soft: #6b7d77;
-  --border: #e3efe9;
-  --danger: #e07a6b;
-  --warn: #e0a96b;
-  --shadow: rgba(87, 184, 156, 0.18);
+  --surface-2: #f1faf5;
+  --primary: #3fae8e;
+  --primary-soft: #e2f5ee;
+  --secondary-soft: #cdeede;
+  --text: #1f332e;
+  --text-soft: #5b7a6f;
+  --border: #d8efe5;
+  --danger: #e0638f;
+  --warn: #d4923a;
+  --shadow: rgba(63, 174, 142, 0.20);
 }
 
 .theme-purple {
@@ -54,7 +54,7 @@
   background: var(--bg-grad);
   color: var(--text);
   box-sizing: border-box;
-  padding-bottom: 40rpx;
+  padding-bottom: calc(180rpx + env(safe-area-inset-bottom));
 }
 
 /* 通用卡片 */

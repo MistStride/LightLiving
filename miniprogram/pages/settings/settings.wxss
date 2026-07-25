@@ -4,11 +4,15 @@
 .profile-sub { font-size: 24rpx; margin-top: 6rpx; }
 
 .field-label { font-size: 26rpx; color: var(--text-soft); margin: 6rpx 0 18rpx; }
-.theme-row { display: flex; }
-.theme-opt { flex: 1; text-align: center; padding: 18rpx 0; border-radius: 16rpx; border: 2rpx solid var(--border); margin-right: 16rpx; font-size: 26rpx; background: var(--surface-2); }
-.theme-opt:last-child { margin-right: 0; }
-.theme-opt.on { border-color: var(--primary); }
-.theme-dot { width: 40rpx; height: 40rpx; border-radius: 50%; margin: 0 auto 10rpx; }
+.theme-row { display: flex; gap: 16rpx; }
+.theme-chip {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 10rpx;
+  padding: 18rpx 0; border-radius: 16rpx; border: 2rpx solid var(--border);
+  background: var(--surface-2); font-size: 26rpx; color: var(--text-soft); font-weight: 600;
+}
+.theme-chip:last-child { margin-right: 0; }
+.theme-chip.on { border-color: var(--primary); color: var(--primary); background: var(--primary-soft); }
+.theme-dot { width: 26rpx; height: 26rpx; border-radius: 50%; flex: 0 0 auto; }
 
 .menu { padding: 6rpx 0; }
 .menu-row { display: flex; align-items: center; padding: 30rpx 28rpx; border-bottom: 1rpx solid var(--border); }
