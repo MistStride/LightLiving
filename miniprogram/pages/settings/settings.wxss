@@ -27,4 +27,3 @@
   font-size: 28rpx; font-weight: 600; color: var(--primary); letter-spacing: 1rpx;
   font-family: "Songti SC", "STSong", serif;
 }
-.foot-from { font-size: 21rpx; margin-top: 14rpx; font-family: "Songti SC", "STSong", serif; }

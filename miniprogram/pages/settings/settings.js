@@ -6,15 +6,14 @@ Page({
   data: {
     theme: 'mint',
     themes: [],
-    poem: '',
-    poemFrom: ''
+    poem: ''
   },
 
   onShow() {
     const t = store.getTheme();
     app.globalData.theme = t;
     const th = themeMod.THEMES[t] || themeMod.THEMES.mint;
-    this.setData({ theme: t, themes: themeMod.list(), poem: th.poem, poemFrom: th.poemFrom });
+    this.setData({ theme: t, themes: themeMod.list(), poem: th.poem });
     themeMod.applyNav(t);
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 1, theme: t });
@@ -25,7 +24,7 @@ Page({
     const key = e.currentTarget.dataset.key;
     app.setTheme(key);
     const th = themeMod.THEMES[key] || themeMod.THEMES.mint;
-    this.setData({ theme: key, poem: th.poem, poemFrom: th.poemFrom });
+    this.setData({ theme: key, poem: th.poem });
     themeMod.applyNav(key);
     const bar = (typeof this.getTabBar === 'function') ? this.getTabBar() : null;
     if (bar) bar.setData({ theme: key });

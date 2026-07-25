@@ -32,7 +32,6 @@
 
   <view class="foot">
     <view class="foot-poem">{{poem}}</view>
-    <view class="foot-from muted">{{poemFrom}}</view>
   </view>
 
 </view>
