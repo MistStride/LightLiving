@@ -3,9 +3,9 @@
 # 脚本用本机已缓存的 GCM 令牌创建 GitHub Release 并上传 APK，令牌不落盘、仅存内存。
 set -e
 REPO="MistStride/LightLiving"
-TAG="v1.2.0"
+TAG="v1.3.0"
 APK="/c/Users/shoyo/WorkBuddy/2026-07-24-02-11-13/light-living/android/app/build/outputs/apk/release/app-release.apk"
-ASSET="LightLiving-v1.2.0-release.apk"
+ASSET="LightLiving-v1.3.0-release.apk"
 
 # curl 不会读 git 的代理配置，这里自动把 git 的 http.proxy 取出来给 curl 用。
 # 在中国网络下，api.github.com / uploads.github.com 必须走代理，否则会卡死。
