@@ -835,7 +835,7 @@
   function setLang(l){
     lang=l;
     try{localStorage.setItem(LANG_KEY,l);}catch(e){}
-    applyI18n();renderGuide();render();
+    applyI18n();renderGuide();render();refreshSettingsSelection();
   }
   function applyTheme(){
     document.documentElement.setAttribute('data-theme',theme);
@@ -1670,9 +1670,9 @@
 
   /* ---------- settings menu ---------- */
   document.getElementById('settingsOverlay').addEventListener('click',e=>{
-    const th=e.target.closest('[data-theme]');
+    const th=e.target.closest('.theme-btn');
     if(th){setTheme(th.dataset.theme);return;}
-    const lg=e.target.closest('[data-lang]');
+    const lg=e.target.closest('.lang-btn');
     if(lg){setLang(lg.dataset.lang);return;}
     const r=e.target.closest('[data-set]');if(!r)return;
     const k=r.dataset.set;
