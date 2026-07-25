@@ -50,9 +50,10 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
         with:
-          api-level: 36
-          build-tools: 36.0.0
-          # setup-android accepts licenses and installs platform-tools + the requested platform/build-tools
+          # v3 uses `packages` (sdkmanager syntax) instead of the old api-level/build-tools inputs.
+          # buildToolsVersion is NOT pinned in the project, so AGP picks the highest installed build-tools.
+          packages: 'platforms;android-36 build-tools;35.0.0'
+          accept-android-sdk-licenses: true
 
       - name: Write local.properties (signing)
         working-directory: android
@@ -71,6 +72,10 @@ jobs:
             echo "lightliving_store_password=$PW"
             echo "lightliving_key_password=$PW"
           } > local.properties
+
+      - name: Make gradlew executable
+        working-directory: android
+        run: chmod +x ./gradlew
 
       - name: Build release APK
         working-directory: android
