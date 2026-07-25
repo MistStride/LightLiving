@@ -34,6 +34,11 @@ Page({
   goCats() { wx.navigateTo({ url: '/pages/categories/categories' }); },
   goBackup() { wx.navigateTo({ url: '/pages/backup/backup' }); },
 
+  loadSamples() {
+    const added = store.loadSamples();
+    wx.showToast({ title: added > 0 ? '已载入 ' + added + ' 件示例' : '示例已存在', icon: 'none' });
+  },
+
   about() {
     wx.showModal({
       title: '关于 物尽其轻',

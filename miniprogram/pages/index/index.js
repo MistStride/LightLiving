@@ -27,6 +27,8 @@ function decorate(it) {
     _statuses: sts,
     _neg: sts.some(s => s.positive === false),
     _archived: !!it.archived,
+    _archiveReason: it.archiveReason || '',
+    _farewellNote: it.farewellNote || '',
     _note: it.note || ''
   });
 }
@@ -43,6 +45,15 @@ Page({
     emptyTitle: '这里还空空如也',
     emptySub: '点击右下角 ＋ ，记录第一件陪伴你的好物',
     stats: { total: '¥0', perDay: '¥0', neg: 0, inf: false, count: 0 },
+    // 告别 sheet 状态
+    showFarewell: false,
+    farewellId: '',
+    farewellMsg: '',
+    farewellReason: '闲置处理',
+    farewellReasons: ['赠送他人', '回收丢弃', '闲置处理'],
+    farewellNote: '',
+    celebrate: false,
+    confetti: [],
     tabs: [
       { key: 'active', label: '陪伴中' },
       { key: 'gone', label: '圆满告别' }
@@ -155,22 +166,58 @@ Page({
         const pick = actions[res.tapIndex];
         if (pick === '编辑') this.onEdit({ currentTarget: { dataset: { id } } });
         else if (pick === '打卡一次') { store.checkinItem(id); this.refresh(); wx.showToast({ title: '已打卡 ✨', icon: 'none' }); }
-        else if (pick === '圆满告别') this.doFarewell(id);
+        else if (pick === '圆满告别') this.openFarewell(id);
         else if (pick === '恢复陪伴') { store.restoreItem(id); this.refresh(); wx.showToast({ title: '已回到陪伴册', icon: 'none' }); }
         else if (pick === '删除') this.doDelete(id);
       }
     });
   },
 
-  doFarewell(id) {
+  // 载入示例好物（仅补充缺失条目，不重复）
+  loadSamples() {
+    const added = store.loadSamples();
+    this.refresh();
+    wx.showToast({ title: added > 0 ? '已载入 ' + added + ' 件示例' : '示例已存在', icon: 'none' });
+  },
+
+  // ---------- 告别 sheet（对齐网页：个性化告别语 + 方式 + 必填评语 + 撒花） ----------
+  openFarewell(id) {
     const it = store.getItems().find(x => x.id === id);
-    wx.showModal({
-      title: '圆满告别',
-      content: '确定让「' + (it ? it.name : '') + '」圆满告别吗？它会移入「圆满告别」，仍可恢复。',
-      confirmText: '告别',
-      confirmColor: '#e07a6b',
-      success: r => { if (r.confirm) { store.farewellItem(id); this.refresh(); wx.showToast({ title: '放手，轻盈地生活。', icon: 'none' }); } }
+    if (!it) return;
+    const msg = '感谢「' + it.name + '」陪伴了你 ' + store.companionDays(it) + ' 天。\n放手，轻盈地生活。';
+    this.setData({
+      showFarewell: true,
+      farewellId: id,
+      farewellMsg: msg,
+      farewellReason: '闲置处理',
+      farewellNote: ''
     });
+  },
+  pickReason(e) { this.setData({ farewellReason: e.currentTarget.dataset.r }); },
+  onFarewellNote(e) { this.setData({ farewellNote: e.detail.value }); },
+  closeFarewell() { this.setData({ showFarewell: false }); },
+  noop() {},
+  confirmFarewell() {
+    const note = (this.data.farewellNote || '').trim();
+    if (!note) { wx.showToast({ title: '写句告别评语再走吧 💬', icon: 'none' }); return; }
+    store.farewellItem(this.data.farewellId, this.data.farewellReason, note);
+    this.setData({ showFarewell: false });
+    this.refresh();
+    this.startCelebrate();
+    wx.showToast({ title: '🎉 已圆满告别，轻装上阵！', icon: 'none' });
+    wx.vibrateShort && wx.vibrateShort({ type: 'light' });
+  },
+  startCelebrate() {
+    const emojis = ['🎉', '💜', '✨', '🌿', '🪶', '💫'];
+    const arr = [];
+    for (let i = 0; i < 20; i++) {
+      const left = (Math.random() * 100).toFixed(2);
+      const delay = (Math.random() * 0.6).toFixed(2);
+      const dur = (1.2 + Math.random() * 0.9).toFixed(2);
+      arr.push({ id: i, e: emojis[i % emojis.length], style: 'left:' + left + '%;animation-delay:' + delay + 's;animation-duration:' + dur + 's;' });
+    }
+    this.setData({ celebrate: true, confetti: arr });
+    setTimeout(() => { this.setData({ celebrate: false }); }, 2300);
   },
 
   doDelete(id) {

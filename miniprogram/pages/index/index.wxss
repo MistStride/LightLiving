@@ -115,3 +115,70 @@
   display: flex; align-items: center; justify-content: center;
 }
 .fab:active { transform: translateX(-50%) scale(.92); }
+
+/* 空态载入示例按钮 */
+.empty-btn {
+  margin: 36rpx auto 0; display: inline-block; padding: 18rpx 44rpx;
+  background: var(--primary); color: #fff; border-radius: 999rpx; font-size: 26rpx; font-weight: 600;
+  box-shadow: 0 12rpx 28rpx -8rpx var(--shadow);
+}
+.empty-btn:active { transform: scale(.96); }
+
+/* 归档卡片：告别方式 + 评语 */
+.archived-tag {
+  margin-top: 16rpx; display: inline-block; font-size: 21rpx; font-weight: 700;
+  color: var(--primary); background: var(--primary-soft); padding: 8rpx 18rpx; border-radius: 999rpx;
+}
+
+/* ===== 告别 sheet ===== */
+.fs-mask {
+  position: fixed; inset: 0; background: rgba(15, 22, 20, 0.5);
+  display: flex; align-items: flex-end; z-index: 60; animation: fadeIn .2s ease both;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.fs-sheet {
+  width: 100%; background: var(--surface); border-top-left-radius: 36rpx; border-top-right-radius: 36rpx;
+  padding: 18rpx 40rpx calc(40rpx + env(safe-area-inset-bottom)); box-sizing: border-box;
+  animation: slideUp .28s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: none; } }
+.fs-handle { width: 72rpx; height: 8rpx; border-radius: 999rpx; background: var(--border); margin: 8rpx auto 24rpx; }
+.fs-title { font-size: 38rpx; font-weight: 800; color: var(--text); text-align: center; }
+.fs-sub { font-size: 24rpx; color: var(--text-soft); text-align: center; margin-top: 8rpx; }
+.fs-card {
+  margin: 28rpx 0; background: linear-gradient(135deg, var(--primary-soft), var(--secondary-soft));
+  border-radius: 24rpx; padding: 32rpx; text-align: center;
+}
+.fs-heart { font-size: 56rpx; }
+.fs-msg { font-size: 27rpx; line-height: 1.7; color: var(--text); font-weight: 600; margin-top: 12rpx; white-space: pre-line; }
+.fs-label { font-size: 26rpx; font-weight: 700; color: var(--text); margin: 24rpx 0 14rpx; }
+.fs-req { color: var(--danger); }
+.fs-reasons { display: flex; gap: 16rpx; }
+.fs-reason {
+  flex: 1; text-align: center; font-size: 26rpx; padding: 22rpx 0; border-radius: 16rpx;
+  background: var(--surface-2); border: 2rpx solid var(--border); color: var(--text-soft); font-weight: 600;
+}
+.fs-reason.on { background: var(--primary-soft); border-color: var(--primary); color: var(--primary); }
+.fs-note {
+  width: 100%; box-sizing: border-box; min-height: 150rpx; background: var(--surface-2);
+  border: 1rpx solid var(--border); border-radius: 16rpx; padding: 20rpx 24rpx; font-size: 28rpx; line-height: 1.6;
+}
+.fs-actions { display: flex; gap: 20rpx; margin-top: 32rpx; }
+.fs-cancel { flex: 0 0 36%; }
+.fs-confirm { flex: 1; }
+
+/* ===== 庆祝撒花 ===== */
+.celebrate { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 90; }
+.confetti {
+  position: absolute; top: -60rpx; font-size: 44rpx;
+  animation-name: confettiFall; animation-timing-function: linear; animation-fill-mode: forwards;
+}
+@keyframes confettiFall {
+  0% { transform: translateY(0) rotate(0); opacity: 1; }
+  100% { transform: translateY(125vh) rotate(540deg); opacity: 0; }
+}
+.celebrate-emoji {
+  position: absolute; top: 38%; left: 50%; transform: translate(-50%, -50%);
+  font-size: 140rpx; animation: pop .6s cubic-bezier(.22,1.4,.36,1) both;
+}
+@keyframes pop { 0% { transform: translate(-50%,-50%) scale(.2); opacity: 0; } 60% { transform: translate(-50%,-50%) scale(1.15); opacity: 1; } 100% { transform: translate(-50%,-50%) scale(1); opacity: 1; } }

@@ -2,7 +2,7 @@
 const THEMES = {
   mint: {
     key: 'mint',
-    name: '薄雾',
+    name: '竹杖',
     navBg: '#3fae8e',
     navText: '#ffffff',
     bg: '#e6f6ee',

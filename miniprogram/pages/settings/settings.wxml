@@ -24,6 +24,7 @@
     <view class="menu-row" bindtap="goRules"><text class="mr-ico">🏷️</text><text class="mr-tx">状态与关系规则</text><text class="mr-ar">›</text></view>
     <view class="menu-row" bindtap="goCats"><text class="mr-ico">🗂️</text><text class="mr-tx">物品分类管理</text><text class="mr-ar">›</text></view>
     <view class="menu-row" bindtap="goBackup"><text class="mr-ico">💾</text><text class="mr-tx">数据备份与恢复</text><text class="mr-ar">›</text></view>
+    <view class="menu-row" bindtap="loadSamples"><text class="mr-ico">🌱</text><text class="mr-tx">载入示例案例</text><text class="mr-ar">›</text></view>
     <view class="menu-row" bindtap="about"><text class="mr-ico">ℹ️</text><text class="mr-tx">关于</text><text class="mr-ar">›</text></view>
   </view>
 

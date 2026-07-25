@@ -63,6 +63,7 @@
     <view class="em">🪶</view>
     <view class="et">{{emptyTitle}}</view>
     <view class="es">{{emptySub}}</view>
+    <view wx:if="{{tab !== 'gone'}}" class="empty-btn" bindtap="loadSamples">载入示例好物</view>
   </view>
 
   <view class="list">
@@ -79,7 +80,9 @@
         <view class="tags">
           <text wx:for="{{item._statuses}}" wx:for-item="s" wx:key="id" class="status-pill" style="color:{{s.color}};background:{{s.color}}22">{{s.emoji}} {{s.name}}</text>
         </view>
-        <view wx:if="{{item._note}}" class="note">💬 {{item._note}}</view>
+        <view wx:if="{{item._archived}}" class="archived-tag">💜 圆满告别 · {{item._archiveReason}}</view>
+        <view wx:if="{{item._farewellNote}}" class="note">💬 {{item._farewellNote}}</view>
+        <view wx:elif="{{item._note}}" class="note">💬 {{item._note}}</view>
       </view>
       <view class="cost">
         <view class="cost-num">{{item._perUse}}</view>
@@ -90,5 +93,36 @@
 
   <!-- 悬浮新增 -->
   <view class="fab" bindtap="onAdd">＋</view>
+
+  <!-- 告别 sheet（对齐网页：个性化告别语 + 方式 + 必填评语） -->
+  <view wx:if="{{showFarewell}}" class="fs-mask" bindtap="closeFarewell">
+    <view class="fs-sheet" catchtap="noop">
+      <view class="fs-handle"></view>
+      <view class="fs-title">断·舍·离</view>
+      <view class="fs-sub">放手，轻盈地生活。</view>
+      <view class="fs-card">
+        <view class="fs-heart">💜</view>
+        <view class="fs-msg">{{farewellMsg}}</view>
+      </view>
+      <view class="fs-label">告别方式</view>
+      <view class="fs-reasons">
+        <view wx:for="{{farewellReasons}}" wx:key="*this"
+          class="fs-reason {{farewellReason === item ? 'on' : ''}}" data-r="{{item}}" bindtap="pickReason">{{item}}</view>
+      </view>
+      <view class="fs-label">给它的告别评语 <text class="fs-req">*</text></view>
+      <textarea class="fs-note" value="{{farewellNote}}" bindinput="onFarewellNote"
+        placeholder="写句心里话，比如：谢谢你陪我走过那段日子，希望下一位主人也喜欢你。" maxlength="140" />
+      <view class="fs-actions">
+        <view class="btn-ghost fs-cancel" bindtap="closeFarewell">再想想</view>
+        <view class="btn-primary fs-confirm" bindtap="confirmFarewell">圆满告别</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 庆祝撒花 -->
+  <view wx:if="{{celebrate}}" class="celebrate">
+    <view wx:for="{{confetti}}" wx:key="id" class="confetti" style="{{item.style}}">{{item.e}}</view>
+    <view class="celebrate-emoji">🎉</view>
+  </view>
 
 </view>

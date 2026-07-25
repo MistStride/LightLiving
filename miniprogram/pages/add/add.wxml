@@ -1,29 +1,28 @@
 <view class="page theme-{{theme}}">
 
   <view class="card">
-    <!-- 封面：大块可点区域，照片优先，否则渐变占位 -->
-    <view class="field-label">封面</view>
-    <view class="cover">
+    <!-- 封面 + emoji：并排，照片与图标二选一 -->
+    <view class="field-label">封面（拍照 / 图标，二选一）</view>
+    <view class="cover-row">
       <view class="cover-main" bindtap="chooseCover">
         <image wx:if="{{image}}" class="cover-img" src="{{image}}" mode="aspectFill" />
         <view wx:else class="cover-empty">
           <view class="cover-ic">📷</view>
-          <view class="cover-tx">点击上传 / 拍照</view>
+          <view class="cover-tx">拍照 / 上传</view>
         </view>
       </view>
-      <view wx:if="{{image}}" class="cover-remove" catchtap="removeCover">✕ 移除照片</view>
-    </view>
-
-    <!-- emoji 封面：一排基础 emoji + 末尾可自定义 -->
-    <view class="field-label">或用 emoji 当封面</view>
-    <view class="emoji-grid">
-      <view wx:for="{{emojis}}" wx:key="*this" class="emoji-opt {{emoji === item ? 'on' : ''}}"
-        data-e="{{item}}" bindtap="onEmoji">{{item}}</view>
-      <view class="emoji-opt custom {{customEmoji ? 'on' : ''}}">
-        <input class="emoji-input" value="{{customEmoji}}" bindinput="onCustomEmoji"
-          placeholder="自定义" maxlength="4" confirm-type="done" />
+      <view class="emoji-side">
+        <view class="emoji-mini">
+          <view wx:for="{{emojis}}" wx:key="*this" class="emini {{emoji === item ? 'on' : ''}}"
+            data-e="{{item}}" bindtap="onEmoji">{{item}}</view>
+          <view class="emini custom {{customEmoji ? 'on' : ''}}">
+            <input class="emini-in" value="{{customEmoji}}" bindinput="onCustomEmoji"
+              placeholder="＋" maxlength="4" confirm-type="done" />
+          </view>
+        </view>
       </view>
     </view>
+    <view wx:if="{{image}}" class="cover-remove" catchtap="removeCover">✕ 移除照片</view>
 
     <view class="field-label">名字</view>
     <input class="input" placeholder="例如：机械键盘" value="{{name}}" bindinput="onName" maxlength="30" />
@@ -47,14 +46,11 @@
     </view>
 
     <view class="field-label">计费方式</view>
-    <radio-group class="mode-group" bindchange="onMode">
-      <label class="mode-opt {{mode === 'time' ? 'on' : ''}}">
-        <radio value="time" checked="{{mode === 'time'}}" color="#57b89c" /> 按天陪伴（看每天摊多少）
-      </label>
-      <label class="mode-opt {{mode === 'use' ? 'on' : ''}}">
-        <radio value="use" checked="{{mode === 'use'}}" color="#57b89c" /> 按次使用（看每次值多少）
-      </label>
-    </radio-group>
+    <view class="seg">
+      <view class="seg-opt {{mode === 'time' ? 'on' : ''}}" data-m="time" bindtap="onMode">按天陪伴</view>
+      <view class="seg-opt {{mode === 'use' ? 'on' : ''}}" data-m="use" bindtap="onMode">按次使用</view>
+    </view>
+    <view class="seg-hint">按天：看每天摊多少；按次：看每次值多少（0 次显示为 ∞）</view>
 
     <view wx:if="{{mode === 'use'}}" class="field-label">已使用次数</view>
     <input wx:if="{{mode === 'use'}}" class="input" type="number" placeholder="0" value="{{useCount}}" bindinput="onUseCount" />

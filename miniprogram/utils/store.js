@@ -6,6 +6,7 @@ const CAT_KEY = 'light_living_categories_v1';
 const STATUS_KEY = 'light_living_statuses_v1';
 const THEME_KEY = 'light_living_theme_v1';
 const AUTO_KEY = 'light_living_autobackup_v1';
+const SEED_KEY = 'light_living_seeded_v1';
 const DAY = 86400000;
 
 const DEFAULT_CATS = ['数码电子', '服饰鞋包', '居家生活', '个人爱好', '其他'];
@@ -66,6 +67,44 @@ function saveStatuses(s) { wx.setStorageSync(STATUS_KEY, s); autoBackup(); }
 
 function getTheme() { try { return wx.getStorageSync(THEME_KEY) || 'mint'; } catch (e) { return 'mint'; } }
 function setTheme(t) { wx.setStorageSync(THEME_KEY, t); }
+
+// ---------- 示例案例（移植自网页版，首次打开自动载入，亦可手动载入） ----------
+function seedItems() {
+  const t = new Date();
+  const d = (y, m, day) => {
+    const dt = new Date(t.getFullYear() - y, m, day);
+    return dt.getFullYear() + '-' + pad(dt.getMonth() + 1) + '-' + pad(dt.getDate());
+  };
+  const now = Date.now();
+  return [
+    { id: 'seed1', name: '复古胶片相机', price: 1280, purchase: d(1, 8, 12), category: '个人爱好', mode: 'use', useCount: 46, checkins: ['2026-07-18'], emoji: '📸', image: '', note: '记录生活的眼睛，每一卷都值得。', archived: false, farewellAt: '', farewellNote: '', archiveReason: '', createdAt: now },
+    { id: 'seed2', name: '机械键盘', price: 499, purchase: d(1, 0, 15), category: '数码电子', mode: 'time', useCount: 1, checkins: [], emoji: '⌨️', image: '', note: '敲字的手感，是每天的仪式感。', archived: false, farewellAt: '', farewellNote: '', archiveReason: '', createdAt: now + 1 },
+    { id: 'seed3', name: '香薰蜡烛', price: 89, purchase: d(0, 5, 20), category: '居家生活', mode: 'time', useCount: 1, checkins: [], emoji: '🕯️', image: '', note: '睡前的一束微光与气息。', archived: false, farewellAt: '', farewellNote: '', archiveReason: '', createdAt: now + 2 },
+    { id: 'seed4', name: '羊绒围巾', price: 259, purchase: d(1, 10, 2), category: '服饰鞋包', mode: 'use', useCount: 2, checkins: ['2026-01-05'], emoji: '🧣', image: '', note: '冬天的温柔铠甲，可惜很少戴。', archived: false, farewellAt: '', farewellNote: '', archiveReason: '', createdAt: now + 3 },
+    { id: 'seed5', name: '便携蓝牙音箱', price: 399, purchase: d(2, 2, 1), category: '数码电子', mode: 'time', useCount: 1, checkins: [], emoji: '🔊', image: '', note: '露营与阳台的bgm。', archived: true, farewellAt: todayStr(), farewellNote: '用了几次就闲置了，希望下个人常带它出门。', archiveReason: '闲置处理', createdAt: now + 4 }
+  ];
+}
+// 首次启动：若库为空且未载入过示例，则自动填充（仅触发一次）
+function ensureSeed() {
+  try {
+    if (wx.getStorageSync(SEED_KEY)) return;
+  } catch (e) { /* ignore */ }
+  const items = getItems();
+  if (!items.length) loadSamples();
+  try { wx.setStorageSync(SEED_KEY, '1'); } catch (e) { /* ignore */ }
+}
+// 手动载入示例：仅补充缺失的示例条目，避免重复
+function loadSamples() {
+  const seeds = seedItems();
+  const items = getItems();
+  const have = {};
+  items.forEach(it => { have[it.id] = true; });
+  let added = 0;
+  seeds.forEach(s => { if (!have[s.id]) { items.push(s); added++; } });
+  if (added) saveItems(items);
+  try { wx.setStorageSync(SEED_KEY, '1'); } catch (e) { /* ignore */ }
+  return added;
+}
 
 // ---------- 物品指标 ----------
 function companionDays(it) { return daysSince(it.purchase) + 1; }
@@ -128,12 +167,14 @@ function checkinItem(id) {
   it.lastUsed = t;
   saveItems(items);
 }
-function farewellItem(id) {
+function farewellItem(id, reason, note) {
   const items = getItems();
   const it = items.find(x => x.id === id);
   if (!it) return;
   it.archived = true;
   it.farewellAt = todayStr();
+  it.archiveReason = reason || '闲置处理';
+  it.farewellNote = note || '';
   saveItems(items);
 }
 function restoreItem(id) {
@@ -289,5 +330,6 @@ module.exports = {
   evalStatuses, isNegative, computeStats,
   checkinItem, farewellItem, restoreItem, deleteItem, upsertItem,
   deleteCategory, renameCategory, addCategory, saveStatus, deleteStatus,
+  seedItems, loadSamples, ensureSeed,
   getAutoBackups, restoreAuto, exportObj, importObj, money, ruleSummary
 };

@@ -2,7 +2,7 @@ const app = getApp();
 const store = require('../../utils/store.js');
 const theme = require('../../utils/theme.js');
 
-const EMOJIS = ['📱', '💻', '📷', '👟', '👜', '🧥', '🪑', '📚', '🎮', '🎧', '⌚', '🪴', '✨', '💜', '🍳', '🚲', '🧴', '🎒'];
+const EMOJIS = ['📱', '💻', '📷', '👟', '👜', '🧥', '📚', '🎮'];
 
 Page({
   data: {
@@ -66,7 +66,7 @@ Page({
     this.setData({ customEmoji: v, emoji: v, image: '' });
   },
   onCat(e) { this.setData({ catIndex: +e.detail.value }); },
-  onMode(e) { this.setData({ mode: e.detail.value }); },
+  onMode(e) { this.setData({ mode: e.currentTarget.dataset.m }); },
   onDate(e) { this.setData({ purchase: e.detail.value }); },
 
   // 上传封面照片（压缩后转 base64 持久化，与原版行为一致）

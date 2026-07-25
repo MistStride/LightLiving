@@ -6,5 +6,6 @@ App({
   },
   onLaunch() {
     this.globalData.theme = store.getTheme();
+    store.ensureSeed();
   }
 });
